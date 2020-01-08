@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import "materialize-css"
-import Home from './pages/Home'
+import 'materialize-css'
+import './App.css'
 
+import {observer} from 'mobx-react'
+const routes = "Hello"
+@observer
 class App extends Component {
+  
   render() {
     return (
       <div>
-        <div className="container">
-          <Home />
-        </div>
+          {routes}
       </div>
     )
   }
