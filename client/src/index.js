@@ -1,20 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
+// import { Provider } from 'mobx-react'
 import {BrowserRouter} from 'react-router-dom'
-import { Provider } from 'mobx-react'
-import storeInit from './stores'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
-
-// const stores = storeInit();
 const app = (
-    // <Provider {...stores}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>   
-    // </Provider>
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
 )
 
 ReactDOM.render(app, document.getElementById('root'));

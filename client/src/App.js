@@ -2,19 +2,24 @@ import React, { Component } from 'react'
 import 'materialize-css'
 import './App.css'
 
+import {useRoutes} from './routes/routes'
+
 import {observer} from 'mobx-react'
-const routes = "Hello"
-@observer
-class App extends Component {
-  
+
+
+export default class App extends Component {
+
+  state = {
+    isAuthenticated: false,//!!token,
+    routes: useRoutes(this.isAuthenticated)
+  }
   render() {
     return (
-      <div>
-          {routes}
-      </div>
+        <div>
+            {this.state.routes}
+        </div>
     )
   }
 }
 
-export default App
 

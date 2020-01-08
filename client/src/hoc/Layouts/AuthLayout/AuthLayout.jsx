@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Auth from '../../../pages/Auth/Auth'
 import Navbar from '../../../components/Navbar/Navbar'
-import { Redirect } from 'react-router-dom'
+import { Switch, Redirect, Route } from 'react-router-dom'
 
-export default class AuthLayout extends Component {
+class AuthLayout extends Component {
     state = {
         navbarLinks: []
     }
@@ -19,8 +19,9 @@ export default class AuthLayout extends Component {
                         <Auth />
                     </Route>
                 </Switch>
-     
             </React.Fragment>
         )
     }
 }
+
+export default AuthLayout
