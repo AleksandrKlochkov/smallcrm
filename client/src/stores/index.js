@@ -1,13 +1,7 @@
-import { configure } from 'mobx';
-import AppStore from './appStore';
-
-// configure({
-//   enforceActions: 'always',
-// });
+import authStore from './authStore'
 
 export default () => {
-  const appStore = AppStore;
-  return {
-    appStore
-  };
-};
+    return {
+      authStore
+    };
+  }

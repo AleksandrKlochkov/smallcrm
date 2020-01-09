@@ -4,7 +4,11 @@ import SiteLayout from '../hoc/Layouts/SiteLayout/SiteLayout'
 
 export const useRoutes = isAuthenticated => {
     if (isAuthenticated) {
-      return (<AuthLayout />)
+      return (
+        <SiteLayout />
+      )
     }
-    return (<SiteLayout />)
+    return (
+      <AuthLayout />
+    )
 }

@@ -1,25 +1,19 @@
 import React, { Component } from 'react'
+import {inject } from 'mobx-react'
 import 'materialize-css'
-import './App.css'
-
 import {useRoutes} from './routes/routes'
 
-import {observer} from 'mobx-react'
-
-
-export default class App extends Component {
-
-  state = {
-    isAuthenticated: false,//!!token,
-    routes: useRoutes(this.isAuthenticated)
-  }
+@inject('authStore')
+class App extends Component {
   render() {
     return (
-        <div>
-            {this.state.routes}
-        </div>
+      <React.Fragment>
+           {useRoutes(this.props.authStore.isAuth)}
+      </React.Fragment>
     )
   }
 }
+
+export default App
 
 
