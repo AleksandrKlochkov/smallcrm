@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Auth from '../../../pages/Auth/Auth'
 import Navbar from '../../../components/Navbar/Navbar'
-import  {Switch, Redirect, Route } from 'react-router-dom'
+import {Switch, Redirect, Route } from 'react-router-dom'
 
 class AuthLayout extends Component {
     state = {

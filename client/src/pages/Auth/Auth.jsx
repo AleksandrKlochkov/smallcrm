@@ -1,25 +1,29 @@
 import React, { Component } from 'react'
+import {inject} from 'mobx-react'
 
-export default class Auth extends Component {
-
+ @inject('authStore')
+ class Auth extends Component {
     submitHandler = (event) => {
-        event.preventDefault();
-        console.log('submit')
+        event.preventDefault()
+        const form = event.target
+        const formData = new FormData(form)
+        console.log(this.props)
+        this.props.authStore.auth(formData)   
     }
 
     render() {
         return (
             <div className="auth-block">
-                    <div className="card">
-                    <form onSubmit={this.submitHandler}>
+                <div className="card">
+                    <form onSubmit={this.submitHandler} noValidate>
                         <div className="card-content">
                             <span className="card-title">Войти в систему</span>
                             <div className="input-field">
-                                <input id="email" type="email"/>
+                                <input id="email" name="email" type="email"/>
                                 <label htmlFor="email">Email:</label>
                             </div>
                             <div className="input-field">
-                                <input id="password" type="password"/>
+                                <input id="password" name="password" type="password" autoComplete="password"/>
                                 <label htmlFor="password">Пароль:</label>
                             </div>
                         </div>
@@ -32,3 +36,5 @@ export default class Auth extends Component {
         )
     }
 }
+
+export default Auth

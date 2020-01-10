@@ -167,9 +167,7 @@ main,footer{
   width: 100%;
 }
 
-
 @media screen and (max-width: 412px) {
-
 	.auth-block .card {
 		max-width: 95%;
 		width: 100%;
