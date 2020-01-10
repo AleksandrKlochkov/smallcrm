@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {inject} from 'mobx-react'
+import {withRouter} from 'react-router-dom'
 
  @inject('authStore')
  class Auth extends Component {
@@ -7,7 +8,7 @@ import {inject} from 'mobx-react'
         event.preventDefault()
         const form = event.target
         const formData = new FormData(form)
-        console.log(this.props)
+        this.props.authStore.setHistory(this.props.history)
         this.props.authStore.auth(formData)   
     }
 
@@ -37,4 +38,4 @@ import {inject} from 'mobx-react'
     }
 }
 
-export default Auth
+export default withRouter(Auth)

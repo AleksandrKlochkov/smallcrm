@@ -7,8 +7,9 @@ export const useRoutes = isAuthenticated => {
       return (
         <SiteLayout />
       )
+    }else{
+      return (
+        <AuthLayout />
+      )
     }
-    return (
-      <AuthLayout />
-    )
 }

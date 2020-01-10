@@ -1,15 +1,16 @@
-import {observable, action, configure} from 'mobx'
+import {observable, action, configure, computed} from 'mobx'
 
 configure({ enforceActions: "observed" })
 
 class AuthStore{
     @observable isAuthenticated = false;
     @observable token = "";
+    routerHistory = {};
 
-
-    get isAuth() {
+    get isAuthenticated() {
         return this.isAuthenticated
     }
+
 
     @action('auth')
     async auth(formData){
@@ -37,12 +38,13 @@ class AuthStore{
                     if(data.message){
                         window.M.toast({ html: data.message})
                     }else{
-                            const experationDate = new Date(data.expiresIn*1000)
-                            localStorage.setItem('token', data.token)
-                            localStorage.setItem('user', data.user)
-                            localStorage.setItem('experationDate', experationDate)
-                            this.authSuccess(data.token)
-                            this.authLogout(experationDate - new Date())
+                        const experationDate = new Date(data.expiresIn*1000)
+                        localStorage.setItem('token', data.token)
+                        localStorage.setItem('user', data.user)
+                        localStorage.setItem('experationDate', experationDate)
+                        this.authSuccess(data.token)
+                        this.authLogout(experationDate - new Date())
+                        this.routerHistory.push('/overwiew')
                     }
                 })
                 .catch(e => {
@@ -71,6 +73,10 @@ class AuthStore{
     logout(){
         localStorage.removeItem('token')
         localStorage.removeItem('experationDate')
+        console.log(this.routerHistory)
+        if(this.routerHistory && Object(this.routerHistory).length > 0){
+             this.routerHistory.push('/')
+        }
     }
 
     @action('autoLogout')
