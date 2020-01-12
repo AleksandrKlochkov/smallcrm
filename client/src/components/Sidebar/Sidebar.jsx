@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {NavLink} from 'react-router-dom'
 
 export default class Sidebar extends Component {
     render() {
@@ -10,7 +11,7 @@ export default class Sidebar extends Component {
                 <li className="bold"><a href="#" className="waves-effect waves-orange">История</a></li>
                 <li className="bold"><a href="#" className="waves-effect waves-orange">Добавить заказ</a></li>
                 <li className="bold "><a href="#" className="waves-effect waves-orange">Ассортимент</a></li>
-                <li className="bold last"><a href="#" className="waves-effect waves-orange">Выйти</a></li>
+                <li className="bold last"><NavLink to="logout" className="waves-effect waves-orange">Выйти</NavLink></li>
             </ul>
         )
     }

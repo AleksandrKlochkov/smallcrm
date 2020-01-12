@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import {Switch, Route, Redirect} from 'react-router-dom'
+
 import Sidebar from '../../../components/Sidebar/Sidebar'
+import Logout from '../../../components/Logout/Logout'
+
 import Overwiew from '../../../pages/Overview/Overview'
+
 
 
 export default class SiteLayout extends Component {
@@ -24,6 +28,7 @@ export default class SiteLayout extends Component {
                     <Route path="/overwiew">
                         <Overwiew />
                     </Route>
+                    <Route path="/logout" component={Logout} />
                 </Switch>
                 </main>
              

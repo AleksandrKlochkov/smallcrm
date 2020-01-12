@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import Auth from '../../../pages/Auth/Auth'
-import Navbar from '../../../components/Navbar/Navbar'
 import {Switch, Redirect, Route } from 'react-router-dom'
+
+import Navbar from '../../../components/Navbar/Navbar'
+import Logout from '../../../components/Logout/Logout'
+
+import Auth from '../../../pages/Auth/Auth'
+
+
 
 class AuthLayout extends Component {
     state = {
@@ -18,6 +23,7 @@ class AuthLayout extends Component {
                     <Route path="/auth">
                         <Auth />
                     </Route>
+                    <Route path="/logout" component={Logout} />
                 </Switch>
             </div>
         )

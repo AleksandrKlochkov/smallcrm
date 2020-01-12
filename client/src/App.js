@@ -4,8 +4,7 @@ import 'materialize-css'
 import {useRoutes} from './routes/routes'
 
 @inject('authStore')
-@observer
-class App extends Component {
+@observer class App extends Component {
 
   componentDidMount() {
     this.props.authStore.autoLogin()
@@ -14,7 +13,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-           {useRoutes(this.props.authStore.isAuth)}
+           {useRoutes(this.props.authStore.isAuthenticated)}
       </React.Fragment>
     )
   }

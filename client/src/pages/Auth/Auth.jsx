@@ -8,7 +8,7 @@ import {withRouter} from 'react-router-dom'
         event.preventDefault()
         const form = event.target
         const formData = new FormData(form)
-        this.props.authStore.setHistory(this.props.history)
+        this.props.authStore.setHistory = this.props.history
         this.props.authStore.auth(formData)   
     }
 

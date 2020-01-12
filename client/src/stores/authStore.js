@@ -5,10 +5,20 @@ configure({ enforceActions: "observed" })
 class AuthStore{
     @observable isAuthenticated = false;
     @observable token = "";
-    routerHistory = {};
+    @observable routerHistory;
 
     get isAuthenticated() {
         return this.isAuthenticated
+    }
+ 
+    // set isAuthenticated(isAuthenticated) {
+    //     this.isAuthenticated = isAuthenticated
+    //     return this.isAuthenticated
+    // }
+
+    set setHistory(routerHistory) {
+       // alert(JSON.stringify(routerHistory))
+        return this.routerHistory = routerHistory 
     }
 
 
@@ -58,7 +68,6 @@ class AuthStore{
 
     @action('authSuccess')
     authSuccess(token) {
-        this.token = token
         this.isAuthenticated = !!token
     }
     
@@ -71,19 +80,16 @@ class AuthStore{
 
     @action('logout')
     logout(){
-        localStorage.removeItem('token')
-        localStorage.removeItem('experationDate')
-        console.log(this.routerHistory)
-        if(this.routerHistory && Object(this.routerHistory).length > 0){
-             this.routerHistory.push('/')
-        }
+        localStorage.clear()
+        this.isAuthenticated = false;
     }
 
-    @action('autoLogout')
+    @action('autoLogin')
     autoLogin() {
         const token = localStorage.getItem('token')
         if(!token) {
             this.logout()
+            //this.routerHistory.push('/')
         }else{
             const experationDate = new Date(localStorage.getItem('experationDate'))
 
