@@ -323,7 +323,7 @@ ul.sidenav.close{
 }
 
 .card .card-title {
-	font-size: 18px;
+	font-size: 16px;
 }
 
 /*END-CARD*/
@@ -397,6 +397,21 @@ display: none;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+}
+
+.form-button-box {
+	display: flex;
+	justify-content: space-between;
+	float: left;
+}
+
+.form-img-box{
+	width: 100%;
+    overflow: hidden;
+}
+
+.m45_0{
+	margin: 45px 0;
 }
 
 

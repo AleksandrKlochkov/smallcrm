@@ -7,9 +7,6 @@ import Navbar from '../../../components/Navbar/Navbar'
 import Auth from '../../../pages/Auth/Auth'
 import NotFound from '../../../pages/NotFound/NotFound'
 
-
-
-
 @inject('authStore')
 @observer class AuthLayout extends Component {
     state = {
@@ -30,7 +27,7 @@ import NotFound from '../../../pages/NotFound/NotFound'
                     {/* <Route path="/NotFound">
                        <NotFound />
                     </Route> */}
-                    <Redirect to="/"/>
+                    {/* <Redirect to="/"/> */}
                 </Switch>
             </div>
         )

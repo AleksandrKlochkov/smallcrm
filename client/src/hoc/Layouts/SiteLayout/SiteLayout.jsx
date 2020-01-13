@@ -27,7 +27,8 @@ import ContactsForm from '../../../pages/ContactsForm/ContactsForm'
             {url: '/order', title: 'Добавить заказ', icon: 'library_add', showSideBar: true},
             {url: '/categories', title: 'Ассортимент', icon: 'apps', showSideBar: true},
             {url: '/contacts', title: 'Контакт центр', icon: 'call', showSideBar: true},
-            {url: '/contacts/contact_form', title: 'Контакт центр', icon: 'call', showSideBar: false}
+            {url: '/contacts/contact_form', title: 'Контакт центр', icon: 'call', showSideBar: false},
+            {url: '/contacts/contact_form/add_form', title: 'Контакт центр', icon: 'call', showSideBar: false}
           ]
     }
 
