@@ -14,18 +14,20 @@ import Order from '../../../pages/Order/Order'
 import Categories from '../../../pages/Categories/Categories'
 import Contacts from '../../../pages/Contacts/Contacts'
 import NotFound from '../../../pages/NotFound/NotFound'
+import ContactsForm from '../../../pages/ContactsForm/ContactsForm'
 
 @inject('authStore','sideBarStore', 'siteLayoutStore')
 @observer class SiteLayout extends Component {
     state = {
         sideBarLinks:[
-            {url: '/crm', title: 'CRM', icon: 'business'},
-            {url: '/overview', title: 'Обзор', icon: 'dashboard'},
-            {url: '/analytics', title: 'Аналитика', icon: 'equalizer'},
-            {url: '/history', title: 'История', icon: 'history'},
-            {url: '/order', title: 'Добавить заказ', icon: 'library_add'},
-            {url: '/categories', title: 'Ассортимент', icon: 'apps'},
-            {url: '/contacts', title: 'Контакт центр', icon: 'call'}
+            {url: '/crm', title: 'CRM', icon: 'business', showSideBar: true},
+            {url: '/overview', title: 'Обзор', icon: 'dashboard', showSideBar: true},
+            {url: '/analytics', title: 'Аналитика', icon: 'equalizer', showSideBar: true},
+            {url: '/history', title: 'История', icon: 'history', showSideBar: true},
+            {url: '/order', title: 'Добавить заказ', icon: 'library_add', showSideBar: true},
+            {url: '/categories', title: 'Ассортимент', icon: 'apps', showSideBar: true},
+            {url: '/contacts', title: 'Контакт центр', icon: 'call', showSideBar: true},
+            {url: '/contacts/contact_form', title: 'Контакт центр', icon: 'call', showSideBar: false}
           ]
     }
 
@@ -53,49 +55,47 @@ import NotFound from '../../../pages/NotFound/NotFound'
     render() {
         const {sideBarStore, siteLayoutStore} = this.props
         return (
-            <React.Fragment>
+            <div className="page-site-layout">
                 <Navbar />
                 <div>
-                <Sidebar isToggle={sideBarStore.isToggle} sideBarLinks = {this.state.sideBarLinks}/>
-                <main className={`content ${sideBarStore.isToggle? "close" : ""}`}>
-                <div className="page-title">
-                    <h1>
-                        {this.renderTitle()}
-                    </h1>
-                     <Link to="#" id="menu"  className="waves-effect waves-light btn btn-floating tap-target-info" onClick={() => siteLayoutStore.tapTargetIsOpen()}><i className="material-icons">info</i></Link>
-                   
-                </div>
-
-                <Switch>
-                    <Route exact path="/">
-                       <Redirect to="/crm"/>
-                    </Route>
-                    <Route exact path="/crm">
-                        <Home tapTargetRef={this.tapTargetRef} />
-                    </Route>
-                    <Route path="/overview">
-                        <Overview />
-                    </Route>
-                    <Route path="/analytics">
-                        <Analytics />
-                    </Route>
-                    <Route path="/history">
-                        <History />
-                    </Route>
-                    <Route path="/order">
-                        <Order />
-                    </Route>
-                    <Route path="/categories">
-                        <Categories />
-                    </Route>
-                    <Route path="/contacts">
-                        <Contacts />
-                    </Route>
-                    <Route path="/logout" component={Logout} />
-                    <Route path="/NotFound" component={NotFound} />
-                    <Redirect to="/" />
-                </Switch>
-                </main>
+                    <Sidebar isToggle={sideBarStore.isToggle} sideBarLinks = {this.state.sideBarLinks}/>
+                    <main className={`content ${sideBarStore.isToggle? "close" : ""}`}>
+                    <div className="page-title">
+                        <h1>
+                            {this.renderTitle()}
+                        </h1>
+                        <Link to="#" id="menu"  className="waves-effect waves-light btn btn-floating tap-target-info" onClick={() => siteLayoutStore.tapTargetIsOpen()}><i className="material-icons">info</i></Link>
+                    </div>
+                    <Switch>
+                        <Route exact path="/">
+                        <Redirect to="/crm"/>
+                        </Route>
+                        <Route exact path="/crm">
+                            <Home tapTargetRef={this.tapTargetRef} />
+                        </Route>
+                        <Route path="/overview">
+                            <Overview />
+                        </Route>
+                        <Route path="/analytics">
+                            <Analytics />
+                        </Route>
+                        <Route path="/history">
+                            <History />
+                        </Route>
+                        <Route path="/order">
+                            <Order />
+                        </Route>
+                        <Route path="/categories">
+                            <Categories />
+                        </Route>
+                        <Route path="/contacts">
+                            <Contacts />
+                        </Route>
+                        <Route path="/logout" component={Logout} />
+                        <Route path="/NotFound" component={NotFound} />
+                        {/* <Redirect to="/" /> */}
+                    </Switch>
+                    </main>
                 </div>
 
                 <div className="fixed-action-btn">
@@ -107,10 +107,7 @@ import NotFound from '../../../pages/NotFound/NotFound'
                     <li><Link to="#" className="btn-floating blue"><i className="material-icons">list</i></Link></li>
                 </ul>
             </div>
-             
-            
-          
-        </React.Fragment>
+        </div>
         )
     }
 }

@@ -51,7 +51,7 @@ class AuthStore{
                         localStorage.setItem('experationDate', experationDate)
                         this.authSuccess(data.token)
                         this.authLogout(experationDate - new Date())
-                        this.routerHistory.push('/overwiew')
+                        this.routerHistory.push('/overview')
                     }
                 })
                 .catch(e => {

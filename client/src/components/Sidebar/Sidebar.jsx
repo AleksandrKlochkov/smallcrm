@@ -8,11 +8,16 @@ import { observer, inject } from 'mobx-react'
     renderLinks() {
         return this.props.sideBarLinks.map((item, index) => {
             return (
-                <li key={`${index}_${Math.random()}`} className="bold">
-                    <NavLink exact activeClassName="active" to={item.url} className="waves-effect waves-teal"><i className="small material-icons">{item.icon}</i>
-                        {item.title}
-                    </NavLink>
-                </li>
+                <React.Fragment  key={`${index}_${Math.random()}`} >
+                    { item.showSideBar ?
+                        <li  key={`${index}_${Math.random()}`}  className="bold">
+                            <NavLink exact activeClassName="active" to={item.url} className="waves-effect waves-teal"><i className="small material-icons">{item.icon}</i>
+                                {item.title}
+                            </NavLink>
+                        </li>
+                        : null
+                    }
+                </React.Fragment>
             )
         })
     }
