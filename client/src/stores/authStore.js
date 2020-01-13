@@ -4,23 +4,20 @@ configure({ enforceActions: "observed" })
 
 class AuthStore{
     @observable isAuthenticated = false;
-    @observable token = "";
-    @observable routerHistory;
+    @observable token = null;
+    @observable routerHistory={};
 
-    get isAuthenticated() {
+    @computed get isAuth(){
+        return this.getIsAuthenticated
+    }
+
+    get getIsAuthenticated() {
         return this.isAuthenticated
     }
  
-    // set isAuthenticated(isAuthenticated) {
-    //     this.isAuthenticated = isAuthenticated
-    //     return this.isAuthenticated
-    // }
-
     set setHistory(routerHistory) {
-       // alert(JSON.stringify(routerHistory))
         return this.routerHistory = routerHistory 
     }
-
 
     @action('auth')
     async auth(formData){
@@ -89,7 +86,6 @@ class AuthStore{
         const token = localStorage.getItem('token')
         if(!token) {
             this.logout()
-            //this.routerHistory.push('/')
         }else{
             const experationDate = new Date(localStorage.getItem('experationDate'))
 

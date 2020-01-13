@@ -13,7 +13,7 @@ import {useRoutes} from './routes/routes'
   render() {
     return (
       <React.Fragment>
-           {useRoutes(this.props.authStore.isAuthenticated)}
+           {useRoutes(this.props.authStore.isAuth)}
       </React.Fragment>
     )
   }

@@ -24,12 +24,12 @@ code {
 
 .a-sidenav{
 	transform:translateX(0)!important;
-	width:250px!important
 }
-.a-sidenav h4{
-	padding:0 30px;
-	opacity:.8;
-	font-size:2rem
+.a-sidenav h4 {
+    padding: 0 30px;
+    opacity: .8;
+    font-size: 2rem;
+    margin: 15px 0;
 }
 .a-sidenav .bold.last{
 	position:absolute;
@@ -37,8 +37,14 @@ code {
 	width:100%
 }
 main,footer{
-	margin-left:250px
+	margin-left:220px;
+	transition: margin-left .3s ease-in-out;
 }
+
+main.close,footer.close {
+	margin-left:0px;
+}
+
 .content{
 	padding:0 30px
 }
@@ -215,6 +221,58 @@ main,footer{
   background-color: #b0c7d6;
   background-image: url('./shared/images/fon.png'); 
   background-repeat: repeat;
+}
+
+nav .nav-wrapper {
+    position: relative;
+    height: 100%;
+    z-index: 999999;
+}
+
+ul.sidenav{
+	background-color: #222d32 !important;
+	width: 100% !important;
+	max-width: 215px;
+	transition: transform .3s ease-in-out;
+}
+
+ul.sidenav.close{
+	transform: translateX(-100%) !important
+}
+
+
+
+.sidenav li>a {
+	color: #fff;
+	padding: 0 7px;
+	font-size: 12px;
+}
+
+.sidenav li>a.active {
+	background-color: rgba(18, 25, 29, 0.64) !important;
+}
+
+
+
+.sidenav li>a>i{
+	margin: 0 5px 0 0 !important;
+	width: 30px !important;
+	color: #000 !important;
+}
+
+.toggle-sidebar {
+	cursor: pointer;
+    background: transparent;
+	box-sizing: border-box;
+    height: 100%;
+    border: none;
+    color: #fff;
+    position: relative;
+    left: -10px;
+}
+
+.toggle-sidebar:focus {
+	background-color: initial;
 }
 
 

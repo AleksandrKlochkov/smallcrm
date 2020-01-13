@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {Redirect, withRouter} from 'react-router-dom'
-import {observer, inject} from 'mobx-react'
+import {inject} from 'mobx-react'
 import authStore from '../../stores/authStore'
 
 @inject('authStore')

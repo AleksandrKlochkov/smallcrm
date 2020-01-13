@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import {Link, NavLink} from 'react-router-dom'
+import {inject, observer} from 'mobx-react'
 
-export default class Navbar extends Component {
-
+@inject('sideBarStore')
+@observer class Navbar extends Component {
     renderNavbarLinks = () => {
         const navbarLinks = this.props.navbarLinks
         if(navbarLinks && navbarLinks.length>0){
@@ -14,14 +15,13 @@ export default class Navbar extends Component {
         }
 
         return ""
-
-     
     }
 
     render() {
         return (
             <nav>
                 <div className="nav-wrapper grey darken-4">
+                <button className="toggle-sidebar" type="button" onClick={() => this.props.sideBarStore.sideBarToggle()}><i className="material-icons">menu</i></button>
                     <Link to="/" className="brand-logo">CRM</Link>
                         {this.renderNavbarLinks()}
                 </div>
@@ -29,3 +29,6 @@ export default class Navbar extends Component {
         )
     }
 }
+
+export default Navbar
+

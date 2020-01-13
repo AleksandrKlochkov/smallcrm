@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-export default class Home extends Component {
+export default class Analytics extends Component {
     render() {
         return (
             <div>
-               <h1>CRM</h1>
+                Analytics
             </div>
         )
     }

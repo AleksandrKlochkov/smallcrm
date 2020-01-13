@@ -1,18 +1,37 @@
 import React, { Component } from 'react'
 import {NavLink} from 'react-router-dom'
+import { observer, inject } from 'mobx-react'
 
-export default class Sidebar extends Component {
+@inject('sideBarStore')
+@observer class Sidebar extends Component {
+
+    renderLinks() {
+        return this.props.sideBarLinks.map((item, index) => {
+            return (
+                <li key={`${index}_${Math.random()}`} className="bold">
+                    <NavLink exact activeClassName="active" to={item.url} className="waves-effect waves-teal"><i className="small material-icons">{item.icon}</i>
+                        {item.title}
+                    </NavLink>
+                </li>
+            )
+        })
+    }
+
     render() {
+        const {sideBarStore} = this.props
         return (
-            <ul className="sidenav sidenav-fixed a-sidenav">
-                <h4>Newborn</h4>
-                <li className="bold active"><a href="#" className="waves-effect waves-orange">Обзор</a></li>
-                <li className="bold"><a href="#" className="waves-effect waves-orange">Аналитика</a></li>
-                <li className="bold"><a href="#" className="waves-effect waves-orange">История</a></li>
-                <li className="bold"><a href="#" className="waves-effect waves-orange">Добавить заказ</a></li>
-                <li className="bold "><a href="#" className="waves-effect waves-orange">Ассортимент</a></li>
-                <li className="bold last"><NavLink to="logout" className="waves-effect waves-orange">Выйти</NavLink></li>
+            <ul className={`sidenav sidenav-fixed a-sidenav ${sideBarStore.isToggle ? "close" : ""}`}>
+                <h4>Crm</h4>
+                {this.renderLinks()}
+                <li className="bold last">
+                    <NavLink to="/logout" className="waves-effect waves-teal">
+                      <i className="small material-icons">exit_to_app</i>
+                        Выйти
+                    </NavLink>
+                </li>
             </ul>
         )
     }
 }
+
+export default Sidebar

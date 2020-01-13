@@ -5,7 +5,7 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import storeInit from './stores'
+import storeInit from './stores/index'
 
 const stores = storeInit()
 
