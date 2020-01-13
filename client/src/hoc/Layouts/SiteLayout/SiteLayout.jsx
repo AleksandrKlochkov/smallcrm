@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Switch, Route, Redirect, Link} from 'react-router-dom'
+import {Switch, withRouter, Route, Redirect, Link} from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
 import Sidebar from '../../../components/Sidebar/Sidebar'
@@ -15,7 +15,7 @@ import Categories from '../../../pages/Categories/Categories'
 import Contacts from '../../../pages/Contacts/Contacts'
 import NotFound from '../../../pages/NotFound/NotFound'
 
-@inject('authStore','sideBarStore')
+@inject('authStore','sideBarStore', 'siteLayoutStore')
 @observer class SiteLayout extends Component {
     state = {
         sideBarLinks:[
@@ -29,27 +29,49 @@ import NotFound from '../../../pages/NotFound/NotFound'
           ]
     }
 
+    constructor(props) {
+        super(props)
+        
+        this.tapTargetRef = React.createRef()
+    }
+
+    componentDidMount() {
+        setTimeout(()=>{ this.props.siteLayoutStore.tapTargetInit(this.tapTargetRef.current)}, 100)
+    }
+
+    renderTitle() {
+        const routes = this.state.sideBarLinks
+        const path = this.props.location.pathname
+        const candidate = routes.find(i => i.url === path)
+        if(candidate){
+            return candidate.title
+        }
+        return ""
+ 
+    }
+
     render() {
-        const {sideBarStore} = this.props
+        const {sideBarStore, siteLayoutStore} = this.props
         return (
             <React.Fragment>
                 <Navbar />
                 <div>
                 <Sidebar isToggle={sideBarStore.isToggle} sideBarLinks = {this.state.sideBarLinks}/>
                 <main className={`content ${sideBarStore.isToggle? "close" : ""}`}>
-                {/* <div className="page-title">
-                    <h4>
-                        Обзор за вчера (09.04.2018)
-                        <i className="material-icons black-text pointer" id="dashboard-info">info_outline</i>
-                    </h4>
-                </div> */}
+                <div className="page-title">
+                    <h1>
+                        {this.renderTitle()}
+                    </h1>
+                     <Link to="#" id="menu"  className="waves-effect waves-light btn btn-floating tap-target-info" onClick={() => siteLayoutStore.tapTargetIsOpen()}><i className="material-icons">info</i></Link>
+                   
+                </div>
 
                 <Switch>
                     <Route exact path="/">
                        <Redirect to="/crm"/>
                     </Route>
                     <Route exact path="/crm">
-                        <Home />
+                        <Home tapTargetRef={this.tapTargetRef} />
                     </Route>
                     <Route path="/overview">
                         <Overview />
@@ -75,18 +97,8 @@ import NotFound from '../../../pages/NotFound/NotFound'
                 </Switch>
                 </main>
                 </div>
-             
-            
-            <Link to="#" id="menu" className="waves-effect waves-light btn btn-floating"><i className="material-icons">info</i></Link>
-            
-            <div className="tap-target" data-target="menu">
-                <div className="tap-target-content">
-                    <h5>Зачем нужна эта страница?</h5>
-                    <p>Страница “Обзор” покажет динамику продаж за предыдущий день. Сравнение со средним значениями поможет вам понять, как идут дела у Вашего бизнеса.</p>
-                </div>
-            </div>
-            
-            <div className="fixed-action-btn">
+
+                <div className="fixed-action-btn">
                 <Link to="#" className="btn-floating btn-large red">
                     <i className="large material-icons">add</i>
                 </Link>
@@ -95,9 +107,12 @@ import NotFound from '../../../pages/NotFound/NotFound'
                     <li><Link to="#" className="btn-floating blue"><i className="material-icons">list</i></Link></li>
                 </ul>
             </div>
+             
+            
+          
         </React.Fragment>
         )
     }
 }
 
-export default SiteLayout
+export default withRouter(SiteLayout)

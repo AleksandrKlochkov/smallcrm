@@ -83,12 +83,14 @@ main.close,footer.close {
 	margin-left:auto;
 	margin-right:auto
 }
-.page-title{
-	display:flex;
-	justify-content:space-between;
-	align-items:center;
-	padding:25px 0
+
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
 }
+
 .page-title a{
 	color:black;
 	opacity:.8
@@ -106,6 +108,13 @@ main.close,footer.close {
 	margin:0;
 	font-size:2.3rem
 }
+
+.page-title h1 {
+    margin: 0;
+    font-weight: normal;
+	font-size: 35px;
+}
+
 .page-subtitle h4{
 	margin:0;
 	font-size:2rem
@@ -273,6 +282,22 @@ ul.sidenav.close{
 
 .toggle-sidebar:focus {
 	background-color: initial;
+}
+
+.tap-target {
+    padding: 30px;
+}
+
+.tap-target-info {
+    /* position: absolute; */
+    float: right;
+    margin: 0 7px 0px 0px;
+    /* right: 30px; */
+    /* top: 80px; */
+}
+
+.tap-target-wrapper {
+    position: fixed !important;
 }
 
 
