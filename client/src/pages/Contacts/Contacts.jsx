@@ -4,7 +4,6 @@ import ContactsForm from '../ContactsForm/ContactsForm'
 
 class Contacts extends Component {
     render() {
-        const {} = this.props
         return (
             <React.Fragment>
 

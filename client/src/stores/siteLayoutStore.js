@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { observable, action, computed } from 'mobx'
+import { observable, action} from 'mobx'
 
 class SiteLayoutStore{
     @observable tapTarget = null;

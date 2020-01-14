@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Switch, withRouter, Route, Redirect, Link} from 'react-router-dom'
+import {Switch, withRouter, Route, Redirect} from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
 import Sidebar from '../../../components/Sidebar/Sidebar'
@@ -14,7 +14,6 @@ import Order from '../../../pages/Order/Order'
 import Categories from '../../../pages/Categories/Categories'
 import Contacts from '../../../pages/Contacts/Contacts'
 import NotFound from '../../../pages/NotFound/NotFound'
-import ContactsForm from '../../../pages/ContactsForm/ContactsForm'
 
 @inject('authStore','sideBarStore', 'siteLayoutStore')
 @observer class SiteLayout extends Component {
@@ -54,7 +53,7 @@ import ContactsForm from '../../../pages/ContactsForm/ContactsForm'
     }
 
     render() {
-        const {sideBarStore, siteLayoutStore} = this.props
+        const {sideBarStore} = this.props
         return (
             <div className="page-site-layout">
                 <Navbar />
@@ -65,7 +64,7 @@ import ContactsForm from '../../../pages/ContactsForm/ContactsForm'
                         <h1>
                             {this.renderTitle()}
                         </h1>
-                        <Link to="#" id="menu"  className="waves-effect waves-light btn btn-floating tap-target-info" onClick={() => siteLayoutStore.tapTargetIsOpen()}><i className="material-icons">info</i></Link>
+                        {/* <Link to="#" id="menu"  className="waves-effect waves-light btn btn-floating tap-target-info" onClick={() => siteLayoutStore.tapTargetIsOpen()}><i className="material-icons">info</i></Link> */}
                     </div>
                     <Switch>
                         <Route exact path="/">
@@ -99,15 +98,15 @@ import ContactsForm from '../../../pages/ContactsForm/ContactsForm'
                     </main>
                 </div>
 
-                <div className="fixed-action-btn">
-                <Link to="#" className="btn-floating btn-large red">
-                    <i className="large material-icons">add</i>
-                </Link>
-                <ul>
-                    <li><Link to="#" className="btn-floating green"><i className="material-icons">assignment</i></Link></li>
-                    <li><Link to="#" className="btn-floating blue"><i className="material-icons">list</i></Link></li>
-                </ul>
-            </div>
+                {/* <div className="fixed-action-btn">
+                    <Link to="#" className="btn-floating btn-large red">
+                        <i className="large material-icons">add</i>
+                    </Link>
+                    <ul>
+                        <li><Link to="#" className="btn-floating green"><i className="material-icons">assignment</i></Link></li>
+                        <li><Link to="#" className="btn-floating blue"><i className="material-icons">list</i></Link></li>
+                    </ul>
+                </div> */}
         </div>
         )
     }

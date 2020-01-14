@@ -5,7 +5,7 @@ import { inject, observer } from 'mobx-react'
 import Navbar from '../../../components/Navbar/Navbar'
 
 import Auth from '../../../pages/Auth/Auth'
-import NotFound from '../../../pages/NotFound/NotFound'
+// import NotFound from '../../../pages/NotFound/NotFound'
 
 @inject('authStore')
 @observer class AuthLayout extends Component {

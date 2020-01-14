@@ -414,6 +414,26 @@ display: none;
 	margin: 45px 0;
 }
 
+/*generate-form-box*/
+.generate-form-box h5 {
+	text-transform: uppercase;
+}
+
+.generate-form-box form {
+	border: 1px solid #c4c4c4 
+}
+
+.fields-editing{
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.fields-editing button {
+	margin: 0 5px;
+}
+/*generate-form-box*/
+
 
 
 

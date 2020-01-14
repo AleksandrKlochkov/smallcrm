@@ -1,6 +1,7 @@
 import {observable, computed} from 'mobx'
 
 class ContactFormStore{
+    @observable modal = null;
     @observable forms = [
         {
             formId: 23123132132, 
@@ -11,8 +12,9 @@ class ContactFormStore{
             formTitle: 'Обратная связь', 
             formDescription: 'Форма обратной связи для моего лендинга',
             fromStyles: '',
-            formFields: {
-                input: {
+            formFields: [
+                {
+                    fields: 'input',
                     label: 'Введите имя',
                     placeholder: 'Введите сообщение',
                     type: 'text',
@@ -20,14 +22,16 @@ class ContactFormStore{
                     name: 'name',
                     hidden: false
                 },
-                input: {
+                {
+                    fields: 'input',
                     label: 'Введите номер телефона',
                     placeholder: 'Введите номер',
                     type: 'number',
                     name: 'phone', 
                     hidden: false
                 },
-                textarea: {
+                {   
+                    fields: 'input',
                     label: 'Введите сообщение',
                     placeholder: 'Введите сообщение',
                     type: 'number',
@@ -35,13 +39,20 @@ class ContactFormStore{
                     name: 'phone', 
                     hidden: false
                 },
-                button: {
+                {
+                    fields: 'button',
                     type: 'submit',
                     title: 'Отправить'
                 }
-            }
+            ]
         }
     ]
+
+    modalInit(elem, options = null) {
+        if(elem){
+              this.modal = window.M.Modal.init(elem, options);
+        }
+     }
 
     @computed get arrForms() {
         return this.forms
