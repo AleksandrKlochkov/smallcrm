@@ -27,13 +27,13 @@ import NotFound from '../../../pages/NotFound/NotFound'
             {url: '/categories', title: 'Ассортимент', icon: 'apps', showSideBar: true},
             {url: '/contacts', title: 'Контакт центр', icon: 'call', showSideBar: true},
             {url: '/contacts/contact_form', title: 'Контакт центр', icon: 'call', showSideBar: false},
-            {url: '/contacts/contact_form/add_form', title: 'Контакт центр', icon: 'call', showSideBar: false}
+            {url: '/contacts/contact_form/add_form', title: 'Контакт центр', icon: 'call', showSideBar: false},
+            {url: '/contacts/contact_form/:id', title: 'Контакт центр', icon: 'call', showSideBar: false}
           ]
     }
 
     constructor(props) {
         super(props)
-        
         this.tapTargetRef = React.createRef()
     }
 
@@ -43,17 +43,16 @@ import NotFound from '../../../pages/NotFound/NotFound'
 
     renderTitle() {
         const routes = this.state.sideBarLinks
-        const path = this.props.location.pathname
-        const candidate = routes.find(i => i.url === path)
+        const path = this.props.location.pathname.split('/')[1]
+        const candidate = routes.find(i => i.url.split('/')[1] === path)
         if(candidate){
             return candidate.title
         }
         return ""
- 
     }
 
     render() {
-        const {sideBarStore} = this.props
+        const {authStore,sideBarStore} = this.props
         return (
             <div className="page-site-layout">
                 <Navbar />
@@ -66,34 +65,44 @@ import NotFound from '../../../pages/NotFound/NotFound'
                         </h1>
                         {/* <Link to="#" id="menu"  className="waves-effect waves-light btn btn-floating tap-target-info" onClick={() => siteLayoutStore.tapTargetIsOpen()}><i className="material-icons">info</i></Link> */}
                     </div>
-                    <Switch>
-                        <Route exact path="/">
-                        <Redirect to="/crm"/>
-                        </Route>
-                        <Route exact path="/crm">
-                            <Home tapTargetRef={this.tapTargetRef} />
-                        </Route>
-                        <Route path="/overview">
-                            <Overview />
-                        </Route>
-                        <Route path="/analytics">
-                            <Analytics />
-                        </Route>
-                        <Route path="/history">
-                            <History />
-                        </Route>
-                        <Route path="/order">
-                            <Order />
-                        </Route>
-                        <Route path="/categories">
-                            <Categories />
-                        </Route>
-                        <Route path="/contacts">
-                            <Contacts />
-                        </Route>
-                        <Route path="/logout" component={Logout} />
-                        <Route path="/NotFound" component={NotFound} />
-                        {/* <Redirect to="/" /> */}
+                      
+                        <Switch>
+                            <Route exact path="/">
+                                <Redirect to="/crm"/>
+                            </Route>
+                            <Route exact path="/crm">
+                                <Home tapTargetRef={this.tapTargetRef} />
+                            </Route>
+                            <Route path="/overview">
+                                <Overview />
+                            </Route>
+                            <Route path="/analytics">
+                                <Analytics />
+                            </Route>
+                            <Route path="/history">
+                                <History />
+                            </Route>
+                            <Route path="/order">
+                                <Order />
+                            </Route>
+                            <Route path="/categories">
+                                <Categories />
+                            </Route>
+                            <Route path="/contacts">
+                                <Contacts />
+                            </Route>
+                            <Route path="/contacts/contact_form">
+                                <Contacts />
+                            </Route>
+                            <Route path="/contacts/contact_form/:id">
+                                <Contacts />
+                            </Route>
+                            <Route path="/logout" component={Logout} />
+                            <Route path="/NotFound" component={NotFound} />
+                            <Route path="*">
+                                <Redirect to="/NotFound" />
+                            </Route>
+                            <Redirect to="/" />
                     </Switch>
                     </main>
                 </div>

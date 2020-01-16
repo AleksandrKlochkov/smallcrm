@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import {Switch, Redirect, Route } from 'react-router-dom'
+import {Redirect, Route } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 
 import Navbar from '../../../components/Navbar/Navbar'
 
 import Auth from '../../../pages/Auth/Auth'
+import authStore from '../../../stores/authStore'
 // import NotFound from '../../../pages/NotFound/NotFound'
 
 @inject('authStore')
@@ -17,18 +18,7 @@ import Auth from '../../../pages/Auth/Auth'
         return (
             <div className="auth-layout">
                <Navbar navbarLinks={this.state.navbarLinks}/>
-               <Switch>
-                    <Route exact path="/">
-                       <Redirect to="/login"/>
-                    </Route>
-                    <Route path="/login">
-                        <Auth />
-                    </Route>
-                    {/* <Route path="/NotFound">
-                       <NotFound />
-                    </Route> */}
-                    {/* <Redirect to="/"/> */}
-                </Switch>
+               {authStore.isAuthenticated ? <Redirect to="/" /> : <Route path="/"><Auth /></Route> }
             </div>
         )
     }

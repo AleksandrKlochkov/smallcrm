@@ -4,6 +4,10 @@ import { inject, observer} from 'mobx-react'
 import {Link, withRouter, Switch, Route} from 'react-router-dom'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import noimages from '../../shared/images/noimages.png'
+import Card from '../../components/Card/Card'
+
+
+
 
 @inject('contactFormStore')
 @observer class ContactsForm extends Component {
@@ -60,30 +64,16 @@ import noimages from '../../shared/images/noimages.png'
          if(forms && forms.length !==0 ){
              return forms.map((item,index) => {
                 return (
-                    <div  key={`${index}_${Math.random()}`} className="col xl3 l4 m6 s12">
-                        <div className="card">
-                            <div className="card-image waves-effect waves-block waves-light">
-                            <Link to="/contacts/contact_form">
-                                <div className="card-img teal accent-3">
-                                    <i className="large material-icons">contact_mail</i>
-                                </div>
-                            </Link>
-                            </div>
-                            <div className="card-content">
-                                <span className="card-title activator grey-text text-darken-4">{item.formName}<i className="material-icons right">more_vert</i></span>
-                                <p><Link to="/contacts/contact_form">Перейти...</Link></p>
-                            </div>
-                            <div className="card-reveal">
-                                <span className="card-title grey-text text-darken-4">{item.formName}<i className="material-icons right">close</i></span>
-                                <p>{item.formDescription}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <Card
+                        key={`${index}_${Math.random()}`} 
+                        icon={item.formImages} 
+                        title={item.formName} 
+                        description={item.formDescription}
+                        link={`/contacts/contact_form/${item.formId}`}
+                    />
                 )
              })
          }
-
-
 
         return "Нет созданных форм, добавьте новую форму."
     }
@@ -91,9 +81,11 @@ import noimages from '../../shared/images/noimages.png'
     render() {
         console.log(this.props)
         const {contactFormStore, history} = this.props
+        const links = history.location.pathname.split('/')
+        // console.log(links)
         return (
             <div className="contact-form-pages">
-                 <Breadcrumbs prevPage={{url:'/contacts', title: 'Контакт центр'}}title={'Готовые формы'}/>
+                
                  { history.location.search === "" ?
                     <div className="contact-form-btn">
                         <Link to="/contacts/contact_form/add_form?action=add">
@@ -102,14 +94,28 @@ import noimages from '../../shared/images/noimages.png'
                     </div> : null
                  }
                 <div className="contact-form">
+                    
                     <Switch>
                         <Route exact path="/contacts/contact_form/">
                             <div className="row">
+                            <Breadcrumbs
+                                breadcrumbLinks={[
+                                    {url:`/contacts`, title: 'Контакт центр',active: false},
+                                    {url:'/contacts/contact_form', title: 'Готовые формы',active: true},
+                                    ]} 
+                                />
                                 {this.renderCardForms(toJS(contactFormStore.arrForms))}
                             </div>
                         </Route>
                         <Route path="/contacts/contact_form/add_form">
                         <div className="row">
+                            <Breadcrumbs
+                                breadcrumbLinks={[
+                                    {url:'/contacts', title: 'Контакт центр',active: false},
+                                    {url:'/contacts/contact_form', title: 'Готовые формы',active: false},
+                                    {url: `${history.location.patchname}`, title: 'Создание формы',active: true}
+                                ]} 
+                            />
                             <form action="#">
                                 <div className="col s12 l6 xl6">
                                     <div className="input-field">

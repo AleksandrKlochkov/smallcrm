@@ -8,7 +8,7 @@ class ContactFormStore{
             formUrl: '#',
             formUrlSite: '#',
             formName: 'Форма обратной связи', 
-            formImages: '#',
+            formImages: 'contact_mail',
             formTitle: 'Обратная связь', 
             formDescription: 'Форма обратной связи для моего лендинга',
             fromStyles: '',

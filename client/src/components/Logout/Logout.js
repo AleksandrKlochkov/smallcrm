@@ -9,7 +9,7 @@ class Logout extends Component {
         authStore.logout()
     }
     render() {
-        return <Redirect to="/" />
+        return <Redirect to="/login" />
     }
 }
 

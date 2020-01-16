@@ -1,18 +1,36 @@
-import {observable, action, configure, computed} from 'mobx'
+import {observable, action, configure, computed, autorun} from 'mobx'
 
-configure({ enforceActions: "observed" })
+ configure({ enforceActions: "observed" })
+
 
 class AuthStore{
-    @observable isAuthenticated = false;
-    @observable token = null;
-    @observable routerHistory={};
+    @observable isAuthenticated = false
+    @observable token = null
+    @observable user = {}
+    @observable routerHistory={}
 
-    @computed get isAuth(){
-        return this.getIsAuthenticated
+    @computed get isToken() {
+        return this.token
     }
 
-    get getIsAuthenticated() {
+    @computed get User() {
+        return this.user
+    }
+
+    @computed get IsAuthenticated() {
         return this.isAuthenticated
+    }
+
+    set setToken(token){
+        this.token = token
+    }
+
+    set setUser(user){
+        this.user = user
+    }
+    
+    set setIsAuthenticated(isAuthenticated) {
+        this.isAuthenticated = isAuthenticated
     }
  
     set setHistory(routerHistory) {
@@ -49,9 +67,9 @@ class AuthStore{
                         localStorage.setItem('token', data.token)
                         localStorage.setItem('user', data.user)
                         localStorage.setItem('experationDate', experationDate)
-                        this.authSuccess(data.token)
+                        this.authSuccess(data.token, data.user)
                         this.authLogout(experationDate - new Date())
-                        this.routerHistory.push('/overview')
+                        this.routerHistory.push('/crm')
                     }
                 })
                 .catch(e => {
@@ -64,8 +82,10 @@ class AuthStore{
     }
 
     @action('authSuccess')
-    authSuccess(token) {
-        this.isAuthenticated = !!token
+    authSuccess(token, user) {
+        this.setToken = token
+        this.setIsAuthenticated = !!token
+        this.setUser = user
     }
     
     @action('authLogout')
@@ -77,14 +97,20 @@ class AuthStore{
 
     @action('logout')
     logout(){
-        localStorage.clear()
-        this.isAuthenticated = false;
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('experationDate')
+        this.setToken = null
+        this.setIsAuthenticated = false
+        this.setUser = null
     }
 
     @action('autoLogin')
     autoLogin() {
         const token = localStorage.getItem('token')
-        if(!token) {
+        const user = localStorage.getItem('user')
+
+        if(!token && !user) {
             this.logout()
         }else{
             const experationDate = new Date(localStorage.getItem('experationDate'))
@@ -92,7 +118,7 @@ class AuthStore{
             if(experationDate<=new Date()){
                 this.logout()
             }else{
-                this.authSuccess(token)
+                this.authSuccess(token, user)
                 this.authLogout(experationDate.getTime() - new Date().getTime())
             }
         }
@@ -100,6 +126,10 @@ class AuthStore{
 }
 
 const authStore = new AuthStore()
+
+// autorun(() => {
+//     console.log(authStore.isAuthenticated);
+// });
 
 export default authStore
 

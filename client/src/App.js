@@ -6,14 +6,15 @@ import {useRoutes} from './routes/routes'
 @inject('authStore')
 @observer class App extends Component {
 
-  componentDidMount() {
+  constructor(props){
+    super(props)
     this.props.authStore.autoLogin()
   }
 
   render() {
     return (
       <React.Fragment>
-           {useRoutes(this.props.authStore.isAuth)}
+           {useRoutes(this.props.authStore.isAuthenticated)}
       </React.Fragment>
     )
   }

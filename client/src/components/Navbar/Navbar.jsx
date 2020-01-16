@@ -22,7 +22,7 @@ import {inject, observer} from 'mobx-react'
         return (
             <nav>
                 <div className="nav-wrapper grey darken-4">
-                {authStore.isAuth ? <button className="toggle-sidebar" type="button" onClick={() => sideBarStore.sideBarToggle()}><i className="material-icons">menu</i></button>: null}
+                {authStore.IsAuthenticated ? <button className="toggle-sidebar" type="button" onClick={() => sideBarStore.sideBarToggle()}><i className="material-icons">menu</i></button>: null}
                     <Link to="/" className="brand-logo">CRM</Link>
                         {this.renderNavbarLinks()}
                 </div>

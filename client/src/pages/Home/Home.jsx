@@ -9,7 +9,7 @@ import FeatureDiscovery from '../../components/FeatureDiscovery/FeatureDiscovery
         return (
             <div>
                <h1>CRM</h1>
-               <FeatureDiscovery tapTargetRef={this.props.tapTargetRef} title="CRM" description="Станица CRM" />
+               {/* <FeatureDiscovery tapTargetRef={this.props.tapTargetRef} title="CRM" description="Станица CRM" /> */}
             </div>
         )
     }
