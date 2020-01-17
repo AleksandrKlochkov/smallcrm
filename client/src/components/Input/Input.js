@@ -1,9 +1,13 @@
 import React from 'react'
 
-export default function Input() {
+ const Input = props => {
     return (
-        <div>
-            
+        <div className="input-field">
+            <input id="formTitle" type={props.type || 'text'} name={props.name} placeholder={props.placeholder} required/>
+            <label htmlFor="title">{props.label}</label>
         </div>
     )
 }
+
+
+export default Input

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {withRouter} from 'react-router-dom'
 
+import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import Card from '../../components/Card/Card'
 import ContactsForm from '../ContactsForm/ContactsForm'
 
@@ -35,11 +36,26 @@ class Contacts extends Component {
                 )
         }
     }
+
     render() {
-        console.log(this.props)
         const {history} = this.props
+        const pathnames = history.location.pathname.split('/')
+        const breadcrumbLinks = []
+        pathnames.forEach((i)=>{
+            const item = this.props.links.find(link => link.url.replace(/\//g, "") === i)
+            if(item){
+                item.active=false
+                breadcrumbLinks.push(item)
+                return
+            }
+        })
+        breadcrumbLinks[breadcrumbLinks.length-1].active = true
+
         return (
             <React.Fragment>
+                <Breadcrumbs
+                    breadcrumbLinks={breadcrumbLinks} 
+                />
                 {this.renderContacts(history.location.pathname)}
             </React.Fragment>
         )

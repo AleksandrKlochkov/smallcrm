@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 
-import FeatureDiscovery from '../../components/FeatureDiscovery/FeatureDiscovery'
+// import FeatureDiscovery from '../../components/FeatureDiscovery/FeatureDiscovery'
 
 @inject('authStore','sideBarStore', 'siteLayoutStore')
 @observer class Home extends Component {

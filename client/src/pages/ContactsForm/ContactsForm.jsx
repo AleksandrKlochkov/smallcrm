@@ -2,27 +2,30 @@ import React, { Component } from 'react'
 import {toJS } from 'mobx'
 import { inject, observer} from 'mobx-react'
 import {Link, withRouter, Switch, Route} from 'react-router-dom'
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import noimages from '../../shared/images/noimages.png'
 import Card from '../../components/Card/Card'
-
-
-
+import FormCreate from '../../components/FormCreate/FormCreate'
+import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFields'
 
 @inject('contactFormStore')
 @observer class ContactsForm extends Component {
 
     state = {
         formFields: [
-            // {
-            //     key: 134,
-            //     label: 'Введите имя',
-            //     placeholder: 'Введите сообщение',
-            //     type: 'text',
-            //     title: 'Имя',
-            //     name: 'name',
-            //     hidden: false
-            // }            
+            {   
+                fieldSelection: [
+                    "input",
+                    "textarea",
+                    "select"
+                ],
+                fieldKey: 134,
+                fieldLabel: 'Введите имя',
+                fieldPlaceholder: 'Введите сообщение',
+                fieldType: 'text',
+                fieldTitle: 'Имя',
+                fieldName: 'name',
+                fieldHidden: false
+            }            
         ]
     }
 
@@ -79,13 +82,9 @@ import Card from '../../components/Card/Card'
     }
 
     render() {
-        console.log(this.props)
         const {contactFormStore, history} = this.props
-        const links = history.location.pathname.split('/')
-        // console.log(links)
         return (
             <div className="contact-form-pages">
-                
                  { history.location.search === "" ?
                     <div className="contact-form-btn">
                         <Link to="/contacts/contact_form/add_form?action=add">
@@ -94,28 +93,14 @@ import Card from '../../components/Card/Card'
                     </div> : null
                  }
                 <div className="contact-form">
-                    
                     <Switch>
                         <Route exact path="/contacts/contact_form/">
                             <div className="row">
-                            <Breadcrumbs
-                                breadcrumbLinks={[
-                                    {url:`/contacts`, title: 'Контакт центр',active: false},
-                                    {url:'/contacts/contact_form', title: 'Готовые формы',active: true},
-                                    ]} 
-                                />
                                 {this.renderCardForms(toJS(contactFormStore.arrForms))}
                             </div>
                         </Route>
                         <Route path="/contacts/contact_form/add_form">
                         <div className="row">
-                            <Breadcrumbs
-                                breadcrumbLinks={[
-                                    {url:'/contacts', title: 'Контакт центр',active: false},
-                                    {url:'/contacts/contact_form', title: 'Готовые формы',active: false},
-                                    {url: `${history.location.patchname}`, title: 'Создание формы',active: true}
-                                ]} 
-                            />
                             <form action="#">
                                 <div className="col s12 l6 xl6">
                                     <div className="input-field">
@@ -160,96 +145,19 @@ import Card from '../../components/Card/Card'
                                         </button>
                                     </div>
                                 </div>
-                               
                             </form>
                             <div className="col s12 l6 xl6 border">
-                                    <div className="generate-form-box">
-                                        <h5>Создание формы</h5>
-                                        <form style={{border: "2px solid  #26a69a", width: "100%", maxWidth:640, padding:20, borderRadius: 5}}>
-                                            <div>
-                                                <h2 style={{color: "#26a69a", fontSize: "18px", padding: " 0 0 15px 0", margin: "10px 0"}}>Обратная связь</h2>  
-                                            </div>
-                                       
-                                            <div className="fields-editing" style={{marginBottom: "10px"}}>
-                                                <button type="button" className="btn btn-small green modal-trigger" href="#modal1">
-                                                    <i className="material-icons">add</i>
-                                                </button> 
-                                            </div>
-
-                                 
-                                            {this.state.formFields.map((item,index) => {
-                                                return (
-                                                    <React.Fragment  key={index}>
-                                                    <div key={index} className="fields-editing">
-                                                        {this.state.formFields.length !== 0 ?
-                                                        <React.Fragment>
-                                                            <button type="button" className="btn btn-small yellow" href="#modal1">
-                                                                <i className="material-icons">create</i>
-                                                            </button>
-                                                            <button type="button" className="btn btn-small red">
-                                                                <i className="material-icons">delete</i>
-                                                            </button>
-                                                        </React.Fragment>
-                                                        
-                                                        : null}
-                                                    </div>
-                                            
-                                                    <div key={index} className="input-field">
-                                                         <input id={item.name} type="text" name={item.name} required/>
-                                                    <label htmlFor={item.name}>{item.title}</label>
-                                                </div>
-                                                </React.Fragment>
-                                                )
-                                            })
-                                            }
-                                           
-                                            <button className="waves-effect waves-light btn" type="submit">
-                                                Отправить
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
+                                  <FormCreate formFields={this.state.formFields}/>
+                            </div>
                         </div>
-
                         </Route>
-                    </Switch>         
-              
+                    </Switch>  
 
-                <div id="modal1" className="modal"
-                    ref={this.modalRef}
-                >
-                    <form action="#" onSubmit={(event) => this.submitHandler(event)}>
-                        <div className="modal-content">
-                            <h4>Поле</h4>
-                            <p>Здесь вы можите редактировать Поле</p>
-                            <div className="input-field">
-                                <input id="nameFiels1" type="text" name="nameFiels1"/>
-                                <label htmlFor="nameFiels1">Имя поля</label>
-                            </div>
-                            <div className="input-field">
-                                <input id="nameFiels2" type="text" name="nameFiels2"/>
-                                <label htmlFor="nameFiels2">Name атрибут</label>
-                            </div>
-                            {this.state.formFields.length === 0 ?
-                                <button type="submit" className="btn btn-small green modal-trigger">
-                                        Добавить
-                                </button>
-                            : null}
-                            {this.state.formFields.length !== 0 ?
-                            <React.Fragment>
-                                <button type="submit" className="btn btn-small yellow">
-                                        Отредактировать
-                                </button>
-                            </React.Fragment>
-                            : null}
-                        </div>
-                       
-                    </form>
-                    <div className="modal-footer">
-                        <button className="modal-close waves-effect waves-green btn-flat">Закрыть</button>
-                    </div>
-                </div>
-
+                    <ModalCreateFields 
+                     modalRef={this.modalRef} 
+                     submitHandler={this.submitHandler}
+                     formFields={this.state.formFields}
+                     />                     
             </div>
         </div>
         )

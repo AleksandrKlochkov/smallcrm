@@ -26,9 +26,9 @@ import NotFound from '../../../pages/NotFound/NotFound'
             {url: '/order', title: 'Добавить заказ', icon: 'library_add', showSideBar: true},
             {url: '/categories', title: 'Ассортимент', icon: 'apps', showSideBar: true},
             {url: '/contacts', title: 'Контакт центр', icon: 'call', showSideBar: true},
-            {url: '/contacts/contact_form', title: 'Контакт центр', icon: 'call', showSideBar: false},
-            {url: '/contacts/contact_form/add_form', title: 'Контакт центр', icon: 'call', showSideBar: false},
-            {url: '/contacts/contact_form/:id', title: 'Контакт центр', icon: 'call', showSideBar: false}
+            {url: 'contact_form', title: 'Готовые формы', icon: 'call', showSideBar: false},
+            {url: 'add_form', title: 'Создать форму', icon: 'call', showSideBar: false},
+            {url: '/contacts/contact_form/:id', title: 'Форма', icon: 'call', showSideBar: false}
           ]
     }
 
@@ -52,7 +52,7 @@ import NotFound from '../../../pages/NotFound/NotFound'
     }
 
     render() {
-        const {authStore,sideBarStore} = this.props
+        const {sideBarStore} = this.props
         return (
             <div className="page-site-layout">
                 <Navbar />
@@ -89,13 +89,13 @@ import NotFound from '../../../pages/NotFound/NotFound'
                                 <Categories />
                             </Route>
                             <Route path="/contacts">
-                                <Contacts />
+                                <Contacts links={this.state.sideBarLinks} />
                             </Route>
                             <Route path="/contacts/contact_form">
-                                <Contacts />
+                                <Contacts links={this.state.sideBarLinks} />
                             </Route>
                             <Route path="/contacts/contact_form/:id">
-                                <Contacts />
+                                <Contacts links={this.state.sideBarLinks}/>
                             </Route>
                             <Route path="/logout" component={Logout} />
                             <Route path="/NotFound" component={NotFound} />

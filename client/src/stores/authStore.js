@@ -1,4 +1,4 @@
-import {observable, action, configure, computed, autorun} from 'mobx'
+import {observable, action, configure, computed} from 'mobx'
 
  configure({ enforceActions: "observed" })
 
