@@ -10,54 +10,40 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
 @inject('contactFormStore')
 @observer class ContactsForm extends Component {
 
-    state = {
-        formFields: [
-            {   
-                fieldSelection: [
-                    "input",
-                    "textarea",
-                    "select"
-                ],
-                fieldKey: 134,
-                fieldLabel: 'Введите имя',
-                fieldPlaceholder: 'Введите сообщение',
-                fieldType: 'text',
-                fieldTitle: 'Имя',
-                fieldName: 'name',
-                fieldHidden: false
-            }            
-        ]
-    }
-
     constructor(props) {
         super(props)
-
         this.modalRef = React.createRef()
     }
 
     submitHandler(event) {
         event.preventDefault()
-        const formFields = this.state.formFields
+        const {contactFormStore} = this.props
         const formData = new FormData(event.target)
+        const field = {
+            fieldSelection: formData.get('fieldSelection'),
+            fieldKey: `${Math.random().toString()}`,
+            fieldLabel: formData.get('fieldTitle'),
+            fieldPlaceholder: formData.get('fieldPlaceholder'),
+            fieldType: formData.get('fieldType'),
+            fieldTitle: formData.get('fieldTitle'),
+            fieldName: formData.get('fieldName'),
+            fieldHidden: formData.get('fieldHidden')
+        }
 
-        const elem = {
-                key: Math.random().toString().replace(/./g,""),
-                label: formData.get('nameFiels1'),
-                placeholder: 'Введите сообщение',
-                type: 'text',
-                title: formData.get('nameFiels1'),
-                name: formData.get('nameFiels2'),
-                hidden: false
-        } 
-        formFields.push(elem)
-        this.setState({
-            formFields
-        })
-        
+
+         contactFormStore.updateformFields(field)
+
+        console.log(event.target)
+        // console.log(formData.get('fieldSelection'))
+        // console.log(formData.get('fieldType'))
+        //console.log(formData.get('fieldTitle'))
+        //console.log(formData.get('fieldName'))
+        // console.log(formData.get('fieldHidden'))
+        // console.log(formData.get('fieldPlaceholder'))
     }
 
-    componentDidMount() {
-       
+    componentDidMount() {  
+
         setTimeout(() => {
             this.props.contactFormStore.modalInit(this.modalRef.current)
         }, 100)
@@ -83,6 +69,7 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
 
     render() {
         const {contactFormStore, history} = this.props
+        console.log(toJS(contactFormStore.FieldsForms))
         return (
             <div className="contact-form-pages">
                  { history.location.search === "" ?
@@ -96,7 +83,7 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
                     <Switch>
                         <Route exact path="/contacts/contact_form/">
                             <div className="row">
-                                {this.renderCardForms(toJS(contactFormStore.arrForms))}
+                                {this.renderCardForms(toJS(contactFormStore.Forms))}
                             </div>
                         </Route>
                         <Route path="/contacts/contact_form/add_form">
@@ -147,7 +134,7 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
                                 </div>
                             </form>
                             <div className="col s12 l6 xl6 border">
-                                  <FormCreate formFields={this.state.formFields}/>
+                                  <FormCreate formFields={contactFormStore.FormFields}/>
                             </div>
                         </div>
                         </Route>
@@ -155,8 +142,8 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
 
                     <ModalCreateFields 
                      modalRef={this.modalRef} 
-                     submitHandler={this.submitHandler}
-                     formFields={this.state.formFields}
+                     submitHandler={this.submitHandler.bind(this)}
+                    //  formFields={this.state.formFields}
                      />                     
             </div>
         </div>

@@ -1,7 +1,8 @@
-import {observable, computed} from 'mobx'
+import {observable, computed, action} from 'mobx'
 
 class ContactFormStore{
     @observable modal = null;
+    @observable formFields = [];
     @observable forms = [
         {
             formId: 23123132132, 
@@ -54,8 +55,23 @@ class ContactFormStore{
         }
      }
 
-    @computed get arrForms() {
+    @computed get Forms() {
         return this.forms
+    }
+
+    @computed get FieldsForms() {
+        return this.formFields
+    }
+
+    // set setFieldsForms(formFields) {
+    //     this.formFields = formFields
+    // }
+
+
+
+    @action.bound updateformFields(elem) {
+        this.formFields.push(elem)
+        // this.setFieldsForms(this.formFields)
     }
     
 }
