@@ -26,6 +26,10 @@ code {
     monospace;
 }
 
+.margin-tb{
+	margin: 10px;
+}
+
 .a-sidenav{
 	transform:translateX(0)!important;
 }
@@ -424,15 +428,30 @@ display: none;
 	border: 1px solid #c4c4c4 
 }
 
-.fields-editing{
-	display: flex;
-	align-items: center;
-	justify-content: flex-end;
+.fields-editing {
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: flex-end;
 }
 
 .fields-editing button {
 	margin: 0 5px;
 }
+
+.fields-editing-btn-box {
+	display: flex;
+    width: 100%;
+    padding: 10px 0;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.fields-editing-btn-box button {
+	margin: 0 5px;
+}
+
 /*generate-form-box*/
 
 

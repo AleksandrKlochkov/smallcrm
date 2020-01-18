@@ -63,15 +63,13 @@ class ContactFormStore{
         return this.formFields
     }
 
-    // set setFieldsForms(formFields) {
-    //     this.formFields = formFields
-    // }
 
+    @action.bound addFormFields(field) {
+        this.formFields.push(field)
+    }
 
-
-    @action.bound updateformFields(elem) {
-        this.formFields.push(elem)
-        // this.setFieldsForms(this.formFields)
+    @action.bound clearFormFields(field) {
+        this.formFields = []
     }
     
 }

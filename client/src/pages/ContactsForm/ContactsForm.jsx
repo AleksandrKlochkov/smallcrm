@@ -30,10 +30,8 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
             fieldHidden: formData.get('fieldHidden')
         }
 
+         contactFormStore.addFormFields(field)
 
-         contactFormStore.updateformFields(field)
-
-        console.log(event.target)
         // console.log(formData.get('fieldSelection'))
         // console.log(formData.get('fieldType'))
         //console.log(formData.get('fieldTitle'))
@@ -68,8 +66,9 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
     }
 
     render() {
+        console.log(this.props)
         const {contactFormStore, history} = this.props
-        console.log(toJS(contactFormStore.FieldsForms))
+        const fieldsForm = toJS(contactFormStore.FieldsForms)
         return (
             <div className="contact-form-pages">
                  { history.location.search === "" ?
@@ -134,16 +133,15 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
                                 </div>
                             </form>
                             <div className="col s12 l6 xl6 border">
-                                  <FormCreate formFields={contactFormStore.FormFields}/>
+                                  <FormCreate formFields={fieldsForm}/>
                             </div>
                         </div>
                         </Route>
                     </Switch>  
 
                     <ModalCreateFields 
-                     modalRef={this.modalRef} 
-                     submitHandler={this.submitHandler.bind(this)}
-                    //  formFields={this.state.formFields}
+                        modalRef={this.modalRef} 
+                        submitHandler={this.submitHandler.bind(this)}
                      />                     
             </div>
         </div>

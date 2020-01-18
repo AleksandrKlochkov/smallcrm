@@ -1,10 +1,12 @@
 import React from 'react'
 
  const Input = props => {
+     const id = props.id || `input_${Math.random().toString().replace(/./g, "")}`
+     const name = props.name | `name${id}`
     return (
         <div className="input-field">
-            <input id="formTitle" type={props.type || 'text'} name={props.name} placeholder={props.placeholder} required/>
-            <label htmlFor="title">{props.label}</label>
+            <input id={id} type={props.type || 'text'} name={name} placeholder={props.placeholder || ""} required/>
+            <label htmlFor={id}>{props.label || ""}</label>
         </div>
     )
 }

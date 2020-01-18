@@ -10,11 +10,9 @@ class ModalCreateFields extends Component{
     }
     
     componentDidMount() {
-
         window.M.FormSelect.init(this.selectRef1.current);
         window.M.FormSelect.init(this.selectRef2.current);
         window.M.FormSelect.init(this.selectRef3.current);
-
     }
 
     render(){
@@ -25,7 +23,6 @@ class ModalCreateFields extends Component{
                 <form action="#" onSubmit={this.props.submitHandler.bind(this)}>
                     <div className="modal-content">
                         <h4>Новое поле</h4>
-
                             <div className="input-field col s6">
                                 <select id="fieldSelection"ref={this.selectRef1} name="fieldSelection">
                                     <option defaultValue="input">Текстовое</option>
@@ -65,11 +62,10 @@ class ModalCreateFields extends Component{
                                 </select>
                                 <label htmlFor="fieldHidden">Отображение поля</label>
                             </div>
-                                <button type="submit" className="btn btn-small green modal-trigger">
-                                        Добавить
-                                </button>
-            
-
+                            <button type="submit" className="btn btn-small green modal-trigger">
+                                Добавить
+                            </button>
+        
                         {/* {props.formFields.length !== 0 ?
                         <React.Fragment>
                             <button type="submit" className="btn btn-small yellow">
