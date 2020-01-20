@@ -1,18 +1,22 @@
 import { observable, action, computed } from "mobx"
 
 class ModalStore{
+    @observable formRef = null
     @observable showModal = false
 
     @computed get ShowModal() {
         return this.showModal
     }
   
-    @action modalClose(e) {
-        e.stopPropagation()
-        const close = e.target.classList.contains('modal_win_close')
-        if(close){
-            this.showModal = false
+    @action modalClose() {
+        this.showModal = false
+        if(this.formRef){
+            this.formRef.reset()
         }
+    }
+
+    @action setFormRef(formRef) {
+        this.formRef = formRef
     }
 
     @action modalOpen() {

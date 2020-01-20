@@ -79,45 +79,41 @@ import { inject, observer } from 'mobx-react'
     }
 
     render(){
-         const {contactFormStore, modalStore, submitHandler, id, modalRef, closeModal} = this.props
-         console.log(toJS(contactFormStore.FormField))
-        return (
+         const {contactFormStore, submitHandler, id, modalRef, closeModal} = this.props
+            return (
+                <div
+                    id={id}
+                    ref={modalRef}
+                    className="modal_win modal_win_bg modal--align-top modal_win_bg_can_close modal_win_close"
+                    role="dialog" 
+                    onClick={(e)=>closeModal(e)}
+                >
+                    <div className="modal_win_dialog">
+                        <div className="modal_win_content">
+                            <form action="#" onSubmit={submitHandler.bind(this)} ref={this.formCreateFieldRef}>
+                                <div className="modal-content">
+                                    <h4>{Object.keys(toJS(contactFormStore.FormField)).length !==0  ? 'Редактирование поля' : 'Создание поля'}</h4>
 
-            <div
-                id={id}
-                ref={modalRef}
-                className="modal_win modal_win_bg modal--align-top modal_win_bg_can_close modal_win_close"
-                role="dialog" 
-                onClick={(e)=>closeModal(e)}
-
-            //   style={{display:"none"}}
-            >
-                <div className="modal_win_dialog">
-                    <div className="modal_win_content">
-                        <form action="#" onSubmit={submitHandler.bind(this)} ref={this.formCreateFieldRef}>
-                            <div className="modal-content">
-                                <h4>{Object.keys(toJS(contactFormStore.FormField)).length !==0  ? 'Редактирование поля' : 'Создание поля'}</h4>
-
-                                    {this.renderFields(contactFormStore.FormField)}
-                                    
-                                {Object.keys(toJS(contactFormStore.FormField)).length !==0  ?
-                                    <button type="submit" className="btn btn-small light-blue accent-4">
-                                            Отредактировать
-                                    </button>
-                                : 
-                                    <button type="submit" className="btn btn-small green">
-                                            Добавить
-                                    </button>
-                                }
+                                        {this.renderFields(contactFormStore.FormField)}
+                                        
+                                    {Object.keys(toJS(contactFormStore.FormField)).length !==0  ?
+                                        <button type="submit" className="btn btn-small light-blue accent-4">
+                                                Отредактировать
+                                        </button>
+                                    : 
+                                        <button type="submit" className="btn btn-small green">
+                                                Добавить
+                                        </button>
+                                    }
+                                </div>
+                            </form>
+                            <div className="modal_win_footer">
+                                <button onClick={(e)=>closeModal(e)} className="waves-effect waves-green btn-flat modal_win_close">Закрыть</button>
                             </div>
-                        </form>
-                        <div className="modal_win_footer">
-                            <button onClick={(e)=>closeModal(e)} className="waves-effect waves-green btn-flat modal_win_close">Закрыть</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
     }
 }
 

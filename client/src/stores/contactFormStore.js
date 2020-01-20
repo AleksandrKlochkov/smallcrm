@@ -1,70 +1,20 @@
-import {observable, computed, action} from 'mobx'
+import {observable, computed, action, toJS} from 'mobx'
 
 class ContactFormStore{
-    @observable modalFieldsForm = null   
     @observable formFields = []
     @observable editFieldsFlag = false
     @observable formField = {};
+    @observable imagesData = null
+    @observable imageUpload = null
+    @observable forms = []
 
-    @observable forms = [
-        {
-            formId: 23123132132, 
-            formUrl: '#',
-            formUrlSite: '#',
-            formName: 'Форма обратной связи', 
-            formImages: 'contact_mail',
-            formTitle: 'Обратная связь', 
-            formDescription: 'Форма обратной связи для моего лендинга',
-            fromStyles: '',
-            formFields: [
-                {
-                    fields: 'input',
-                    label: 'Введите имя',
-                    placeholder: 'Введите сообщение',
-                    type: 'text',
-                    title: 'Имя',
-                    name: 'name',
-                    hidden: false
-                },
-                {
-                    fields: 'input',
-                    label: 'Введите номер телефона',
-                    placeholder: 'Введите номер',
-                    type: 'number',
-                    name: 'phone', 
-                    hidden: false
-                },
-                {   
-                    fields: 'input',
-                    label: 'Введите сообщение',
-                    placeholder: 'Введите сообщение',
-                    type: 'number',
-                    title: 'Сообщение',
-                    name: 'phone', 
-                    hidden: false
-                },
-                {
-                    fields: 'button',
-                    type: 'submit',
-                    title: 'Отправить'
-                }
-            ]
-        }
-    ]
+    @computed get ImagesData() {
+        return this.imagesData 
+    }
 
-    @action modalInit(elem, options = null) {
-         if(elem){
-               this.modalFieldsForm = window.M.Modal.init(elem, options);
-         }
-     }
- 
-     @action modalClose() {
-        this.modalFieldsForm.close();
-     }
- 
-     @action modalOpen() {
-        this.modalFieldsForm.open();
-     }
+    @computed get ImagesUpload() {
+        return this.imageUpload
+    }
 
     @computed get FormField() {
         return this.formField
@@ -78,22 +28,47 @@ class ContactFormStore{
         return this.formFields
     }
 
+  
+
+    @action setImagesData(imagesData) {
+        this.imagesData = imagesData
+    }
+
+    @action setImageUpload(imageUpload) {
+        this.imageUpload = imageUpload
+    }
+
     @action removeFormField(key) {
+        const field = this.formFields.filter(item => item.fieldKey === key.trim())
         this.formFields = this.formFields.filter(item => item.fieldKey !== key.trim())
-        window.M.toast({html: 'Удалено одно поле'})
+        window.M.toast({html: `Удалено поле ${toJS(field[0].fieldTitle)}`})
+    }
+
+    @action editingFormField(field){
+        const index = this.formFields.findIndex(i => i.fieldKey === field.fieldKey)
+        this.formFields[index] = field
+        window.M.toast({html: `Отредактированно поле  ${toJS(field.fieldTitle)}`})
+    }
+
+    @action addFormField(field) {
+        this.formFields.push(field)
+        window.M.toast({html: `Добавлено новое поле ${toJS(field.fieldTitle)}`})
     }
 
     @action editFormFields(key) {
         this.formField = this.formFields.find(item => item.fieldKey === key.trim())
     }
 
-    @action addFormField(field) {
-        this.formFields.push(field)
-        window.M.toast({html: 'Добавлено новое поле'})
-    }
-
     @action clearFormField() {
         this.formField = {}
+    }
+
+    @action async сreateForm(form) {
+        try{
+
+        }catch(e){
+            console.log(e.message)
+        }
     }
 }
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import Input from '../Input/Input'
 import { inject, observer} from 'mobx-react'
+import noimages from '../../shared/images/noimages.png'
+import ButtonFile from '../ButtonFile/ButtonFile'
 
 @inject('contactFormStore', 'modalStore')
 @observer class FormCreate extends Component {
 
     renderFiels(formFields) {
-        console.log(formFields)
-
         if(formFields && formFields.length !== 0){
             return formFields.map((item, index)=>{
                 return (
@@ -31,41 +31,93 @@ import { inject, observer} from 'mobx-react'
         return 'Здесь вы увидите добавленные поля'
     }
 
-    submiHandler(event) {
-        event.preventDefault()
-    }
-
-    componentDidUpdate() {
-        window.M.updateTextFields();
-    }
-
     render() {
-        console.log(this.props)
+        const {contactFormStore} = this.props
         return (
-            <div className="generate-form-box">
-            <h5>Создание формы</h5>
-            <form style={{border: "2px solid  #26a69a", width: "100%", maxWidth:640, padding:20}} onSubmit={this.submiHandler.bind(this)}>
-                <div>
-                    <h2 style={{color: "#26a69a", fontSize: "18px", padding: " 0 0 15px 0", margin: "10px 0"}}>Обратная связь</h2>  
-                </div>
-                <div className="fields-editing">
-                    <button onClick={()=>this.props.modalStore.modalOpen()}  className="waves-effect waves-light btn" type="button">
-                    <i className="small material-icons left">add</i>                   
-                        Добавить поле
-                    </button>
-                </div>
-                <div className="col s12 margin-tb">
-                    {this.renderFiels(this.props.formFields)}
-                </div>        
-               <div className="fields-editing-btn-box">
-                    <button className="waves-effect waves-light btn light-blue darken-4" type="submit">
-                        Отправить
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div className="row">
+                <form action="#" onSubmit={this.props.submitHandlerSave.bind(this)}>
+                    <div className="col s12 l6 xl6">
+                        <div className="input-field">
+                            <label htmlFor="">Изображение для формы</label>
+                        </div>
+                        <div className="form-img-box">
+                            <div className="col s12 center m45_0">
+                                    <img
+                                    className="responsive-img" 
+                                    style={{height: "200px"}} 
+                                    src={contactFormStore.ImagesData ? contactFormStore.ImagesData : noimages} 
+                                    alt="images forms" />
+                            </div>
+                            <div className="form-button-box">
+                                <ButtonFile onChangeHandlerFile={this.uploadsFiles} />
+                            </div>
+                        </div>
+                        <div className="input-field">
+                            <input id="formName" type="text" name="formName" placeholder="Введите название формы" required/>
+                            <label htmlFor="name">Название формы</label>
+                        </div>
+                
+                        <div className="input-field">
+                            <input id="formUrlSite" type="text" name="formUrlSite" placeholder="Введите URL домена сайта" required/>
+                            <label htmlFor="formUrlSite">URL-домен сайта</label>
+                        </div>
+                        <div className="input-field">
+                            <select  id="fieldType" name="fieldType" ref={this.selectRef4} >
+                                <option defaultValue="post">POST</option>
+                                <option value="get">GET</option>
+                
+                            </select>
+                            <label htmlFor="fieldHidden">Метод отправки</label>
+                        </div>
+                
+                        <div className="input-field">
+                            <input id="formDescription" type="text" name="formDescription" placeholder="Введите краткое описание формы" required/>
+                            <label htmlFor="formDescription">Краткое описание</label>
+                        </div>
+                    </div>
+                        
+                
+                    <div className="col s12 l6 xl6">
+                        <div className="generate-form-box">
+                                <h5>Создание формы</h5>
+                                <div className="generate-form-content">
+                                    <div className="input-field">
+                                        <input id="formTitle" type="text" name="formTitle" placeholder="Введите название формы" required/>
+                                        <label htmlFor="title">Заголовок формы</label>
+                                    </div>
+                                    <div className="fields-editing">
+                                        <button onClick={()=>this.props.modalStore.modalOpen()}  className="waves-effect waves-light btn" type="button">
+                                        <i className="small material-icons left">add</i>                   
+                                            Добавить поле
+                                        </button>
+                                    </div>
+                                    <div className="col s12 margin-tb">
+                                        {this.renderFiels(this.props.formFields)}
+                                    </div>        
+                                <div className="fields-editing-btn-box">
+                                        <button className="waves-effect waves-light btn light-blue darken-4" type="button">
+                                            Отправить
+                                        </button>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+            
+                    <div className="col s12 l12 xl12 border">
+                        <div className="form-button-box">
+                            <button className="waves-effect waves-light btn" type="submit">
+                                <i className="material-icons left">save</i>
+                                Сохранить изменения
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            
+            </div>
         )
     }
 }
 
 export default FormCreate
+
+

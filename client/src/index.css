@@ -244,7 +244,7 @@ main.close,footer.close {
 nav .nav-wrapper {
     position: relative;
     height: 100%;
-    z-index: 999999;
+    z-index: 999;
 }
 
 ul.sidenav{
@@ -254,11 +254,13 @@ ul.sidenav{
 	transition: transform .3s ease-in-out;
 }
 
+.sidenav{
+    z-index: 995;
+}
+
 ul.sidenav.close{
 	transform: translateX(-100%) !important
 }
-
-
 
 .sidenav li>a {
 	color: #fff;
@@ -410,6 +412,12 @@ display: none;
 	float: left;
 }
 
+.generate-form-content {
+    border: 2px solid #26a69a;
+    margin: 15px 0;
+    padding: 15px;
+}
+
 .form-img-box{
 	width: 100%;
     overflow: hidden;
@@ -499,12 +507,10 @@ display: none;
 
 .modal_win_content {
     z-index: 9999999;
-    overflow: hidden;
     will-change: transform, opacity;
     position: relative;
     padding: 15px;
     background: #fbfbfb;
-    /* border-radius: 5px; */
     background-clip: padding-box;
     box-shadow: 0 3px 7px rgba(0,0,0,.25);
     -moz-box-shadow: 0 3px 7px rgba(0,0,0,.25);
