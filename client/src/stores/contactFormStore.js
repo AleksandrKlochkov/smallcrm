@@ -1,8 +1,11 @@
 import {observable, computed, action} from 'mobx'
 
 class ContactFormStore{
-    @observable modal = null;
-    @observable formFields = [];
+    @observable modalFieldsForm = null   
+    @observable formFields = []
+    @observable editFieldsFlag = false
+    @observable formField = {};
+
     @observable forms = [
         {
             formId: 23123132132, 
@@ -49,12 +52,24 @@ class ContactFormStore{
         }
     ]
 
-    modalInit(elem, options = null) {
-        if(elem){
-              this.modal = window.M.Modal.init(elem, options);
-        }
+    @action modalInit(elem, options = null) {
+         if(elem){
+               this.modalFieldsForm = window.M.Modal.init(elem, options);
+         }
+     }
+ 
+     @action modalClose() {
+        this.modalFieldsForm.close();
+     }
+ 
+     @action modalOpen() {
+        this.modalFieldsForm.open();
      }
 
+    @computed get FormField() {
+        return this.formField
+    }
+  
     @computed get Forms() {
         return this.forms
     }
@@ -63,19 +78,27 @@ class ContactFormStore{
         return this.formFields
     }
 
+    @action removeFormField(key) {
+        this.formFields = this.formFields.filter(item => item.fieldKey !== key.trim())
+        window.M.toast({html: 'Удалено одно поле'})
+    }
 
-    @action.bound addFormFields(field) {
+    @action editFormFields(key) {
+        this.formField = this.formFields.find(item => item.fieldKey === key.trim())
+    }
+
+    @action addFormField(field) {
         this.formFields.push(field)
+        window.M.toast({html: 'Добавлено новое поле'})
     }
 
-    @action.bound clearFormFields(field) {
-        this.formFields = []
+    @action clearFormField() {
+        this.formField = {}
     }
-    
 }
 
-const contactFromStore = new ContactFormStore()
+const contactFormStore = new ContactFormStore()
 
-export default contactFromStore
+export default contactFormStore
 
 export {ContactFormStore}

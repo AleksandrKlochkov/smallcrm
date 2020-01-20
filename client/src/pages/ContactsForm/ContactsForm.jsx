@@ -5,23 +5,28 @@ import {Link, withRouter, Switch, Route} from 'react-router-dom'
 import noimages from '../../shared/images/noimages.png'
 import Card from '../../components/Card/Card'
 import FormCreate from '../../components/FormCreate/FormCreate'
-import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFields'
+import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm'
+import modalStore from '../../stores/modalStore'
 
-@inject('contactFormStore')
+
+@inject('contactFormStore','modalStore')
 @observer class ContactsForm extends Component {
-
     constructor(props) {
         super(props)
         this.modalRef = React.createRef()
+        setTimeout(() => {
+            this.props.contactFormStore.modalInit(this.modalRef.current)
+        }, 100)
     }
 
     submitHandler(event) {
         event.preventDefault()
         const {contactFormStore} = this.props
         const formData = new FormData(event.target)
+        const fieldKey = `${formData.get('fieldName')}${Math.random().toString().replace(/[.]/g, "")}`
         const field = {
             fieldSelection: formData.get('fieldSelection'),
-            fieldKey: `${Math.random().toString()}`,
+            fieldKey: fieldKey.trim(),
             fieldLabel: formData.get('fieldTitle'),
             fieldPlaceholder: formData.get('fieldPlaceholder'),
             fieldType: formData.get('fieldType'),
@@ -30,21 +35,32 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
             fieldHidden: formData.get('fieldHidden')
         }
 
-         contactFormStore.addFormFields(field)
-
-        // console.log(formData.get('fieldSelection'))
-        // console.log(formData.get('fieldType'))
-        //console.log(formData.get('fieldTitle'))
-        //console.log(formData.get('fieldName'))
-        // console.log(formData.get('fieldHidden'))
-        // console.log(formData.get('fieldPlaceholder'))
+        contactFormStore.addFormField(field)
+        event.target.reset();
     }
 
-    componentDidMount() {  
+    removeField(key) {
+        const {contactFormStore} = this.props
+        contactFormStore.removeFormField(key) 
+    }
 
-        setTimeout(() => {
-            this.props.contactFormStore.modalInit(this.modalRef.current)
-        }, 100)
+    editField(key) {
+        const {contactFormStore, modalStore} = this.props
+        contactFormStore.editFormFields(key)
+        modalStore.modalOpen()
+    }
+
+    closeModal(e) {
+            e.stopPropagation()
+            const close = e.target.classList.contains('modal_win_close')
+            if(close){
+                const {contactFormStore, modalStore} = this.props
+                contactFormStore.clearFormField()
+                if(this.modalRef.current){
+                    this.modalRef.current.querySelector('form').reset()
+                }
+                modalStore.modalClose(e)
+            }
     }
 
     renderCardForms(forms) {
@@ -61,13 +77,11 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
                 )
              })
          }
-
         return "Нет созданных форм, добавьте новую форму."
     }
 
     render() {
-        console.log(this.props)
-        const {contactFormStore, history} = this.props
+        const {contactFormStore, modalStore, history} = this.props
         const fieldsForm = toJS(contactFormStore.FieldsForms)
         return (
             <div className="contact-form-pages">
@@ -133,18 +147,31 @@ import ModalCreateFields from '../../components/ModalCreateFields/ModalCreateFie
                                 </div>
                             </form>
                             <div className="col s12 l6 xl6 border">
-                                  <FormCreate formFields={fieldsForm}/>
+                                  <FormCreate 
+                                    formFields={fieldsForm}
+                                    removeField={this.removeField.bind(this)}
+                                    editField={this.editField.bind(this)}
+                                  />
                             </div>
                         </div>
                         </Route>
                     </Switch>  
 
-                    <ModalCreateFields 
-                        modalRef={this.modalRef} 
-                        submitHandler={this.submitHandler.bind(this)}
-                     />                     
+                            
             </div>
+            {modalStore.ShowModal ?
+                    <CreateFieldsForm
+                        id={'modal1'}
+                        modalRef={this.modalRef}
+                        submitHandler={this.submitHandler.bind(this)}
+                        closeModal={this.closeModal.bind(this)}
+                    />   
+                    : null
+                }     
+                
+            {/* <Popup /> */}
         </div>
+        
         )
     }
 }
