@@ -11,87 +11,6 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
     constructor(props) {
         super(props)
         this.modalRef = React.createRef()
-        this.selectRef4 = React.createRef()
-    }
-
-    uploadsFiles = (event) => {
-        const {contactFormStore} =  this.props
-        const file = event.target.files[0]
-        const reader = new FileReader()
-        contactFormStore.setImageUpload(file)
-        reader.onload = () => {
-           const imagesData = reader.result
-           contactFormStore.setImagesData(imagesData)
-        }
-        reader.readAsDataURL(file)
-    }
-
-    submitHandlerSave(event) {
-        event.preventDefault()
-        const {contactFormStore} = this.props
-        const formData = new FormData(event.target)
-
-        const form = {
-            // formId: Math.random(), 
-            // formAction: '#',
-            formUrl: formData.get('formUrlSite'),
-            formMethod: formData.get('formMethod'),
-            formUrlSite: formData.get('formUrlSite'),
-            formName: formData.get('formName'), 
-            formImage: formData.get('formImages'),
-            formTitle: formData.get('formTitle'), 
-            formDescription: formData.get('formDescription'),
-            formFields: toJS(contactFormStore.FieldsForms)
-        }
-        console.log(form)
-    }
-
-    submitHandler(event) {
-        event.preventDefault()
-        const formData = new FormData(event.target)
-        const {contactFormStore, modalStore} = this.props
-        const formField = toJS(contactFormStore.FormField)
-        if(formField && Object.keys(formField).length !== 0) {
-            const field = {
-                fieldSelection: formData.get('fieldSelection'),
-                fieldKey: formField.fieldKey,
-                fieldLabel: formData.get('fieldTitle'),
-                fieldPlaceholder: formData.get('fieldPlaceholder'),
-                fieldType: formData.get('fieldType'),
-                fieldTitle: formData.get('fieldTitle'),
-                fieldName: formData.get('fieldName'),
-                fieldHidden: formData.get('fieldHidden')
-            }
-            contactFormStore.editingFormField(field)
-            contactFormStore.clearFormField()
-            modalStore.modalClose()
-        }else{
-            const fieldKey = `${formData.get('fieldName')}${Math.random().toString().replace(/[.]/g, "")}`
-            const field = {
-                fieldSelection: formData.get('fieldSelection'),
-                fieldKey: fieldKey.trim(),
-                fieldLabel: formData.get('fieldTitle'),
-                fieldPlaceholder: formData.get('fieldPlaceholder'),
-                fieldType: formData.get('fieldType'),
-                fieldTitle: formData.get('fieldTitle'),
-                fieldName: formData.get('fieldName'),
-                fieldHidden: formData.get('fieldHidden')
-            }
-            contactFormStore.addFormField(field)
-        }
-        event.target.reset();
-        window.M.updateTextFields();
-    }
-
-    removeField(key) {
-        const {contactFormStore} = this.props
-        contactFormStore.removeFormField(key) 
-    }
-
-    editField(key) {
-        const {contactFormStore, modalStore} = this.props
-        contactFormStore.editFormFields(key)
-        modalStore.modalOpen()
     }
 
     closeModal(e) {
@@ -99,7 +18,7 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
         const close = e.target.classList.contains('modal_win_close')
         if(close){
             const {contactFormStore, modalStore} = this.props
-            contactFormStore.clearFormField()
+            contactFormStore.clearFieldForm()
             if(this.modalRef.current){
                 this.modalRef.current.querySelector('form').reset()
             }
@@ -125,17 +44,15 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
     }
 
     componentDidMount() {
-        window.M.updateTextFields()
-        window.M.FormSelect.init(this.selectRef4.current)
         if(this.modalRef.current){
             this.modalRef.current.querySelector('form').reset()
             setTimeout(()=>{this.props.modalStore.setFormRef(this.modalRef.current.querySelector('form'))},100)
         }
+        window.M.updateTextFields()
     }
 
     render() {
         const {contactFormStore, modalStore, history} = this.props
-        const fieldsForm = toJS(contactFormStore.FieldsForms)
         return (
             <div className="contact-form-pages">
                  { history.location.search === "" ?
@@ -153,12 +70,7 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
                             </div>
                         </Route>
                         <Route path="/contacts/contact_form/add_form">
-                            <FormCreate 
-                                formFields={fieldsForm}
-                                removeField={this.removeField.bind(this)}
-                                editField={this.editField.bind(this)}
-                                submitHandlerSave={this.submitHandlerSave.bind(this)}
-                            />
+                            <FormCreate />
                         </Route>
                     </Switch>     
             </div>
@@ -166,7 +78,6 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
                 <CreateFieldsForm
                     id={'modal1'}
                     modalRef={this.modalRef}
-                    submitHandler={this.submitHandler.bind(this)}
                     closeModal={this.closeModal.bind(this)}
                 />   
                 : null

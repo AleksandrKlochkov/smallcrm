@@ -11,6 +11,7 @@ import { inject, observer } from 'mobx-react'
         this.selectRef2 = React.createRef()
         this.selectRef3 = React.createRef()
         this.formCreateFieldRef = React.createRef()
+        
     }
     
     componentDidMount() {
@@ -27,7 +28,8 @@ import { inject, observer } from 'mobx-react'
         window.M.updateTextFields() 
     }
 
-    renderFields(field) {
+    renderFields(item) {
+        const field = toJS(item)
 
         return (
             <React.Fragment>
@@ -79,7 +81,8 @@ import { inject, observer } from 'mobx-react'
     }
 
     render(){
-         const {contactFormStore, submitHandler, id, modalRef, closeModal} = this.props
+         const {contactFormStore, id, modalRef, closeModal} = this.props
+         console.log(toJS(contactFormStore.FieldForm))
             return (
                 <div
                     id={id}
@@ -90,13 +93,13 @@ import { inject, observer } from 'mobx-react'
                 >
                     <div className="modal_win_dialog">
                         <div className="modal_win_content">
-                            <form action="#" onSubmit={submitHandler.bind(this)} ref={this.formCreateFieldRef}>
+                            <form action="#" onSubmit={(event)=>this.props.contactFormStore.submitSaveFields(event)} ref={this.formCreateFieldRef}> {/*(event)=>contactFormStore.submitSaveFields(event)*/}
                                 <div className="modal-content">
-                                    <h4>{Object.keys(toJS(contactFormStore.FormField)).length !==0  ? 'Редактирование поля' : 'Создание поля'}</h4>
+                                    <h4>{Object.keys(contactFormStore.FieldForm).length !==0  ? 'Редактирование поля' : 'Создание поля'}</h4>
 
-                                        {this.renderFields(contactFormStore.FormField)}
+                                    {this.renderFields(contactFormStore.FieldForm)}
                                         
-                                    {Object.keys(toJS(contactFormStore.FormField)).length !==0  ?
+                                    {Object.keys(toJS(contactFormStore.FieldForm)).length !== 0  ?
                                         <button type="submit" className="btn btn-small light-blue accent-4">
                                                 Отредактировать
                                         </button>

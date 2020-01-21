@@ -524,7 +524,7 @@ display: none;
 }
 
 .modal_win_close {
-    z-index: 9999999;
+    z-index: 9999;
     cursor: pointer;
 }
 

@@ -1,41 +1,29 @@
 import React, { Component } from 'react'
-import Input from '../Input/Input'
+import {toJS} from 'mobx'
 import { inject, observer} from 'mobx-react'
 import noimages from '../../shared/images/noimages.png'
 import ButtonFile from '../ButtonFile/ButtonFile'
+import Fields from '../Fields/Fields'
 
 @inject('contactFormStore', 'modalStore')
 @observer class FormCreate extends Component {
+    constructor(props) {
+        super(props)
+        this.selectRef4 = React.createRef()
+    }
 
-    renderFiels(formFields) {
-        if(formFields && formFields.length !== 0){
-            return formFields.map((item, index)=>{
-                return (
-                    <div key={index} className="fields-editing">
-                        <div className="col s8">
-                            <Input idx={index} id={item.fieldKey} label={item.fieldLabel} type={item.fieldType} placeholder={item.fieldPlaceholder} disabled={true} hidden={item.fieldHidden}/>
-                        </div>
-                        <div className="col s4">
-                            <button onClick={this.props.editField.bind(this,item.fieldKey)} type="button" className="btn waves-effect waves-light btn-small light-blue accent-4" href="#modal1">
-                                <i className="material-icons">create</i>
-                            </button>
-                            <button onClick={this.props.removeField.bind(this,item.fieldKey)} type="button" className="btn btn-small red">
-                                <i className="material-icons">delete</i>
-                            </button>
-                        </div>
-                    </div>
-                )
-            })
-        }
 
-        return 'Здесь вы увидите добавленные поля'
+
+    componentDidMount(){
+        window.M.updateTextFields()
+        window.M.FormSelect.init(this.selectRef4.current)
     }
 
     render() {
-        const {contactFormStore} = this.props
+        const {contactFormStore, modalStore} = this.props
         return (
             <div className="row">
-                <form action="#" onSubmit={this.props.submitHandlerSave.bind(this)}>
+                <form action="#" onSubmit={(event)=>contactFormStore.submitSaveForm(event)}>
                     <div className="col s12 l6 xl6">
                         <div className="input-field">
                             <label htmlFor="">Изображение для формы</label>
@@ -49,21 +37,21 @@ import ButtonFile from '../ButtonFile/ButtonFile'
                                     alt="images forms" />
                             </div>
                             <div className="form-button-box">
-                                <ButtonFile onChangeHandlerFile={this.uploadsFiles} />
+                                <ButtonFile onChangeHandlerFile={contactFormStore.uploadsFiles} />
                             </div>
                         </div>
                         <div className="input-field">
                             <input id="formName" type="text" name="formName" placeholder="Введите название формы" required/>
-                            <label htmlFor="name">Название формы</label>
+                            <label className="active" htmlFor="name">Название формы</label>
                         </div>
                 
                         <div className="input-field">
                             <input id="formUrlSite" type="text" name="formUrlSite" placeholder="Введите URL домена сайта" required/>
-                            <label htmlFor="formUrlSite">URL-домен сайта</label>
+                            <label className="active" htmlFor="formUrlSite">URL-домен сайта</label>
                         </div>
                         <div className="input-field">
-                            <select  id="fieldType" name="fieldType" ref={this.selectRef4} >
-                                <option defaultValue="post">POST</option>
+                            <select  id="formMethod" name="formMethod" ref={this.selectRef4} >
+                                <option value="post" defaultValue="post">POST</option>
                                 <option value="get">GET</option>
                 
                             </select>
@@ -72,7 +60,7 @@ import ButtonFile from '../ButtonFile/ButtonFile'
                 
                         <div className="input-field">
                             <input id="formDescription" type="text" name="formDescription" placeholder="Введите краткое описание формы" required/>
-                            <label htmlFor="formDescription">Краткое описание</label>
+                            <label className="active" htmlFor="formDescription">Краткое описание</label>
                         </div>
                     </div>
                         
@@ -83,18 +71,18 @@ import ButtonFile from '../ButtonFile/ButtonFile'
                                 <div className="generate-form-content">
                                     <div className="input-field">
                                         <input id="formTitle" type="text" name="formTitle" placeholder="Введите название формы" required/>
-                                        <label htmlFor="title">Заголовок формы</label>
+                                        <label className="active" htmlFor="title">Заголовок формы</label>
                                     </div>
                                     <div className="fields-editing">
-                                        <button onClick={()=>this.props.modalStore.modalOpen()}  className="waves-effect waves-light btn" type="button">
+                                        <button onClick={()=>modalStore.modalOpen()}  className="waves-effect waves-light btn" type="button">
                                         <i className="small material-icons left">add</i>                   
                                             Добавить поле
                                         </button>
                                     </div>
                                     <div className="col s12 margin-tb">
-                                        {this.renderFiels(this.props.formFields)}
+                                        <Fields />
                                     </div>        
-                                <div className="fields-editing-btn-box">
+                                    <div className="fields-editing-btn-box">
                                         <button className="waves-effect waves-light btn light-blue darken-4" type="button">
                                             Отправить
                                         </button>
@@ -119,5 +107,10 @@ import ButtonFile from '../ButtonFile/ButtonFile'
 }
 
 export default FormCreate
+
+
+
+
+
 
 

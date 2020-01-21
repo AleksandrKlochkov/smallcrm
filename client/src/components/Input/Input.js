@@ -6,7 +6,7 @@ import React from 'react'
     return (
         <div className="input-field">
             <input id={id} type={props.type || 'text'} name={name || `fields${props.idx}`} placeholder={props.placeholder || ""} disabled={props.disabled} required/>
-            <label htmlFor={id}>{props.label || ""}</label>
+            <label className="active" htmlFor={id}>{props.label || ""}</label>
         </div>
     )
 }

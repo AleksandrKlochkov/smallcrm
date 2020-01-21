@@ -37,18 +37,24 @@ module.exports.remove = async function(req, res) {
 }
 
 module.exports.create = async function(req, res) {
-  console.log(req.body)
-  // const category = new Contact({
-  //   name: req.body.name,
-  //   imageSrc: req.file ? req.file.path : '',
-  //   user: req.user.id
-  // })
-  // try{
-  //   await category.save()
-  //   res.status(201).json(category)
-  // }catch(e){
-  //   errorHandler(res,e)
-  // }
+    console.log(req.body.formFields)
+    const form = new Contact({
+      formMethod: req.body.formMethod,
+      formName: req.body.formName,
+      formUrlSite: req.body.formUrlSite,
+      formTitle: req.body.formTitle,
+      formDescription: req.body.formDescription,
+      imageSrc: req.file ? req.file.path : '',
+      formFields: JSON.parse(req.body.formFields),
+      formHtmlCode: '',
+      user: req.user.id
+    })
+    try{
+       await form.save()
+       res.status(201).json(form)
+    }catch(e){
+       errorHandler(res,e)
+    }
 }
 
 module.exports.update = async function(req, res) {

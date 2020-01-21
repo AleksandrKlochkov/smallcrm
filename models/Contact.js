@@ -2,15 +2,15 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const contactSchema = new Schema({
+  date: {
+    type: Date,
+    default: Date.now
+  },
   formAction:{
     type: String,
     default: ''
   },
   formMethod: {
-    type: String,
-    default: 'POST'
-  },
-  formUrl: {
     type: String,
     default: ''
   },
@@ -30,19 +30,22 @@ const contactSchema = new Schema({
     type: String,
     required: true
   },
-  imageImageSrc: {
+  imageSrc: {
     type: String,
     default: ''
   },
-  formFields: {
-    fieldSelection: {type: String, required: true},
-    fieldLabel: {type: String, required: true},
-    fieldPlaceholder: {type: String, required: true},
-    fieldType: {type: String, required: true},
-    fieldTitle: {type: String, required: true},
-    fieldName: {type: String, required: true},
-    fieldHidden:{type: String, required: true} 
-  },
+  formFields: [
+    {
+      fieldSelection: {type: String, required: true},
+      fieldKey: {type: String, required: true},
+      fieldLabel: {type: String, required: true},
+      fieldPlaceholder: {type: String, default: ''},
+      fieldType: {type: String, required: true},
+      fieldTitle: {type: String, required: true},
+      fieldName: {type: String, required: true},
+      fieldHidden:{type: Boolean, required: true} 
+    }
+  ],
   formHtmlCode: {
     type: String,
     default: ''

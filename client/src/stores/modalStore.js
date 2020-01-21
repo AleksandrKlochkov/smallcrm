@@ -1,4 +1,6 @@
 import { observable, action, computed } from "mobx"
+import contactFormStore from "./contactFormStore"
+
 
 class ModalStore{
     @observable formRef = null
@@ -10,6 +12,7 @@ class ModalStore{
   
     @action modalClose() {
         this.showModal = false
+        contactFormStore.clearFieldForm()
         if(this.formRef){
             this.formRef.reset()
         }
