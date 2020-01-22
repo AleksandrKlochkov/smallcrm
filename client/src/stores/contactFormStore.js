@@ -4,8 +4,10 @@ import modalStore from './modalStore';
 class ContactFormStore{
     @observable forms = []
     @observable fieldsForm = []
-    @observable fieldForm = {};
+    @observable fieldForm = {}
+    @observable titleForm = ''
     @observable imagesData = null
+    @observable elementForm = null
 
     @computed get Forms() {
         return this.forms
@@ -19,8 +21,16 @@ class ContactFormStore{
         return this.fieldForm
     }
 
+    @computed get TitleForm() {
+        return this.titleForm
+    }
+
     @computed get ImagesData() {
         return this.imagesData 
+    }
+
+    @action setTitleForm(titleForm) {
+        this.titleForm = titleForm
     }
 
     @action setImagesData(imagesData) {
@@ -29,7 +39,7 @@ class ContactFormStore{
 
     @action addForms(form) {
         this.forms.push(form)
-        window.M.toast({html: `Форма ${toJS(form.fieldTitle)} создана`})
+        window.M.toast({html: `Форма ${toJS(form.formTitle)} создана`})
     }
 
     @action addFieldForm(field) {
@@ -58,6 +68,10 @@ class ContactFormStore{
         this.fieldForm = {}
     }
 
+    @action clearFieldsForm() {
+        this.fieldsForm = []
+    }
+
     @action uploadsFiles = (event) => {
         const file = event.target.files[0]
         const reader = new FileReader()
@@ -70,37 +84,38 @@ class ContactFormStore{
 
     @action submitSaveFields(event) {
         event.preventDefault()
-            const formData = new FormData(event.target)
-            if(this.FieldForm && Object.keys(this.FieldForm).length !== 0) {
-                const field = {
-                    fieldSelection: formData.get('fieldSelection'),
-                    fieldKey: contactFormStore.fieldForm.fieldKey,
-                    fieldLabel: formData.get('fieldTitle'),
-                    fieldPlaceholder: formData.get('fieldPlaceholder'),
-                    fieldType: formData.get('fieldType'),
-                    fieldTitle: formData.get('fieldTitle'),
-                    fieldName: formData.get('fieldName'),
-                    fieldHidden: formData.get('fieldHidden')
-                }
-                this.editingFormField(field)
-                modalStore.modalClose()
-            }else{
-                const fieldKey = `${formData.get('fieldName')}${Math.random().toString().replace(/[.]/g, "")}`
-                const field = {
-                    fieldSelection: formData.get('fieldSelection'),
-                    fieldKey: fieldKey.trim(),
-                    fieldLabel: formData.get('fieldTitle'),
-                    fieldPlaceholder: formData.get('fieldPlaceholder'),
-                    fieldType: formData.get('fieldType'),
-                    fieldTitle: formData.get('fieldTitle'),
-                    fieldName: formData.get('fieldName'),
-                    fieldHidden: formData.get('fieldHidden')
-                }
-                this.addFieldForm(field)
+        const formData = new FormData(event.target)
+        const fieldType = event.target.querySelector('[name="fieldType"]').defaultValue
+        if(this.FieldForm && Object.keys(this.FieldForm).length !== 0) {
+            const field = {
+                fieldSelection: formData.get('fieldSelection'),
+                fieldKey: this.FieldForm.fieldKey,
+                fieldLabel: formData.get('fieldTitle'),
+                fieldPlaceholder: formData.get('fieldPlaceholder'),
+                fieldType: fieldType , //formData.get('fieldType'),
+                fieldTitle: formData.get('fieldTitle'),
+                fieldName: formData.get('fieldName'),
+                fieldHidden: formData.get('fieldHidden')
             }
-        
-            event.target.reset();
-            window.M.updateTextFields()
+            this.editingFormField(field)
+            modalStore.modalClose()
+        }else{
+            const fieldKey = `${formData.get('fieldName')}${Math.random().toString().replace(/[.]/g, "")}`
+            const field = {
+                fieldSelection: formData.get('fieldSelection'),
+                fieldKey: fieldKey.trim(),
+                fieldLabel: formData.get('fieldTitle'),
+                fieldPlaceholder: formData.get('fieldPlaceholder'),
+                fieldType: fieldType,//formData.get('fieldType'),
+                fieldTitle: formData.get('fieldTitle'),
+                fieldName: formData.get('fieldName'),
+                fieldHidden: formData.get('fieldHidden')
+            }
+            this.addFieldForm(field)
+        }
+    
+        event.target.reset();
+        window.M.updateTextFields()
     }
 
     
@@ -110,14 +125,11 @@ class ContactFormStore{
         const formData = new FormData(elemForm)
         formData.append('formFields', JSON.stringify(toJS(this.FieldsForm)))
         this.сreateForm(formData)
-        this.setImagesData = null
-        elemForm.reset()
-        window.M.updateTextFields()
+        this.elementForm = elemForm
     }
 
     @action async сreateForm(formData) {
         const token = localStorage.getItem('token')
-        console.log(token)
         try{
                 await fetch('/api/contact',{
                     method: 'POST',
@@ -135,15 +147,25 @@ class ContactFormStore{
                         window.M.toast({ html:`${data.message}`})
                     }else{
                         this.addForms(data)
+                        this.clearFormElement()
                     }
                 })
                 .catch(e => {
-                    console.log(e)
-                    window.M.toast({ html:`${e.message}`})
+                    console.log(e.message)
+                    window.M.toast({ html:`Что то пошло не так`})
                 })
         }catch(e){
             console.log(e.message)
+            window.M.toast({ html:`Что то пошло не так`})
         }
+    }
+
+    @action clearFormElement(){
+        this.setImagesData(null)
+        this.clearFieldsForm()
+        this.clearFieldForm()
+        this.elementForm.reset()
+        window.M.updateTextFields()
     }
 }
 

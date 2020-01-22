@@ -1,28 +1,40 @@
 import React, { Component } from 'react'
+import { inject, observer } from 'mobx-react'
+@inject('contactFormStore')
+@observer class FormGenerate extends Component {
 
-export default class FormGenerate extends Component {
+    componentDidMount(){
+        window.M.updateTextFields()
+    }
+
+    renderFormGenerate() {
+        const {contactFormStore} = this.props
+
+        return contactFormStore.FieldsForm.map((item,index) => {
+            return (
+                    <div key={index} className="input-field">
+                        <input 
+                         id={item.fieldKey+`${index}`} 
+                         type={item.fieldType} 
+                         name={item.fieldName}
+                         placeholder={item.fieldPlaceholder}
+                         />
+                        <label htmlFor={item.fieldKey+`${index}`}>{item.fieldLabel}</label>
+                    </div>
+                )
+             })
+    }
+
     render() {
+        const {contactFormStore} = this.props
         return (
             <div>
-                <form action="#" method="POST" style={{border: "2px solid  #26a69a", width: "100%", maxWidth:640, padding:20, borderRadius: 5}} noValidate>
+                <form action="#" method="POST" style={{border: "2px solid  #26a69a", width: "100%", padding:20, borderRadius: 5}} noValidate>
                     <div>
-                        <h2 style={{color: "#26a69a", fontSize: "18px", padding: " 0 0 15px 0", margin: "10px 0"}}>Обратная связь</h2>  
+                        <h2 style={{color: "#26a69a", fontSize: "18px", padding: " 0 0 15px 0", margin: "10px 0"}}>{contactFormStore.TitleForm}</h2>  
                     </div>
 
-                    <div className="fields-editing" style={{marginBottom: "10px"}}>
-                        <button type="button" className="btn btn-small green modal-trigger" href="#modal1">
-                            <i className="material-icons">add</i>
-                        </button> 
-                    </div>
-                    { this.props.formFields.map((item,index) => {
-                        return (
-                                <div key={index} className="input-field">
-                                    <input id={item.name} type="text" name={item.name} required/>
-                                    <label htmlFor={item.name}>{item.title}</label>
-                                </div>
-                            )
-                         })
-                    }
+                    {this.renderFormGenerate()}
                     <button className="waves-effect waves-light btn" type="submit">
                         Отправить
                     </button>
@@ -31,3 +43,5 @@ export default class FormGenerate extends Component {
         )
     }
 }
+
+export default FormGenerate

@@ -1,8 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {toJS} from 'mobx'
 import { inject, observer} from 'mobx-react'
 import noimages from '../../shared/images/noimages.png'
 import ButtonFile from '../ButtonFile/ButtonFile'
+import FormGenerate from '../FormGenerate/FormGenerate'
 import Fields from '../Fields/Fields'
 
 @inject('contactFormStore', 'modalStore')
@@ -12,8 +13,6 @@ import Fields from '../Fields/Fields'
         this.selectRef4 = React.createRef()
     }
 
-
-
     componentDidMount(){
         window.M.updateTextFields()
         window.M.FormSelect.init(this.selectRef4.current)
@@ -22,6 +21,7 @@ import Fields from '../Fields/Fields'
     render() {
         const {contactFormStore, modalStore} = this.props
         return (
+            <Fragment>
             <div className="row">
                 <form action="#" onSubmit={(event)=>contactFormStore.submitSaveForm(event)}>
                     <div className="col s12 l6 xl6">
@@ -70,7 +70,14 @@ import Fields from '../Fields/Fields'
                                 <h5>Создание формы</h5>
                                 <div className="generate-form-content">
                                     <div className="input-field">
-                                        <input id="formTitle" type="text" name="formTitle" placeholder="Введите название формы" required/>
+                                        <input 
+                                            id="formTitle" 
+                                            type="text" 
+                                            name="formTitle" 
+                                            placeholder="Введите название формы" 
+                                            required
+                                            onChange={(event)=>contactFormStore.setTitleForm(event.target.value)}
+                                        />
                                         <label className="active" htmlFor="title">Заголовок формы</label>
                                     </div>
                                     <div className="fields-editing">
@@ -100,8 +107,14 @@ import Fields from '../Fields/Fields'
                         </div>
                     </div>
                 </form>
-            
+          
+                 
             </div>
+
+            <hr/>
+
+            <FormGenerate />
+            </Fragment>
         )
     }
 }

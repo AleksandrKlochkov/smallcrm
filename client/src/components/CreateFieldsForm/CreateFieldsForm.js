@@ -39,9 +39,9 @@ import { inject, observer } from 'mobx-react'
                      name="fieldSelection" 
                      defaultValue={field.fieldSelection}
                     >
-                        <option value="input" >Текстовое</option>
-                        <option value="textarea">Сообщение</option>
-                        <option value="select">Список</option>
+                        <option value="input" >Ввод текста</option>
+                        <option value="textarea">Ввод сообщения</option>
+                        <option value="select">Выбор из списка</option>
                     </select>
                     <label htmlFor="fieldSelection">Тип поля</label>
                 </div>
@@ -55,26 +55,18 @@ import { inject, observer } from 'mobx-react'
                 </div>
                 <div className="input-field col s6">
                     <select  id="fieldType" name="fieldType" ref={this.selectRef3}  defaultValue={field.fieldType}>
-                        <option defaultValue="text">text</option>
-                        <option value="number">number</option>
-                        <option value="password">password</option>
-                        <option value="checkbox">checkbox</option>
-                        <option value="file">file</option>
-                        <option value="hidden">hidden</option>
-                        <option value="radio">radio</option>
+                        <option defaultValue="text">Текст</option>
+                        <option value="number">Номер</option>
+                        <option value="password">Пароль</option>
+                        <option value="checkbox">Флажок(Галочка)</option>
+                        <option value="file">Файл</option>
+                        <option value="hidden">Скрытое поле</option>
                     </select>
-                    <label htmlFor="fieldHidden">Атрибут поля type</label>
+                    <label htmlFor="fieldHidden">Выберите формат поля</label>
                 </div>
                 <div className="input-field col s6">
-                    <input id="fieldPlaceholder" type="text" name="fieldPlaceholder" placeholder="Введите значение атрибута placeholder" defaultValue={field.fieldPlaceholder}/>
-                    <label htmlFor="fieldPlaceholder">Атрибут поля PLACEHOLDER</label>
-                </div>
-                <div className="input-field col s6">
-                    <select if="fieldHidden" name="fieldHidden" ref={this.selectRef2} defaultValue={field.fieldHidden}>
-                        <option value="true">Открытое</option>
-                        <option value="false">Скрытое</option>
-                    </select>
-                    <label htmlFor="fieldHidden">Отображение поля</label>
+                    <input id="fieldPlaceholder" type="text" name="fieldPlaceholder" placeholder="Введите пояснения для поля" defaultValue={field.fieldPlaceholder}/>
+                    <label htmlFor="fieldPlaceholder">Пояснительное сообщение</label>
                 </div>
             </React.Fragment>
         )
@@ -82,7 +74,6 @@ import { inject, observer } from 'mobx-react'
 
     render(){
          const {contactFormStore, id, modalRef, closeModal} = this.props
-         console.log(toJS(contactFormStore.FieldForm))
             return (
                 <div
                     id={id}
@@ -96,18 +87,19 @@ import { inject, observer } from 'mobx-react'
                             <form action="#" onSubmit={(event)=>this.props.contactFormStore.submitSaveFields(event)} ref={this.formCreateFieldRef}> {/*(event)=>contactFormStore.submitSaveFields(event)*/}
                                 <div className="modal-content">
                                     <h4>{Object.keys(contactFormStore.FieldForm).length !==0  ? 'Редактирование поля' : 'Создание поля'}</h4>
-
-                                    {this.renderFields(contactFormStore.FieldForm)}
-                                        
-                                    {Object.keys(toJS(contactFormStore.FieldForm)).length !== 0  ?
-                                        <button type="submit" className="btn btn-small light-blue accent-4">
-                                                Отредактировать
-                                        </button>
-                                    : 
-                                        <button type="submit" className="btn btn-small green">
-                                                Добавить
-                                        </button>
-                                    }
+                                    
+                                        {this.renderFields(contactFormStore.FieldForm)}
+                                        <div className="modal_win_btn">
+                                            {Object.keys(toJS(contactFormStore.FieldForm)).length !== 0  ?
+                                                <button type="submit" className="btn btn-small light-blue accent-4">
+                                                        Отредактировать
+                                                </button>
+                                            : 
+                                                <button type="submit" className="btn btn-small green">
+                                                        Добавить
+                                                </button>
+                                            } 
+                                        </div>  
                                 </div>
                             </form>
                             <div className="modal_win_footer">

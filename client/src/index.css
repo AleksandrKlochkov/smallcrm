@@ -524,8 +524,16 @@ display: none;
 }
 
 .modal_win_close {
-    z-index: 9999;
+    z-index: 999;
     cursor: pointer;
+}
+
+.modal_win_btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px 15px;
 }
 
 .modal_win_trigger:hover {
