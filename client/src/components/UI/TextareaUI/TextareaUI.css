@@ -1,0 +1,21 @@
+.TextareaUI {
+    min-height: 60px;
+}
+
+.TextareaUI>textarea {
+    min-height: 80px;
+    width: 100%;
+    padding: 7px !important;
+    box-sizing: border-box !important;
+    resize: none;
+    background: #fff;
+}
+
+
+.TextareaUI>textarea::placeholder {
+    color: rgba(0,0,0,0.42) !important;
+    font-weight: normal !important;
+    margin: 0px !important;
+    font-size: 14px;
+    
+ }
