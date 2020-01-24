@@ -1,20 +1,32 @@
-import React from 'react'
-import './SelectUI.css'
+import React, {Component} from 'react'
 
- const SelectUI = props => {
+ class SelectUI extends Component{
 
-    return (
-        <div className="SelectUI">
-            {props.fieldLabel ? <label className="active" htmlFor={props.fieldKey}>{props.fieldLabel || ""}</label> : null}
-            <select>
-                <option value="" disabled selected>Choose your option</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-            </select>
-            <span className="error">error</span>
-        </div>
-    )
+        componentDidMount(){
+             const elems = document.querySelectorAll('select');
+             console.log(this.props)
+             window.M.FormSelect.init(elems);
+        }
+
+        render(){
+            const selectList = this.props.fieldSelectValues.split(',')
+            return (
+                <div className="input-field col s12">
+                    {this.props.fieldLabel ? <label className="active" htmlFor={this.props.fieldKey}>{this.props.fieldLabel || ""}</label> : null}
+                    <select 
+                     defaultValue={selectList[0]}
+                     >
+                        {selectList.map((item, index)=>{
+                            return (
+                                <option key={index} value={item.value}>{item.title}</option>
+                            )
+                        })}
+                    </select>
+                    <span className="helper-text mess-error" data-error="wrong" data-success="right"></span>
+                </div>
+            )
+        }
 }
 
 export default SelectUI
+

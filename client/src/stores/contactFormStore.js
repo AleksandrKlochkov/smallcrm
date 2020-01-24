@@ -5,9 +5,23 @@ class ContactFormStore{
     @observable forms = []
     @observable fieldsForm = []
     @observable fieldForm = {}
-    @observable titleForm = ''
+    @observable titleForm = 'Оставьте отзыв'
+    @observable sendingMessage = 'Спасибо, Ваше сообщение успешно отправлено'
     @observable imagesData = null
     @observable elementForm = null
+    @observable fieldTypeKey = null
+    @observable fieldsType = {
+                                text: 'text',
+                                select: 'select',
+                                textarea: 'textarea',
+                                number: 'number',
+                                checkbox: 'checkbox',
+                                file: 'file',
+                                hidden: 'hidden',
+                                password: 'password'
+                            }
+    
+
 
     @computed get Forms() {
         return this.forms
@@ -25,8 +39,16 @@ class ContactFormStore{
         return this.titleForm
     }
 
+    @computed get SendingMessage() {
+        return this.sendingMessage
+    }
+
     @computed get ImagesData() {
         return this.imagesData 
+    }
+
+    @computed get FieldTypeKey() {
+        return this.fieldTypeKey
     }
 
     @action setTitleForm(titleForm) {
@@ -35,6 +57,14 @@ class ContactFormStore{
 
     @action setImagesData(imagesData) {
         this.imagesData = imagesData
+    }
+
+    @action setSendingMessage(message) {
+        this.sendingMessage = message
+    }
+
+    @action setFieldTypeKey(key) {
+        this.fieldTypeKey = key
     }
 
     @action addForms(form) {
@@ -85,29 +115,30 @@ class ContactFormStore{
     @action submitSaveFields(event) {
         event.preventDefault()
         const formData = new FormData(event.target)
-        const fieldType = event.target.querySelector('[name="fieldType"]').defaultValue
         if(this.FieldForm && Object.keys(this.FieldForm).length !== 0) {
             const field = {
                 fieldSelection: formData.get('fieldSelection'),
                 fieldKey: this.FieldForm.fieldKey,
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
-                fieldType: fieldType , //formData.get('fieldType'),
+                fieldType: formData.get('fieldType'),
                 fieldTitle: formData.get('fieldTitle'),
+                fieldSelectValues: formData.get('fieldSelectValues'),
                 fieldName: formData.get('fieldName'),
                 fieldHidden: formData.get('fieldHidden')
             }
             this.editingFormField(field)
             modalStore.modalClose()
         }else{
-            const fieldKey = `${formData.get('fieldName')}${Math.random().toString().replace(/[.]/g, "")}`
+            const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
             const field = {
                 fieldSelection: formData.get('fieldSelection'),
                 fieldKey: fieldKey.trim(),
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
-                fieldType: fieldType,//formData.get('fieldType'),
+                fieldType: formData.get('fieldType'),
                 fieldTitle: formData.get('fieldTitle'),
+                fieldSelectValues: formData.get('fieldSelectValues'),
                 fieldName: formData.get('fieldName'),
                 fieldHidden: formData.get('fieldHidden')
             }
@@ -165,6 +196,7 @@ class ContactFormStore{
         this.clearFieldsForm()
         this.clearFieldForm()
         this.elementForm.reset()
+        this.setFieldTypeKey(null)
         window.M.updateTextFields()
     }
 }

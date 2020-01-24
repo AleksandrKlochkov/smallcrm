@@ -73,7 +73,7 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
                             <FormCreate />
                         </Route>
                     </Switch>     
-            </div>
+                </div>
             {modalStore.ShowModal ?
                 <CreateFieldsForm
                     id={'modal1'}

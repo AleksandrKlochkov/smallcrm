@@ -44,7 +44,6 @@ import Fields from '../Fields/Fields'
                             <input id="formName" type="text" name="formName" placeholder="Введите название формы" required/>
                             <label className="active" htmlFor="name">Название формы</label>
                         </div>
-                
                         <div className="input-field">
                             <input id="formUrlSite" type="text" name="formUrlSite" placeholder="Введите URL домена сайта" required/>
                             <label className="active" htmlFor="formUrlSite">URL-домен сайта</label>
@@ -53,7 +52,6 @@ import Fields from '../Fields/Fields'
                             <select  id="formMethod" name="formMethod" ref={this.selectRef4} >
                                 <option value="post" defaultValue="post">POST</option>
                                 <option value="get">GET</option>
-                
                             </select>
                             <label htmlFor="fieldHidden">Метод отправки</label>
                         </div>
@@ -64,7 +62,6 @@ import Fields from '../Fields/Fields'
                         </div>
                     </div>
                         
-                
                     <div className="col s12 l6 xl6">
                         <div className="generate-form-box">
                                 <h5>Создание формы</h5>
@@ -76,9 +73,24 @@ import Fields from '../Fields/Fields'
                                             name="formTitle" 
                                             placeholder="Введите название формы" 
                                             required
-                                            onChange={(event)=>contactFormStore.setTitleForm(event.target.value)}
+                                            onChange={(event)=>contactFormStore.setTitleForm(event.target.value)} 
                                         />
-                                        <label className="active" htmlFor="title">Заголовок формы</label>
+                                        <label className="active" htmlFor="formTitle">Заголовок формы</label>
+                                    </div>
+                                    <div className="input-field">
+                                        <textarea 
+                                            className="materialize-textarea"
+                                            id="formSendMessage" 
+                                            type="text" 
+                                            name="formSendMessage" 
+                                            placeholder="Введите сообщение после отправки" 
+                                            value={contactFormStore.SendingMessage}
+                                            onChange={(event)=>contactFormStore.setSendingMessage(event.target.value)} 
+                                            required
+                                        >
+                                        
+                                        </textarea>
+                                        <label htmlFor="formSendMessage">Сообщение после отправки</label>
                                     </div>
                                     <div className="fields-editing">
                                         <button onClick={()=>modalStore.modalOpen()}  className="waves-effect waves-light btn" type="button">
@@ -91,7 +103,7 @@ import Fields from '../Fields/Fields'
                                     </div>        
                                     <div className="fields-editing-btn-box">
                                         <button className="waves-effect waves-light btn light-blue darken-4" type="button">
-                                            Отправить
+                                            Отправить   
                                         </button>
                                     </div>
                                 </div>

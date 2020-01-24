@@ -7,66 +7,57 @@ import { inject, observer } from 'mobx-react'
 
     constructor(props) {
         super(props)
-        this.selectRef1 = React.createRef()
-        this.selectRef2 = React.createRef()
-        this.selectRef3 = React.createRef()
         this.formCreateFieldRef = React.createRef()
         
     }
     
     componentDidMount() {
-        window.M.FormSelect.init(this.selectRef1.current);
-        window.M.FormSelect.init(this.selectRef2.current);
-        window.M.FormSelect.init(this.selectRef3.current);
+        const selects = document.querySelectorAll('select');
+        const fieldType = document.querySelector('[name="fieldType"]')
+        var eventOnChange = new Event('change', { bubbles: true });
+        fieldType.dispatchEvent(eventOnChange);
+        window.M.FormSelect.init(selects);
         window.M.updateTextFields();
-    }
-
-    resetForm() {
-        const {contactFormStore} = this.props
-        contactFormStore.clearFormField()
-        this.formCreateFieldRef.current.reset()
-        window.M.updateTextFields() 
     }
 
     renderFields(item) {
         const field = toJS(item)
+        const {contactFormStore} = this.props
+        window.M.updateTextFields();
 
         return (
             <React.Fragment>
-                <div className="input-field col s6">
-                    <select id="fieldSelection"
-                     ref={this.selectRef1}
-                     name="fieldSelection" 
-                     defaultValue={field.fieldSelection}
-                    >
-                        <option value="input" >Ввод текста</option>
-                        <option value="textarea">Ввод сообщения</option>
-                        <option value="select">Выбор из списка</option>
-                    </select>
-                    <label htmlFor="fieldSelection">Тип поля</label>
-                </div>
-                <div className="input-field col s6">
+                <div className="input-field col s12  l6 xl6">
                     <input id="fieldTitle" type="text" name="fieldTitle" placeholder="Введите название поля" defaultValue={field.fieldTitle}/>
-                    <label htmlFor="fieldTitle">Название поля</label>
+                    <label htmlFor="fieldTitle" className="active">Название поля</label>
                 </div>
-                <div className="input-field col s6">
-                    <input id="fieldName" type="text" name="fieldName" placeholder="Введите значение атрибута name" defaultValue={field.fieldName}/>
-                    <label htmlFor="fieldName">Атрибут поля NAME</label>
-                </div>
-                <div className="input-field col s6">
-                    <select  id="fieldType" name="fieldType" ref={this.selectRef3}  defaultValue={field.fieldType}>
-                        <option defaultValue="text">Текст</option>
-                        <option value="number">Номер</option>
-                        <option value="password">Пароль</option>
+                <div className="input-field col s12  l6 xl6">
+                    <select 
+                        onChange={(event)=>{contactFormStore.setFieldTypeKey(event.target.value)}}
+                        id="fieldType" 
+                        name="fieldType" 
+                        defaultValue={field.fieldType}
+                    >
+                        <option value="text">Текстовое поле</option>
+                        <option value="select">Выпадающий список</option>
+                        <option value="textarea">Сообщение</option>
+                        <option value="number">Цифры</option>
                         <option value="checkbox">Флажок(Галочка)</option>
                         <option value="file">Файл</option>
                         <option value="hidden">Скрытое поле</option>
+                        <option value="password">Поле с закрытым вводом</option>
                     </select>
-                    <label htmlFor="fieldHidden">Выберите формат поля</label>
+                    <label htmlFor="fieldHidden" className="active">Выберите формат поля</label>
                 </div>
-                <div className="input-field col s6">
+                { contactFormStore.fieldsType[contactFormStore.FieldTypeKey] === 'select' ? 
+                    <div className="input-field col s12 l6 xl6">
+                        <input id="fieldSelectValues" type="text" name="fieldSelectValues" placeholder="Введите значения строго через запятую" defaultValue={field.fieldSelectValues}/>
+                        <label htmlFor="fieldSelectValues" className="active">Значения для списка</label>
+                    </div>
+                 : null } 
+                <div className="input-field col s12  l6 xl6">
                     <input id="fieldPlaceholder" type="text" name="fieldPlaceholder" placeholder="Введите пояснения для поля" defaultValue={field.fieldPlaceholder}/>
-                    <label htmlFor="fieldPlaceholder">Пояснительное сообщение</label>
+                    <label htmlFor="fieldPlaceholder" className="active">Пояснительное сообщение</label>
                 </div>
             </React.Fragment>
         )

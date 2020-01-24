@@ -13,6 +13,7 @@ class ModalStore{
     @action modalClose() {
         this.showModal = false
         contactFormStore.clearFieldForm()
+        contactFormStore.setFieldTypeKey(null)
         if(this.formRef){
             this.formRef.reset()
         }

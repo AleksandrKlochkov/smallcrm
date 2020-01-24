@@ -20,6 +20,13 @@ html, body, #root {
 	background-image: url('./shared/images/fon3.jpg');   */
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;/* <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -576,6 +583,62 @@ display: none;
     justify-content: flex-end;
 }
 /*Модальное окно*/
+
+
+/*FORM GENERATE*/
+.form-generate>form{
+    border: 1px solid rgb(154, 154, 154);
+    width: 100%;
+    padding: 20px;
+    background: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+.form-generate-title{
+    color: rgb(34, 45, 50);
+    font-size: 18px;
+    margin: 10px 0px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+select {
+    outline: none !important;
+}
+
+
+
+.message-form {
+    display: flex;
+    padding: 7px;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 12px;
+    font-weight: 500;
+    height: 50px;
+    margin: 10px 0;
+}
+
+.message-form.success{
+    font-size: 12px;
+    border: 1px solid #4687c0;
+    background: #AFD3F2;
+}
+
+.message-form.error{
+    color: red;
+    background: #ff8c8c5c;  
+    border: 1px solid #ff9999;
+}
+
+span.mess-error {
+    color: red !important;
+    padding: 0 7px;
+    font-size: 11px !important;
+}
+
+
+/*FORM GENERATE*/
 
 
 
