@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import {toJS } from 'mobx'
 import { inject, observer} from 'mobx-react'
-import {Link, withRouter, Switch, Route} from 'react-router-dom'
+import {withRouter, Switch, Route} from 'react-router-dom'
 import Card from '../../components/Card/Card'
 import FormCreate from '../../components/FormCreate/FormCreate'
 import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm'
 import CreateFormModal from '../../components/CreateFormModal/CreateFormModal'
+import Loading from '../../components/Loading/Loading'
 
 @inject('contactFormStore','modalStore')
 @observer class ContactsForm extends Component {
@@ -31,7 +32,6 @@ import CreateFormModal from '../../components/CreateFormModal/CreateFormModal'
     renderCardForms(forms) {
          if(forms && forms.length !==0 ){
              return forms.map((item,index) => {
-                 console.log(item)
                 return (
                     <Card
                         key={`${index}_${Math.random()}`} 
@@ -54,24 +54,21 @@ import CreateFormModal from '../../components/CreateFormModal/CreateFormModal'
 
     render() {
         const {contactFormStore, modalStore, history} = this.props
-        console.log(contactFormStore.Forms)
         return (
             <div className="contact-form-pages">
                  { history.location.search === "" ?
                     <div className="contact-form-btn">
-                        {/* <Link to="/contacts/contact_form/add_form?action=add"> */}
-                            <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
-                        {/* </Link> */}
+                        <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
                     </div> : null
                  }
                 <div className="contact-form">
                     <Switch>
-                        <Route exact path="/contacts/contact_form/">
+                        <Route exact path="/contacts/contact_form">
                             <div className="row">
-                                {this.renderCardForms(toJS(contactFormStore.Forms))}
+                              {contactFormStore.Loading ? <Loading /> : this.renderCardForms(toJS(contactFormStore.Forms))}
                             </div>
                         </Route>
-                        <Route path="/contacts/contact_form/add_form">
+                        <Route path="/contacts/contact_form/:id">
                             <FormCreate />
                         </Route>
                     </Switch>     

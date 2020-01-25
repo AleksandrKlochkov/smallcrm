@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import {toJS} from 'mobx'
+import {withRouter} from 'react-router-dom'
 import { inject, observer} from 'mobx-react'
 import noimages from '../../shared/images/noimages.png'
 import ButtonFile from '../ButtonFile/ButtonFile'
 import FormGenerate from '../FormGenerate/FormGenerate'
 import Fields from '../Fields/Fields'
+import { toJS } from 'mobx'
 
 @inject('contactFormStore', 'modalStore')
 @observer class FormCreate extends Component {
@@ -16,10 +17,13 @@ import Fields from '../Fields/Fields'
     componentDidMount(){
         window.M.updateTextFields()
         window.M.FormSelect.init(this.selectRef4.current)
+        this.props.contactFormStore.fetchItemForms(this.props.match.params.id)
     }
 
     render() {
         const {contactFormStore, modalStore} = this.props
+        console.log(toJS(contactFormStore.ItemForm))
+        console.log(contactFormStore.ItemForm.imageSrc)
         return (
             <Fragment>
             <div className="row">
@@ -131,7 +135,7 @@ import Fields from '../Fields/Fields'
     }
 }
 
-export default FormCreate
+export default withRouter(FormCreate)
 
 
 

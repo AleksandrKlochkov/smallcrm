@@ -3,16 +3,16 @@ import React from 'react'
  const CheckboxUI = props => {
      console.log(props)
     const {
-        fieldSelection,
-        fieldKey,
-        fieldLabel,
-        fieldPlaceholder,
-        fieldValue,
-        fieldType,
-        fieldTitle,
-        fieldSelectValues,
-        fieldName,
-        fieldHidden
+        // fieldSelection,
+        // fieldKey,
+        // fieldLabel,
+        // fieldPlaceholder,
+        fieldValue
+        // fieldType,
+        // fieldTitle,
+        // fieldSelectValues,
+        // fieldName,
+        // fieldHidden
     } = props
 
     return (

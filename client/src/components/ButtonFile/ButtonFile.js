@@ -9,7 +9,12 @@ const ButtonFile = props => {
 
     return (
         <div onClick={(event)=>triggerClick(event)} >
-            <input onChange={props.onChangeHandlerFile} name="formImages" type="file" hidden/>
+            <input 
+             onChange={props.onChangeHandlerFile} 
+             name="formImages" 
+             type="file" 
+             hidden
+             />
             <button className="waves-effect waves-light btn orange lighten-2 mb2" type="button">
                 <i className="material-icons left">backup</i>
                 Загрузить изображение

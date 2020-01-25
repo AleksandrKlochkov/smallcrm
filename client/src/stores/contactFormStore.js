@@ -2,7 +2,9 @@ import {observable, computed, action, toJS} from 'mobx'
 import modalStore from './modalStore';
 
 class ContactFormStore{
+    @observable loading = false
     @observable forms = []
+    @observable itemForm = {}
     @observable fieldsForm = []
     @observable fieldForm = {}
     @observable titleForm = 'Оставьте отзыв'
@@ -22,9 +24,16 @@ class ContactFormStore{
                             }
     
 
-
+    
+    @computed get Loading() {
+        return this.loading
+    }
     @computed get Forms() {
         return this.forms
+    }
+
+    @computed get ItemForm() {
+        return this.itemForm
     }
 
     @computed get FieldsForm() {
@@ -49,6 +58,14 @@ class ContactFormStore{
 
     @computed get FieldTypeKey() {
         return this.fieldTypeKey
+    }
+
+    @action setItemForm(form) {
+        this.itemForm = form
+    }
+
+    @action setLoading(flag) {
+        this.loading = flag
     }
 
     @action setForms(forms) {
@@ -241,16 +258,15 @@ class ContactFormStore{
                 }
             })
             .catch(e => {
-                console.log(e.message)
                 window.M.toast({ html:`Что то пошло не так`})
             })
         }catch(e){
-            console.log(e.message)
             window.M.toast({ html:`Что то пошло не так`})
         }
     }
 
     @action async fetchForms() {
+        this.setLoading(true)
         const token = localStorage.getItem('token')  
         try{
             await fetch('/api/contact',{
@@ -267,6 +283,39 @@ class ContactFormStore{
                     window.M.toast({ html:`${data.message}`})
                 }else{
                     this.setForms(data)
+                    this.setLoading(false)
+                }
+            })
+            .catch(e => {
+                window.M.toast({ html:`Что то пошло не так`})
+            })
+        }catch(e){
+            window.M.toast({ html:`Что то пошло не так`})
+        }
+    }
+
+    @action async fetchItemForms(id) {
+        this.setLoading(true)
+        const token = localStorage.getItem('token')  
+        try{
+            await fetch(`/api/contact/${id}`,{
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(data=>{
+                if(data.message){
+                    window.M.toast({ html:`${data.message}`})
+                }else{
+                    console.log(data)
+                    this.setItemForm(data)
+
+                    this.setImagesData('/'+data.imageSrc)
+                    this.setLoading(false)
                 }
             })
             .catch(e => {

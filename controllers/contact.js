@@ -16,12 +16,12 @@ module.exports.getAll = async function(req, res) {
 }
 
 module.exports.getById = async function(req, res) {
-  // try{
-  //   const category = await Contact.findById(req.params.id)
-  //   res.status(200).json(category)
-  // }catch(e){
-  //   errorHandler(res,e)
-  // }
+  try{
+    const form = await Contact.findById(req.params.id)
+    res.status(200).json(form)
+  }catch(e){
+    errorHandler(res,e)
+  }
 }
 
 module.exports.remove = async function(req, res) {

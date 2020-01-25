@@ -95,7 +95,7 @@ import NotFound from '../../../pages/NotFound/NotFound'
                                 <Contacts links={this.state.sideBarLinks} />
                             </Route>
                             <Route path="/contacts/contact_form/:id">
-                                <Contacts links={this.state.sideBarLinks}/>
+                                <Contacts links={this.state.sideBarLinks} />
                             </Route>
                             <Route path="/logout" component={Logout} />
                             <Route path="/NotFound" component={NotFound} />

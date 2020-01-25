@@ -21,29 +21,29 @@ import { inject, observer } from 'mobx-react'
                         <div className="modal-content">
                             <h4>Добавление формы</h4>
                             <div className="input-field col s12 xl6">
-                                <input id="formName" type="text" name="formName" placeholder="Введите название формы" />
-                                <label htmlFor="formName" className="active">Название формы*</label>
+                                <input id="_formName" type="text" name="formName" placeholder="Введите название формы" />
+                                <label htmlFor="_formName" className="active">Название формы*</label>
                             </div>
                             <div className="input-field  col s12 xl6">
                                 <input 
-                                    id="formTitle" 
+                                    id="_formTitle" 
                                     type="text" 
                                     name="formTitle" 
                                     placeholder="Введите заголовок формы" 
                                 />
-                                <label className="active" htmlFor="formTitle">Заголовок формы</label>
+                                <label className="active" htmlFor="_formTitle">Заголовок формы</label>
                             </div>
                             <div className="input-field col s12">
                                 <textarea
                                  className="materialize-textarea" 
                                  data-length="50"
-                                 id="formDescription" 
+                                 id="_formDescription" 
                                  type="text" 
                                  name="formDescription" 
                                  placeholder="Введите краткое описание формы" 
                                  >
                                  </textarea>
-                                <label className="active" htmlFor="formDescription">Краткое описание формы*</label>
+                                <label className="active" htmlFor="_formDescription">Краткое описание формы*</label>
                             </div>
 
                             <div className="file-field input-field col s12 xl6">

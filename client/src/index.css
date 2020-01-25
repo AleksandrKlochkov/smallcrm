@@ -13,6 +13,7 @@ body {
 
 .card .card-image img {
     z-index: 9;
+    height: 150px;
 }
 
 html, body, #root {
@@ -336,8 +337,17 @@ ul.sidenav.close{
 .card-img {
     display: flex;
     justify-content: center;
+    height: 150px;
     align-items: center;
-    min-height: 120px;
+}
+
+.card-create-date{
+    position: absolute;
+    bottom: 10px;
+}
+
+.card-padding{
+    padding: 15px 7px !important;
 }
 
 .card .card-title {
