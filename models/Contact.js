@@ -36,13 +36,13 @@ const contactSchema = new Schema({
   },
   formFields: [
     {
-      fieldSelection: {type: String, required: true},
-      fieldKey: {type: String, required: true},
       fieldLabel: {type: String, required: true},
-      fieldPlaceholder: {type: String, default: ''},
       fieldType: {type: String, required: true},
+      fieldPlaceholder: {type: String, default: ''},
+      fieldValue: {type: String, default: ''},
       fieldTitle: {type: String, required: true},
-      fieldName: {type: String, required: true},
+      fieldSelectValues: {type: Array, default: []},
+      fieldName: {type: String, required: true, default: ''},
       fieldHidden:{type: Boolean, required: true} 
     }
   ],

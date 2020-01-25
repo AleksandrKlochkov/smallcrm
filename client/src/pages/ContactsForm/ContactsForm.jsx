@@ -5,12 +5,14 @@ import {Link, withRouter, Switch, Route} from 'react-router-dom'
 import Card from '../../components/Card/Card'
 import FormCreate from '../../components/FormCreate/FormCreate'
 import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm'
+import CreateFormModal from '../../components/CreateFormModal/CreateFormModal'
 
 @inject('contactFormStore','modalStore')
 @observer class ContactsForm extends Component {
     constructor(props) {
         super(props)
         this.modalRef = React.createRef()
+        this.modalCreateFormRef =React.createRef()
     }
 
     closeModal(e) {
@@ -29,13 +31,11 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
     renderCardForms(forms) {
          if(forms && forms.length !==0 ){
              return forms.map((item,index) => {
+                 console.log(item)
                 return (
                     <Card
                         key={`${index}_${Math.random()}`} 
-                        icon={item.formImages} 
-                        title={item.formName} 
-                        description={item.formDescription}
-                        link={`/contacts/contact_form/${item.formId}`}
+                        {...item}
                     />
                 )
              })
@@ -44,6 +44,7 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
     }
 
     componentDidMount() {
+        this.props.contactFormStore.fetchForms()
         if(this.modalRef.current){
             this.modalRef.current.querySelector('form').reset()
             setTimeout(()=>{this.props.modalStore.setFormRef(this.modalRef.current.querySelector('form'))},100)
@@ -53,13 +54,14 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
 
     render() {
         const {contactFormStore, modalStore, history} = this.props
+        console.log(contactFormStore.Forms)
         return (
             <div className="contact-form-pages">
                  { history.location.search === "" ?
                     <div className="contact-form-btn">
-                        <Link to="/contacts/contact_form/add_form?action=add">
-                            <button className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
-                        </Link>
+                        {/* <Link to="/contacts/contact_form/add_form?action=add"> */}
+                            <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
+                        {/* </Link> */}
                     </div> : null
                  }
                 <div className="contact-form">
@@ -74,14 +76,15 @@ import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm
                         </Route>
                     </Switch>     
                 </div>
-            {modalStore.ShowModal ?
                 <CreateFieldsForm
-                    id={'modal1'}
                     modalRef={this.modalRef}
                     closeModal={this.closeModal.bind(this)}
                 />   
-                : null
-            }     
+
+                <CreateFormModal 
+                        modalRef={this.modalCreateFormRef}
+                        closeModal={this.closeModal.bind(this)}
+                />   
         </div>
         )
     }

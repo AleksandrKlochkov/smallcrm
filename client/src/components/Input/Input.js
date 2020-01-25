@@ -9,7 +9,7 @@ import React from 'react'
      }
     return (
         <div className={classes.join(' ')}>
-            <input id={id} type={props.type || 'text'} name={name || `fields${props.idx}`} placeholder={props.placeholder || ""} disabled={props.disabled} required/>
+            <input type={props.type || 'text'} name={name || `fields${props.idx}`} placeholder={props.placeholder || ""} disabled={props.disabled} required/>
             <label className="active" htmlFor={id}>{props.label || ""}</label>
         </div>
     )

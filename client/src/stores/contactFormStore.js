@@ -51,6 +51,10 @@ class ContactFormStore{
         return this.fieldTypeKey
     }
 
+    @action setForms(forms) {
+        this.forms = forms
+    }
+
     @action setTitleForm(titleForm) {
         this.titleForm = titleForm
     }
@@ -117,13 +121,13 @@ class ContactFormStore{
         const formData = new FormData(event.target)
         if(this.FieldForm && Object.keys(this.FieldForm).length !== 0) {
             const field = {
-                fieldSelection: formData.get('fieldSelection'),
                 fieldKey: this.FieldForm.fieldKey,
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
                 fieldType: formData.get('fieldType'),
+                fieldValue: formData.get('fieldValue'),
                 fieldTitle: formData.get('fieldTitle'),
-                fieldSelectValues: formData.get('fieldSelectValues'),
+                fieldSelectValues: formData.get('fieldSelectValues').split(',') || [],
                 fieldName: formData.get('fieldName'),
                 fieldHidden: formData.get('fieldHidden')
             }
@@ -132,16 +136,17 @@ class ContactFormStore{
         }else{
             const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
             const field = {
-                fieldSelection: formData.get('fieldSelection'),
                 fieldKey: fieldKey.trim(),
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
                 fieldType: formData.get('fieldType'),
+                fieldValue: formData.get('fieldValue'),
                 fieldTitle: formData.get('fieldTitle'),
-                fieldSelectValues: formData.get('fieldSelectValues'),
+                fieldSelectValues:  formData.get('fieldSelectValues').split(',') || [],
                 fieldName: formData.get('fieldName'),
                 fieldHidden: formData.get('fieldHidden')
             }
+            console.log(field)
             this.addFieldForm(field)
         }
     
@@ -150,41 +155,124 @@ class ContactFormStore{
     }
 
     
-    @action submitSaveForm(event) {
+    @action async submitSaveForm(event, save = true) {
         event.preventDefault()
         const elemForm = event.target
         const formData = new FormData(elemForm)
-        formData.append('formFields', JSON.stringify(toJS(this.FieldsForm)))
-        this.сreateForm(formData)
+        const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
         this.elementForm = elemForm
-    }
 
-    @action async сreateForm(formData) {
+        if(save){
+            formData.append('formFields', JSON.stringify(toJS(this.FieldsForm)))
+        }else{
+            if(formData.get('autoGenerationFields') && formData.get('autoGenerationFields') === 'on'){
+                const fieldsForm = [
+                    {     
+                        fieldPosition: 1,                                                                                               
+                        fieldLabel: 'Имя',
+                        fieldType: 'text',
+                        fieldPlaceholder: 'Введите имя',
+                        fieldValue: '',
+                        fieldTitle: 'Имя отправителя',
+                        fieldSelectValues: JSON.stringify([]),
+                        fieldName: fieldKey,
+                        fieldHidden: false
+                    },
+                    {                     
+                        fieldPosition: 2,                                                                                      
+                        fieldLabel: 'Email',
+                        fieldType: 'email',
+                        fieldPlaceholder: 'Введите email',
+                        fieldValue: '',
+                        fieldTitle: 'Email отправителя',
+                        fieldSelectValues: [],
+                        fieldName: fieldKey,
+                        fieldHidden: false
+                    },
+                    {           
+                        fieldPosition: 3,                                                                                                    
+                        fieldLabel: 'Тип заявки',
+                        fieldType: 'select',
+                        fieldPlaceholder: 'Выберите тип заявки',
+                        fieldValue: '',
+                        fieldTitle: 'Тип заявки',
+                        fieldSelectValues: ['Пожелание','Ошибка'],
+                        fieldName: fieldKey,
+                        fieldHidden: false
+                    },
+                    {
+                        fieldPosition: 4,   
+                        fieldLabel: 'Сообщение',
+                        fieldType: 'textarea',
+                        fieldPlaceholder: 'Введите сообщение',
+                        fieldValue: '',
+                        fieldTitle: 'Сообщение отправителя',
+                        fieldSelectValues: [],
+                        fieldName: fieldKey,
+                        fieldHidden: false
+                    }
+                ]
+                formData.append('formFields', JSON.stringify(fieldsForm))
+            } else {
+                formData.append('formFields', JSON.stringify([]))
+            }
+            modalStore.modalClose()
+        }
+
         const token = localStorage.getItem('token')
         try{
-                await fetch('/api/contact',{
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': `${token}`
-                    },
-                    body: formData
-                })
-                .then(response => {
-                    return response.json()
-                })
-                .then(data=>{
-                    if(data.message){
-                        window.M.toast({ html:`${data.message}`})
-                    }else{
-                        this.addForms(data)
-                        this.clearFormElement()
-                    }
-                })
-                .catch(e => {
-                    console.log(e.message)
-                    window.M.toast({ html:`Что то пошло не так`})
-                })
+            await fetch('/api/contact',{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `${token}`
+                },
+                body: formData
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(data=>{
+                if(data.message){
+                    window.M.toast({ html:`${data.message}`})
+                }else{
+                    this.addForms(data)
+                    this.clearFormElement()
+                }
+            })
+            .catch(e => {
+                console.log(e.message)
+                window.M.toast({ html:`Что то пошло не так`})
+            })
+        }catch(e){
+            console.log(e.message)
+            window.M.toast({ html:`Что то пошло не так`})
+        }
+    }
+
+    @action async fetchForms() {
+        const token = localStorage.getItem('token')  
+        try{
+            await fetch('/api/contact',{
+                method: 'GET',
+                headers: {
+                    'Authorization': `${token}`
+                }
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(data=>{
+                if(data.message){
+                    window.M.toast({ html:`${data.message}`})
+                }else{
+                    this.setForms(data)
+                }
+            })
+            .catch(e => {
+                console.log(e.message)
+                window.M.toast({ html:`Что то пошло не так`})
+            })
         }catch(e){
             console.log(e.message)
             window.M.toast({ html:`Что то пошло не так`})

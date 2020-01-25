@@ -4,7 +4,6 @@ import React, {Component} from 'react'
 
         componentDidMount(){
              const elems = document.querySelectorAll('select');
-             console.log(this.props)
              window.M.FormSelect.init(elems);
         }
 
@@ -12,13 +11,13 @@ import React, {Component} from 'react'
             const selectList = this.props.fieldSelectValues.split(',')
             return (
                 <div className="input-field col s12">
-                    {this.props.fieldLabel ? <label className="active" htmlFor={this.props.fieldKey}>{this.props.fieldLabel || ""}</label> : null}
+                    <label className="active" htmlFor={this.props.fieldKey}>{this.props.fieldLabel || ""}</label>
                     <select 
                      defaultValue={selectList[0]}
                      >
                         {selectList.map((item, index)=>{
                             return (
-                                <option key={index} value={item.value}>{item.title}</option>
+                                <option key={index} value={item}>{item}</option>
                             )
                         })}
                     </select>

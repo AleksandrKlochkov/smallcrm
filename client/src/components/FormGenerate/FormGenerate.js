@@ -3,7 +3,9 @@ import { inject, observer } from 'mobx-react'
 
 import InputUI from '../UI/InputUI/InputUI'
 import SelectUI from '../UI/SelectUI/SelectUI'
-import Textarea from '../UI/TextareaUI/TextareaUI'
+import TextareaUI from '../UI/TextareaUI/TextareaUI'
+import CheckboxUI from '../UI/CheckboxUI/CheckboxUI'
+import FileUI from '../UI/FileUI/FileUI'
 
 
 @inject('contactFormStore')
@@ -23,6 +25,14 @@ import Textarea from '../UI/TextareaUI/TextareaUI'
                             type="text"
                         />
                     )
+                case 'email':
+                    return (
+                        <InputUI
+                            key={item.fieldKey+`${index}`}
+                            {...item}
+                            type="email"
+                        />
+                    )
                 case 'number':
                     return (
                         <InputUI
@@ -38,16 +48,23 @@ import Textarea from '../UI/TextareaUI/TextareaUI'
                             {...item}
                         />
                     )
+                case 'textarea':
+                    return (
+                        <TextareaUI 
+                            key={item.fieldKey+`${index}`}
+                            {...item}
+                        />
+                )
                 case 'checkbox':
                     return (
-                        <InputUI
+                        <CheckboxUI
                             key={item.fieldKey+`${index}`}
                             {...item}
                         />
                     )
                 case 'file':
                     return (
-                        <InputUI
+                        <FileUI
                             key={item.fieldKey+`${index}`}
                             {...item}
                         />
@@ -56,6 +73,7 @@ import Textarea from '../UI/TextareaUI/TextareaUI'
                     return (
                         <InputUI
                             key={item.fieldKey+`${index}`}
+                            type="hidden"
                             {...item}
                         />
                     )
@@ -63,16 +81,10 @@ import Textarea from '../UI/TextareaUI/TextareaUI'
                     return (
                         <InputUI
                             key={item.fieldKey+`${index}`}
+                            type="password"
                             {...item}
                         />
                     )
-                case 'textarea':
-                    return (
-                       <Textarea 
-                            key={item.fieldKey+`${index}`}
-                            {...item}
-                       />
-                )
                 default:
                     return ''
             }

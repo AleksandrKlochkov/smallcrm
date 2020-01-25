@@ -10,7 +10,7 @@ const Fields = inject('contactFormStore','modalStore')(observer((props) => {
                         return fields.map((item, index) => {
                             return (
                                 <div key={index} className="fields-editing">
-                                        <Input className="col s12 l10 xl8" idx={index} id={item.fieldKey} label={item.fieldLabel} type={item.fieldType} placeholder={item.fieldPlaceholder} disabled={true} hidden={item.fieldHidden}/>
+                                        <Input className="col s12 l10 xl8" idx={index} id={item.fieldKey} label={item.fieldLabel} type={'text'} placeholder={item.fieldPlaceholder} disabled={true} hidden={item.fieldHidden}/>
                                         <div className="col s12 l2 xl4">
                                             <button 
                                                 onClick={()=>props.contactFormStore.setFieldForm(item.fieldKey)} 

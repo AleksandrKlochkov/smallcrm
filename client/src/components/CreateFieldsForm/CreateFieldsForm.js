@@ -24,12 +24,11 @@ import { inject, observer } from 'mobx-react'
         const field = toJS(item)
         const {contactFormStore} = this.props
         window.M.updateTextFields();
-
         return (
             <React.Fragment>
                 <div className="input-field col s12  l6 xl6">
                     <input id="fieldTitle" type="text" name="fieldTitle" placeholder="Введите название поля" defaultValue={field.fieldTitle}/>
-                    <label htmlFor="fieldTitle" className="active">Название поля</label>
+                    <label htmlFor="fieldTitle" className="active">Название поля*</label>
                 </div>
                 <div className="input-field col s12  l6 xl6">
                     <select 
@@ -38,6 +37,7 @@ import { inject, observer } from 'mobx-react'
                         name="fieldType" 
                         defaultValue={field.fieldType}
                     >
+                        <option value="email">Email</option>
                         <option value="text">Текстовое поле</option>
                         <option value="select">Выпадающий список</option>
                         <option value="textarea">Сообщение</option>
@@ -47,18 +47,24 @@ import { inject, observer } from 'mobx-react'
                         <option value="hidden">Скрытое поле</option>
                         <option value="password">Поле с закрытым вводом</option>
                     </select>
-                    <label htmlFor="fieldHidden" className="active">Выберите формат поля</label>
+                    <label  htmlFor="fieldType" >Выберите формат поля*</label>
                 </div>
                 { contactFormStore.fieldsType[contactFormStore.FieldTypeKey] === 'select' ? 
                     <div className="input-field col s12 l6 xl6">
                         <input id="fieldSelectValues" type="text" name="fieldSelectValues" placeholder="Введите значения строго через запятую" defaultValue={field.fieldSelectValues}/>
-                        <label htmlFor="fieldSelectValues" className="active">Значения для списка</label>
+                        <label htmlFor="fieldSelectValues" className="active">Значения для списка*</label>
                     </div>
                  : null } 
                 <div className="input-field col s12  l6 xl6">
                     <input id="fieldPlaceholder" type="text" name="fieldPlaceholder" placeholder="Введите пояснения для поля" defaultValue={field.fieldPlaceholder}/>
-                    <label htmlFor="fieldPlaceholder" className="active">Пояснительное сообщение</label>
+                    <label htmlFor="fieldPlaceholder" className="active">Пояснение для поля*</label>
                 </div>
+                { contactFormStore.fieldsType[contactFormStore.FieldTypeKey] === 'checkbox' ||  contactFormStore.fieldsType[contactFormStore.FieldTypeKey] === 'hidden'  ? 
+                <div className="input-field col s12  l6 xl6">
+                    <input id="fieldValue" type="text" name="fieldValue" placeholder="Введите значение поля" defaultValue={field.fieldPlaceholder}/>
+                    <label htmlFor="fieldValue" className="active">Значение по умолчанию</label>
+                </div>
+                : null}
             </React.Fragment>
         )
     }
@@ -69,6 +75,7 @@ import { inject, observer } from 'mobx-react'
                 <div
                     id={id}
                     ref={modalRef}
+                    style={{display:'none'}}
                     className="modal_win modal_win_bg modal--align-top modal_win_bg_can_close modal_win_close"
                     role="dialog" 
                     onClick={(e)=>closeModal(e)}
@@ -78,7 +85,6 @@ import { inject, observer } from 'mobx-react'
                             <form action="#" onSubmit={(event)=>this.props.contactFormStore.submitSaveFields(event)} ref={this.formCreateFieldRef}> {/*(event)=>contactFormStore.submitSaveFields(event)*/}
                                 <div className="modal-content">
                                     <h4>{Object.keys(contactFormStore.FieldForm).length !==0  ? 'Редактирование поля' : 'Создание поля'}</h4>
-                                    
                                         {this.renderFields(contactFormStore.FieldForm)}
                                         <div className="modal_win_btn">
                                             {Object.keys(toJS(contactFormStore.FieldForm)).length !== 0  ?

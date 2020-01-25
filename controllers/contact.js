@@ -4,15 +4,15 @@ const Position = require('../models/Position')
 
 
 module.exports.getAll = async function(req, res) {
-  // try{
-  //   const categories = await Contact.find({
-  //     user: req.user.id
-  //   })
+  try{
+    const forms = await Contact.find({
+      user: req.user.id
+    })
 
-  //   res.status(200).json(categories)
-  // }catch(e){
-  //   errorHandler(res,e)
-  // }
+    res.status(200).json(forms)
+  }catch(e){
+    errorHandler(res,e)
+  }
 }
 
 module.exports.getById = async function(req, res) {
