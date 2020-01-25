@@ -5,7 +5,7 @@ import Input from '../Input/Input'
 
 const Fields = inject('contactFormStore','modalStore')(observer((props) => {
             const renderFields=()=>{
-                const fields = toJS(props.contactFormStore.FieldsForm)
+                const fields = toJS(props.contactFormStore.ItemForm.formFields)
                     if(fields && fields.length !== 0){
                         return fields.map((item, index) => {
                             return (

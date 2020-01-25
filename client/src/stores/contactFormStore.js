@@ -93,6 +93,10 @@ class ContactFormStore{
         window.M.toast({html: `Форма ${toJS(form.formTitle)} создана`})
     }
 
+    @action setFieldsForm(fields) {
+        this.fieldsForm = fields
+    }
+
     @action addFieldForm(field) {
         this.fieldsForm.push(field)
         window.M.toast({html: `Добавлено новое поле ${toJS(field.fieldTitle)}`})
@@ -313,7 +317,7 @@ class ContactFormStore{
                 }else{
                     console.log(data)
                     this.setItemForm(data)
-
+                    this.setFieldsForm(data.formFields)
                     this.setImagesData('/'+data.imageSrc)
                     this.setLoading(false)
                 }
