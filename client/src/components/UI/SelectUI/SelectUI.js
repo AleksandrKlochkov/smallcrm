@@ -8,13 +8,15 @@ import React, {Component} from 'react'
         }
 
         render(){
+            const {_id,fieldSelectValues, fieldLabel} = this.props
             return (
                 <div className="input-field col s12">
-                    <label className="active" htmlFor={this.props.fieldKey}>{this.props.fieldLabel || ""}</label>
+                    <label className="active" htmlFor={_id}>{fieldLabel || ""}</label>
                     <select 
-                     defaultValue={this.props.fieldSelectValues[0]}
+                     defaultValue={fieldSelectValues[0]}
+                     name={_id}
                      >
-                        {this.props.fieldSelectValues.map((item, index)=>{
+                        {fieldSelectValues.map((item, index)=>{
                             return (
                                 <option key={index} value={item}>{item}</option>
                             )

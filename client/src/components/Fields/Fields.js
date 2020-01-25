@@ -10,16 +10,16 @@ const Fields = inject('contactFormStore','modalStore')(observer((props) => {
                         return fields.map((item, index) => {
                             return (
                                 <div key={index} className="fields-editing">
-                                        <Input className="col s12 l10 xl8" idx={index} id={item.fieldKey} label={item.fieldLabel} type={'text'} placeholder={item.fieldPlaceholder} disabled={true} hidden={item.fieldHidden}/>
+                                        <Input className="col s12 l10 xl8" idx={index} id={item._id} label={item.fieldLabel} type={'text'} placeholder={item.fieldPlaceholder} disabled={true} hidden={item.fieldHidden}/>
                                         <div className="col s12 l2 xl4">
                                             <button 
-                                                onClick={()=>props.contactFormStore.setFieldForm(item.fieldKey)} 
+                                                onClick={()=>props.contactFormStore.setFieldForm(item._id)} 
                                                 type="button" className="btn waves-effect waves-light btn-small light-blue accent-4" 
                                             >
                                                 <i className="material-icons">create</i>
                                             </button>
                                             <button 
-                                                onClick={()=>props.contactFormStore.removeFieldForm(item.fieldKey) } 
+                                                onClick={()=>props.contactFormStore.removeFieldForm(item._id) } 
                                                 type="button" 
                                                 className="btn btn-small red"
                                             >

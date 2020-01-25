@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react'
         >
             <div className="modal_win_dialog">
                 <div className="modal_win_content">
-                    <form onSubmit={(event)=>contactFormStore.submitSaveForm(event,false)}> {/*(event)=>contactFormStore.submitSaveFields(event)*/}
+                    <form onSubmit={(event)=>contactFormStore.submitSaveForm(event,false)}>
                         <div className="modal-content">
                             <h4>Добавление формы</h4>
                             <div className="input-field col s12 xl6">
@@ -54,7 +54,7 @@ import { inject, observer } from 'mobx-react'
                                 <div className="file-path-wrapper">
                                     <input className="file-path validate" type="text"/>
                                 </div>
-                                </div>
+                            </div>
 
                             <div className="input-field col s12 xl6">
                                 <p>

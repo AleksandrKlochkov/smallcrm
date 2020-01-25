@@ -98,24 +98,26 @@ class ContactFormStore{
     }
 
     @action addFieldForm(field) {
-        this.fieldsForm.push(field)
+        const formIdx = this.forms.findIndex(f=>f._id === this.ItemForm._id)
+        this.forms[formIdx].formFields.push(field)
+        this.itemForm.fieldsForm.push(field)
         window.M.toast({html: `Добавлено новое поле ${toJS(field.fieldTitle)}`})
     }
 
-    @action removeFieldForm(key) {
-        const field = this.fieldsForm.filter(item => item.fieldKey === key.trim())
-        this.fieldsForm = this.fieldsForm.filter(item => item.fieldKey !== key.trim())
+    @action removeFieldForm(id) {
+        const field = this.fieldsForm.filter(item => item._id === id)
+        this.fieldsForm = this.fieldsForm.filter(item => item._id !== id)
         window.M.toast({html: `Удалено поле ${toJS(field[0].fieldTitle)}`})
     }
 
     @action editingFormField(field){
-        const index = this.fieldsForm.findIndex(i => i.fieldKey === field.fieldKey)
+        const index = this.fieldsForm.findIndex(i => i._id === field._id)
         this.fieldsForm[index] = field
         window.M.toast({html: `Отредактированно поле  ${toJS(field.fieldTitle)}`})
     }
 
-    @action setFieldForm(key) {
-        this.fieldForm = contactFormStore.fieldsForm.find(item => item.fieldKey === key.trim())
+    @action setFieldForm(id) {
+        this.fieldForm = contactFormStore.fieldsForm.find(item => item._id === id)
         modalStore.modalOpen()
     }
 
@@ -141,31 +143,35 @@ class ContactFormStore{
         event.preventDefault()
         const formData = new FormData(event.target)
         if(this.FieldForm && Object.keys(this.FieldForm).length !== 0) {
+            let fieldSelectValues = null
+            if(formData.get('fieldSelectValues')){
+                fieldSelectValues = formData.get('fieldSelectValues').split(',')
+            }
             const field = {
-                fieldKey: this.FieldForm.fieldKey,
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
                 fieldType: formData.get('fieldType'),
                 fieldValue: formData.get('fieldValue'),
                 fieldTitle: formData.get('fieldTitle'),
-                fieldSelectValues: formData.get('fieldSelectValues').split(',') || [],
-                fieldName: formData.get('fieldName'),
-                fieldHidden: formData.get('fieldHidden')
+                fieldSelectValues: fieldSelectValues ? fieldSelectValues : [],
+                fieldHidden: formData.get('fieldType') === 'hidden' ? true : false
             }
             this.editingFormField(field)
             modalStore.modalClose()
         }else{
-            const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
+            // const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
+            let fieldSelectValues = null
+            if(formData.get('fieldSelectValues')){
+                fieldSelectValues = formData.get('fieldSelectValues').split(',')
+            }
             const field = {
-                fieldKey: fieldKey.trim(),
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
                 fieldType: formData.get('fieldType'),
                 fieldValue: formData.get('fieldValue'),
                 fieldTitle: formData.get('fieldTitle'),
-                fieldSelectValues:  formData.get('fieldSelectValues').split(',') || [],
-                fieldName: formData.get('fieldName'),
-                fieldHidden: formData.get('fieldHidden')
+                fieldSelectValues:  fieldSelectValues ? fieldSelectValues : [],
+                fieldHidden: formData.get('fieldType') === 'hidden' ? true : false
             }
             console.log(field)
             this.addFieldForm(field)
@@ -196,7 +202,6 @@ class ContactFormStore{
                         fieldValue: '',
                         fieldTitle: 'Имя отправителя',
                         fieldSelectValues: JSON.stringify([]),
-                        fieldName: fieldKey,
                         fieldHidden: false
                     },
                     {                     
@@ -207,7 +212,6 @@ class ContactFormStore{
                         fieldValue: '',
                         fieldTitle: 'Email отправителя',
                         fieldSelectValues: [],
-                        fieldName: fieldKey,
                         fieldHidden: false
                     },
                     {           
@@ -218,7 +222,6 @@ class ContactFormStore{
                         fieldValue: '',
                         fieldTitle: 'Тип заявки',
                         fieldSelectValues: ['Пожелание','Ошибка'],
-                        fieldName: fieldKey,
                         fieldHidden: false
                     },
                     {
@@ -229,7 +232,6 @@ class ContactFormStore{
                         fieldValue: '',
                         fieldTitle: 'Сообщение отправителя',
                         fieldSelectValues: [],
-                        fieldName: fieldKey,
                         fieldHidden: false
                     }
                 ]
@@ -317,9 +319,14 @@ class ContactFormStore{
                 }else{
                     console.log(data)
                     this.setItemForm(data)
-                    this.setFieldsForm(data.formFields)
-                    this.setImagesData('/'+data.imageSrc)
+                    if(data.formFields){
+                        this.setFieldsForm(data.formFields)
+                    }
+                    if(data.imageSrc){
+                        this.setImagesData('/'+data.imageSrc)
+                    }
                     this.setLoading(false)
+                    window.M.updateTextFields()
                 }
             })
             .catch(e => {

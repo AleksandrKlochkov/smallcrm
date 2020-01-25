@@ -14,6 +14,7 @@ import Loading from '../../components/Loading/Loading'
         super(props)
         this.modalRef = React.createRef()
         this.modalCreateFormRef =React.createRef()
+        this.modalCreateFieldsRef = React.createRef()
     }
 
     closeModal(e) {
@@ -45,10 +46,6 @@ import Loading from '../../components/Loading/Loading'
 
     componentDidMount() {
         this.props.contactFormStore.fetchForms()
-        if(this.modalRef.current){
-            this.modalRef.current.querySelector('form').reset()
-            setTimeout(()=>{this.props.modalStore.setFormRef(this.modalRef.current.querySelector('form'))},100)
-        }
         window.M.updateTextFields()
     }
 
@@ -69,18 +66,18 @@ import Loading from '../../components/Loading/Loading'
                             </div>
                         </Route>
                         <Route path="/contacts/contact_form/:id">
-                            <FormCreate />
+                            <FormCreate modalCreateFieldsRef={this.modalCreateFieldsRef} />
                         </Route>
                     </Switch>     
                 </div>
                 <CreateFieldsForm
-                    modalRef={this.modalRef}
+                    modalRef={this.modalCreateFieldsRef}
                     closeModal={this.closeModal.bind(this)}
                 />   
 
                 <CreateFormModal 
-                        modalRef={this.modalCreateFormRef}
-                        closeModal={this.closeModal.bind(this)}
+                    modalRef={this.modalCreateFormRef}
+                    closeModal={this.closeModal.bind(this)}
                 />   
         </div>
         )

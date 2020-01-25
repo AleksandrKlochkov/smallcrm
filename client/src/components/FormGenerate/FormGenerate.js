@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import {toJS} from 'mobx'
 import { inject, observer } from 'mobx-react'
 
 import InputUI from '../UI/InputUI/InputUI'
@@ -13,8 +14,9 @@ import FileUI from '../UI/FileUI/FileUI'
 
     renderFormGenerate() {
         const {contactFormStore} = this.props
-
-        return contactFormStore.FieldsForm.map((item,index) => {
+        const fields = toJS(contactFormStore.ItemForm.formFields)
+        if(fields && fields.length !== 0){
+        return fields.map((item,index) => {
 
             switch(item.fieldType){
                 case 'text':
@@ -89,6 +91,9 @@ import FileUI from '../UI/FileUI/FileUI'
                     return ''
             }
             })
+        }
+
+        return "Добавьте поля"
     }
 
     render() {

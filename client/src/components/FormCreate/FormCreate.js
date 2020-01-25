@@ -12,10 +12,14 @@ import Loading from '../Loading/Loading'
 @observer class FormCreate extends Component {
 
     componentDidMount(){
-        window.M.updateTextFields()
+       
         const elems = document.querySelectorAll('select');
         window.M.FormSelect.init(elems);
         this.props.contactFormStore.fetchItemForms(this.props.match.params.id)
+        setTimeout(()=>{
+            window.M.updateTextFields()
+        },100)
+        window.M.updateTextFields()
     }
 
     render() {
@@ -98,7 +102,7 @@ import Loading from '../Loading/Loading'
                                                 <label htmlFor="formSendMessage">Сообщение после отправки</label>
                                             </div>
                                             <div className="fields-editing">
-                                                <button onClick={()=>modalStore.modalOpen()}  className="waves-effect waves-light btn" type="button">
+                                                <button onClick={()=>modalStore.setModalElement(this.props.modalCreateFieldsRef.current)}  className="waves-effect waves-light btn" type="button">
                                                 <i className="small material-icons left">add</i>                   
                                                     Добавить поле
                                                 </button>

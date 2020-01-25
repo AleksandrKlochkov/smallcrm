@@ -42,7 +42,6 @@ const contactSchema = new Schema({
       fieldValue: {type: String, default: ''},
       fieldTitle: {type: String, required: true},
       fieldSelectValues: {type: Array, default: []},
-      fieldName: {type: String, required: true, default: ''},
       fieldHidden:{type: Boolean, required: true} 
     }
   ],
