@@ -22,7 +22,7 @@ import React, {Component} from 'react'
                             )
                         })}
                     </select>
-                    <span className="helper-text mess-error" data-error="wrong" data-success="right"></span>
+                    {this.props.error ? <span className="helper-text mess-error" data-error="wrong" data-success="right" ></span> : null}
                 </div>
             )
         }

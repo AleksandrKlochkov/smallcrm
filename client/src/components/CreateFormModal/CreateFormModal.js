@@ -31,19 +31,7 @@ import { inject, observer } from 'mobx-react'
                                     name="formTitle" 
                                     placeholder="Введите заголовок формы" 
                                 />
-                                <label className="active" htmlFor="_formTitle">Заголовок формы</label>
-                            </div>
-                            <div className="input-field col s12">
-                                <textarea
-                                 className="materialize-textarea" 
-                                 data-length="50"
-                                 id="_formDescription" 
-                                 type="text" 
-                                 name="formDescription" 
-                                 placeholder="Введите краткое описание формы" 
-                                 >
-                                 </textarea>
-                                <label className="active" htmlFor="_formDescription">Краткое описание формы*</label>
+                                <label className="active" htmlFor="_formTitle">Заголовок формы*</label>
                             </div>
 
                             <div className="file-field input-field col s12 xl6">
@@ -59,10 +47,22 @@ import { inject, observer } from 'mobx-react'
                             <div className="input-field col s12 xl6">
                                 <p>
                                     <label>
-                                        <input type="checkbox" name="autoGenerationFields"/>
+                                        <input type="checkbox" name="autoGenerationFields" defaultChecked={true}/>
                                         <span>Сгенировать поля формы автоматически</span>
                                     </label>
                                 </p>
+                            </div>
+                            <div className="input-field col s12">
+                                <textarea
+                                 className="materialize-textarea" 
+                                 data-length="50"
+                                 id="_formDescription" 
+                                 type="text" 
+                                 name="formDescription" 
+                                 placeholder="Введите краткое описание формы" 
+                                 >
+                                 </textarea>
+                                <label className="active" htmlFor="_formDescription">Краткое описание формы*</label>
                             </div>
                             <div className="modal_win_btn">
                                 <button type="submit" className="btn btn-small green waves-effect waves-light">

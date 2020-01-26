@@ -15,7 +15,7 @@ import React from 'react'
             >
             </textarea>
             <label  className="active" htmlFor={_id}>{fieldTitle}</label>
-            <span className="helper-text mess-error" data-error="wrong" data-success="right"></span>
+            {props.error ? <span className="helper-text mess-error" data-error="wrong" data-success="right" ></span> : null}
       </div>
     )
 }

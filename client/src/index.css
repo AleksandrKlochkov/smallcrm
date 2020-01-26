@@ -464,10 +464,12 @@ display: none;
     justify-content: flex-end;
 }
 
-.fields-box{
-    background: #222d32;
+.fields-box {
+    background: #c4c4c4;
     padding: 10px 0 10px 0;
-    color: #fff;
+    color: #222d32;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .fields-editing button {

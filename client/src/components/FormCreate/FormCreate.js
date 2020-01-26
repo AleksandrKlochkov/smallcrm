@@ -5,7 +5,6 @@ import noimages from '../../shared/images/noimages.png'
 import ButtonFile from '../ButtonFile/ButtonFile'
 import FormGenerate from '../FormGenerate/FormGenerate'
 import Fields from '../Fields/Fields'
-import { toJS } from 'mobx'
 import Loading from '../Loading/Loading'
 
 @inject('contactFormStore', 'modalStore')

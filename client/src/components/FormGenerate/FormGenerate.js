@@ -93,7 +93,7 @@ import FileUI from '../UI/FileUI/FileUI'
             })
         }
 
-        return "Добавьте поля"
+        return <p style={{padding:'0 15px'}}>Добавьте поля</p>
     }
 
     render() {
@@ -114,10 +114,12 @@ import FileUI from '../UI/FileUI/FileUI'
                     </div>
                     <div className="row">
                         {this.renderFormGenerate()}
+                        <div className="input-field col">
+                            <button className="waves-effect waves-light btn" type="button">
+                                Отправить
+                            </button>
+                        </div>    
                     </div>
-                    <button className="waves-effect waves-light btn" type="button">
-                        Отправить
-                    </button>
                 </form>
             </div>
         )

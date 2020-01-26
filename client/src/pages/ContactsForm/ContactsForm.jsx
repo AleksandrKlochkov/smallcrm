@@ -35,7 +35,7 @@ import Loading from '../../components/Loading/Loading'
              return forms.map((item,index) => {
                 return (
                     <Card
-                        key={`${index}_${Math.random()}`} 
+                        key={`${index}_${Math.random().toString().replace(/[.]/g, "")}`} 
                         {...item}
                     />
                 )

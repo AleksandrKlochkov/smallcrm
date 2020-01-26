@@ -9,8 +9,8 @@ import React from 'react'
              name={props._id} 
              placeholder={props.fieldPlaceholder || ""} 
            />
-          {props.fieldLabel ? <label className="active" htmlFor={props._id}>{props.fieldLabel || ""}</label> : null}
-          <span className="helper-text mess-error" data-error="wrong" data-success="right"></span>
+          {props.fieldLabel && props.type !== 'hidden' ? <label className="active" htmlFor={props._id}>{props.fieldLabel || ""}</label> : null}
+          {props.error ? <span className="helper-text mess-error" data-error="wrong" data-success="right" ></span> : null}
         </div>
     )
 }

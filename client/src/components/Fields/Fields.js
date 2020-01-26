@@ -11,7 +11,7 @@ const Fields = inject('contactFormStore','modalStore')(observer((props) => {
                                 <Fragment key={index}>
                                     <div key={index} className="fields-editing">
                                             <div className="col s12 l10 xl8">
-                                                <p>Название поля: {item.fieldLabel}</p>
+                                                <p>Название поля: {item.fieldLabel}, Тип поля: {item.fieldType}</p>
                                             </div>
                                             <div className="col s12 l2 xl4">
                                                 <button 
