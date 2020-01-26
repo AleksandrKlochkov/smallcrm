@@ -103,6 +103,7 @@ class AuthStore{
         this.setToken = null
         this.setIsAuthenticated = false
         this.setUser = null
+
     }
 
     @action('autoLogin')

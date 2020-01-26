@@ -30,6 +30,10 @@ const contactSchema = new Schema({
     type: String,
     required: true
   },
+  formSuccessMessages: {
+    type: String,
+    required: true
+  },
   imageSrc: {
     type: String,
     default: ''
@@ -57,4 +61,4 @@ const contactSchema = new Schema({
   }
 })
 
-module.exports = mongoose.model('contact', contactSchema)
+module.exports = mongoose.model('form', contactSchema)

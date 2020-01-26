@@ -8,7 +8,6 @@ import { inject, observer } from 'mobx-react'
     constructor(props) {
         super(props)
         this.formCreateFieldRef = React.createRef()
-        
     }
     
     componentDidMount() {

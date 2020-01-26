@@ -24,7 +24,7 @@ import Loading from '../Loading/Loading'
                 {contactFormStore.Loading ? <Loading /> :
                  <Fragment>
                     <div className="row">
-                        <form action="#" onSubmit={(event)=>contactFormStore.submitSaveForm(event)}>
+                        <form action="#" onSubmit={(event)=>contactFormStore.submitSaveForm(event, true)}>
                             <div className="col s12 l6 xl6">
                                 <div className="input-field">
                                     <label htmlFor="">Изображение для формы</label>
@@ -83,9 +83,9 @@ import Loading from '../Loading/Loading'
                                                 <textarea 
                                                     defaultValue={contactFormStore.ItemForm.formSendMessage}
                                                     className="materialize-textarea"
-                                                    id="formSendMessage" 
+                                                    id="formSuccessMessages" 
                                                     type="text" 
-                                                    name="formSendMessage" 
+                                                    name="formSuccessMessages" 
                                                     placeholder="Введите сообщение после отправки" 
                                                     value={contactFormStore.SendingMessage}
                                                     onChange={(event)=>contactFormStore.setSendingMessage(event.target.value)} 
@@ -93,7 +93,7 @@ import Loading from '../Loading/Loading'
                                                 >
                                                 
                                                 </textarea>
-                                                <label className="active" htmlFor="formSendMessage">Сообщение после отправки</label>
+                                                <label className="active" htmlFor="formSuccessMessages">Сообщение после отправки</label>
                                             </div>
                                             <div className="fields-editing">
                                                 <button onClick={()=>modalStore.setModalElement(this.props.modalCreateFieldsRef.current)}  className="waves-effect waves-light btn" type="button">

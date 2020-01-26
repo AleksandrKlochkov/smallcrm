@@ -46,18 +46,17 @@ import Loading from '../../components/Loading/Loading'
 
     componentDidMount() {
         this.props.contactFormStore.fetchForms()
+        this.props.contactFormStore.setLocation(this.props)
         window.M.updateTextFields()
     }
 
     render() {
-        const {contactFormStore, modalStore, history} = this.props
+        const {contactFormStore, modalStore, match} = this.props
         return (
             <div className="contact-form-pages">
-                 { history.location.search === "" ?
-                    <div className="contact-form-btn">
-                        <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
-                    </div> : null
-                 }
+                <div className="contact-form-btn">
+                    <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
+                </div>
                 <div className="contact-form">
                     <Switch>
                         <Route exact path="/contacts/contact_form">

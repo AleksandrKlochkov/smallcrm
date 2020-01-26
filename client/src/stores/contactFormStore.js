@@ -1,11 +1,12 @@
 import {observable, computed, action, toJS} from 'mobx'
-import modalStore from './modalStore';
+import modalStore from './modalStore'
 import authStore from './authStore'
 
 class ContactFormStore{
     @observable loading = false
     @observable forms = []
     @observable itemForm = {}
+    @observable location = {}
     @observable fieldForm = {}
     @observable titleForm = 'Оставьте отзыв'
     @observable sendingMessage = 'Спасибо, Ваше сообщение успешно отправлено'
@@ -85,6 +86,10 @@ class ContactFormStore{
     @action addForms(form) {
         this.forms.push(form)
         window.M.toast({html: `Форма ${toJS(form.formTitle)} создана`})
+    }
+
+    @action setLocation(props){
+        this.location = props
     }
 
     @action setFieldForm(fieldKey, modalElem) {
@@ -192,6 +197,7 @@ class ContactFormStore{
         window.M.toast({html: `Отредактированно поле  ${toJS(field.fieldTitle)}`})
     }
 
+
     @action async submitSaveForm(event, save = true) {
         event.preventDefault()
         const elemForm = event.target
@@ -199,7 +205,24 @@ class ContactFormStore{
         this.elementForm = elemForm
 
         if(save){
-            formData.append('formFields', JSON.stringify(toJS(this.ItemForm.FieldsForm)))
+            formData.append('formFields', JSON.stringify(toJS(this.ItemForm.formFields)))
+            const data = await this.httpRequest(`/api/contact/${this.itemForm._id}`, 'PATCH', formData, {'Authorization': `${authStore.isToken}`}, true)
+            if(data.message){
+                window.M.toast({ html:`${data.message}`})
+            }else{
+                this.setItemForm(data)
+                this.setTitleForm(data.formTitle)
+                const title = document.querySelector('[name="formTitle"]')
+                if(title){
+                    title.value = data.formTitle
+                }
+                if(data.imageSrc){
+                    this.setImagesData('/'+data.imageSrc)
+                }
+                this.setSendingMessage(data.formSuccessMessages)
+
+                window.M.toast({ html:`Изменения формы сохранены`})
+           }
         }else{
             if(formData.get('autoGenerationFields') && formData.get('autoGenerationFields') === 'on'){
                 const fieldsForm = [
@@ -250,20 +273,24 @@ class ContactFormStore{
                 ]
                 formData.set('formMethod', 'post')
                 formData.set('formFields', JSON.stringify(fieldsForm))
+                formData.set('formSuccessMessages', 'Спасибо, Ваше сообщение успешно отправлено')
             } else {
                 formData.set('formFields', JSON.stringify([]))
+                formData.set('formMethod', 'post')
+                formData.set('formSuccessMessages', 'Спасибо, Ваше сообщение успешно отправлено')
+            }
+
+            const data = await this.httpRequest(`/api/contact/`, 'POST', formData, {'Authorization': `${authStore.isToken}`}, false)
+            if(data.message){
+                window.M.toast({ html:`${data.message}`})
+            }else{
+                this.addForms(data)
+                this.clearFormElement()
+                modalStore.modalClose()
             }
    
         }
 
-        const data = await this.httpRequest(`/api/contact/`, 'POST', formData, {'Authorization': `${authStore.isToken}`}, false)
-        if(data.message){
-            window.M.toast({ html:`${data.message}`})
-        }else{
-            this.addForms(data)
-            this.clearFormElement()
-            modalStore.modalClose()
-        }
     }
 
     @action async fetchForms() {
@@ -280,11 +307,12 @@ class ContactFormStore{
         if(data.message){
             window.M.toast({ html:`${data.message}`})
         }else{
-            this.setItemForm(data)
-            console.log(data)
-            if(data.imageSrc){
-                this.setImagesData('/'+data.imageSrc)
-            }
+                this.setItemForm(data)
+                this.setTitleForm(data.formTitle)
+                if(data.imageSrc){
+                    this.setImagesData('/'+data.imageSrc)
+                }
+                this.setSendingMessage(data.formSuccessMessages)
         }
     }
 
@@ -311,12 +339,11 @@ class ContactFormStore{
       }
 
     @action clearFormElement(){
-        this.setImagesData(null)
-        this.clearFieldsForm()
-        this.clearFieldForm()
-        this.elementForm.reset()
-        this.setFieldTypeKey(null)
-        window.M.updateTextFields()
+        // this.setImagesData(null)
+        // this.clearFieldForm()
+        // this.elementForm.reset()
+        // this.setFieldTypeKey(null)
+        // window.M.updateTextFields()
     }
 }
 
