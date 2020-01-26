@@ -65,7 +65,7 @@ import { inject, observer } from 'mobx-react'
                                 </p>
                             </div>
                             <div className="modal_win_btn">
-                                <button type="submit" className="btn btn-small green">
+                                <button type="submit" className="btn btn-small green waves-effect waves-light">
                                     Добавить
                                 </button>
                             </div>

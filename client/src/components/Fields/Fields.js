@@ -1,7 +1,6 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import {toJS} from 'mobx'
 import {inject, observer} from 'mobx-react'
-import Input from '../Input/Input'
 
 const Fields = inject('contactFormStore','modalStore')(observer((props) => {
             const renderFields=()=>{
@@ -9,28 +8,33 @@ const Fields = inject('contactFormStore','modalStore')(observer((props) => {
                     if(fields && fields.length !== 0){
                         return fields.map((item, index) => {
                             return (
-                                <div key={index} className="fields-editing">
-                                        <Input className="col s12 l10 xl8" idx={index} id={item._id} label={item.fieldLabel} type={'text'} placeholder={item.fieldPlaceholder} disabled={true} hidden={item.fieldHidden}/>
-                                        <div className="col s12 l2 xl4">
-                                            <button 
-                                                onClick={()=>props.contactFormStore.setFieldForm(item._id)} 
-                                                type="button" className="btn waves-effect waves-light btn-small light-blue accent-4" 
-                                            >
-                                                <i className="material-icons">create</i>
-                                            </button>
-                                            <button 
-                                                onClick={()=>props.contactFormStore.removeFieldForm(item._id) } 
-                                                type="button" 
-                                                className="btn btn-small red"
-                                            >
-                                                <i className="material-icons">delete</i>
-                                            </button>
-                                        </div>
-                                </div>
+                                <Fragment key={index}>
+                                    <div key={index} className="fields-editing">
+                                            <div className="col s12 l10 xl8">
+                                                <p>Название поля: {item.fieldLabel}</p>
+                                            </div>
+                                            <div className="col s12 l2 xl4">
+                                                <button 
+                                                    onClick={()=>props.contactFormStore.setFieldForm(item.fieldKey,props.modalCreateFieldsRef.current)} 
+                                                    type="button" className="btn waves-effect waves-light btn-small light-blue accent-4" 
+                                                >
+                                                    <i className="material-icons">create</i>
+                                                </button>
+                                                <button 
+                                                    onClick={()=>props.contactFormStore.removeFormField(item.fieldKey) } 
+                                                    type="button" 
+                                                    className="btn btn-small red"
+                                                >
+                                                    <i className="material-icons">delete</i>
+                                                </button>
+                                            </div>
+                                    </div>
+                                    {fields.length - 1 !== index ? <hr/>: null}
+                                </Fragment>
                             )
                         })
                     }
-                return 'Здесь вы увидите добавленные поля'
+                return <p style={{padding:'0 15px'}}>Добавьте поля</p>
             }
 
         return (

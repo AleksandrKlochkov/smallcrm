@@ -6,7 +6,6 @@ class ContactFormStore{
     @observable loading = false
     @observable forms = []
     @observable itemForm = {}
-    @observable fieldsForm = []
     @observable fieldForm = {}
     @observable titleForm = 'Оставьте отзыв'
     @observable sendingMessage = 'Спасибо, Ваше сообщение успешно отправлено'
@@ -23,9 +22,7 @@ class ContactFormStore{
                                 hidden: 'hidden',
                                 password: 'password'
                             }
-    
 
-    
     @computed get Loading() {
         return this.loading
     }
@@ -35,10 +32,6 @@ class ContactFormStore{
 
     @computed get ItemForm() {
         return this.itemForm
-    }
-
-    @computed get FieldsForm() {
-        return this.fieldsForm 
     }
 
     @computed get FieldForm() {
@@ -94,48 +87,20 @@ class ContactFormStore{
         window.M.toast({html: `Форма ${toJS(form.formTitle)} создана`})
     }
 
-    @action setFieldsForm(fields) {
-        this.fieldsForm = fields
-    }
+    @action setFieldForm(fieldKey, modalElem) {
 
-    @action async addFieldForm(field) {
-        const formIdx = this.forms.findIndex(f=>f._id === this.ItemForm._id)
-        this.forms[formIdx].formFields.push(field)
-
-        const data = await this.httpRequest(`/api/contact/${this.ItemForm._id}`,'PATH',toJS(this.ItemForm),{'Authorization': `${authStore.isToken}`}, false)
-        if(data.message) {
-            window.M.toast({html: data.message})
-        }else {
-            console.log(data)
-        }
-        this.itemForm.formFields.push(field)
-        window.M.toast({html: `Добавлено новое поле ${toJS(field.fieldTitle)}`})
-    }
-
-    @action removeFieldForm(id) {
-        const field = this.fieldsForm.filter(item => item._id === id)
-        this.fieldsForm = this.fieldsForm.filter(item => item._id !== id)
-        window.M.toast({html: `Удалено поле ${toJS(field[0].fieldTitle)}`})
-    }
-
-    @action editingFormField(field){
-        const index = this.fieldsForm.findIndex(i => i._id === field._id)
-        this.fieldsForm[index] = field
-        window.M.toast({html: `Отредактированно поле  ${toJS(field.fieldTitle)}`})
-    }
-
-    @action setFieldForm(id) {
-        this.fieldForm = contactFormStore.fieldsForm.find(item => item._id === id)
-        modalStore.modalOpen()
+        this.fieldForm = this.itemForm.formFields.find(item => item.fieldKey === fieldKey)
+        modalStore.setModalElement(modalElem)
     }
 
     @action clearFieldForm() {
         this.fieldForm = {}
     }
 
-    @action clearFieldsForm() {
-        this.fieldsForm = []
+    @action clearFormFields() {
+        this.itemForm.formFields = []
     }
+
 
     @action uploadsFiles = (event) => {
         const file = event.target.files[0]
@@ -156,6 +121,7 @@ class ContactFormStore{
                 fieldSelectValues = formData.get('fieldSelectValues').split(',')
             }
             const field = {
+                fieldKey: this.FieldForm.fieldKey ,
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
                 fieldType: formData.get('fieldType'),
@@ -167,7 +133,7 @@ class ContactFormStore{
             this.editingFormField(field)
             modalStore.modalClose()
         }else{
-            // const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
+            const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
             let fieldSelectValues = null
             if(formData.get('fieldSelectValues')){
                 fieldSelectValues = formData.get('fieldSelectValues').split(',')
@@ -178,6 +144,7 @@ class ContactFormStore{
             formData.set('fieldHidden', formData.get('fieldType') === 'hidden' ? true : false)
            
             const field = {
+                fieldKey: fieldKey,
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
                 fieldType: formData.get('fieldType'),
@@ -186,14 +153,39 @@ class ContactFormStore{
                 fieldSelectValues:  fieldSelectValues ? fieldSelectValues : [],
                 fieldHidden: formData.get('fieldType') === 'hidden' ? true : false
             }
-            this.addFieldForm(field)
+            this.addingFormField(field)
         }
-    
         event.target.reset();
         window.M.updateTextFields()
     }
 
-    
+    @action addingFormField(field) {
+        this.itemForm.formFields.push(field)
+        window.M.toast({html: `Добавлено новое поле ${toJS(field.fieldTitle)}`})
+    }
+
+    @action removeFormField(fieldKey) {
+        const field = this.itemForm.formFields.filter(item => item.fieldKey === fieldKey)
+        const result = window.confirm(`Удалить поле ${toJS(field[0].fieldTitle)}?`)
+        if(result){
+            this.itemForm.formFields = this.itemForm.formFields.filter(item => item.fieldKey !== fieldKey)
+            window.M.toast({html: `Удалено поле ${toJS(field[0].fieldTitle)}`})
+        }
+    }
+
+    @action removeFormFields() {
+        const result = window.confirm('Удалить все поля формы?')
+        if(result){
+            this.itemForm.formFields = []
+        }
+    }
+
+    @action editingFormField(field){
+        const index = this.itemForm.formFields.findIndex(i => i.fieldKey === field.fieldKey)
+        this.itemForm.formFields[index] = field
+        window.M.toast({html: `Отредактированно поле  ${toJS(field.fieldTitle)}`})
+    }
+
     @action async submitSaveForm(event, save = true) {
         event.preventDefault()
         const elemForm = event.target
@@ -201,21 +193,23 @@ class ContactFormStore{
         this.elementForm = elemForm
 
         if(save){
-            formData.append('formFields', JSON.stringify(toJS(this.FieldsForm)))
+            formData.append('formFields', JSON.stringify(toJS(this.ItemForm.FieldsForm)))
         }else{
             if(formData.get('autoGenerationFields') && formData.get('autoGenerationFields') === 'on'){
                 const fieldsForm = [
-                    {     
+                    {   
+                        fieldKey: `text${Math.random().toString().replace(/[.]/g, "")}`,
                         fieldPosition: 1,                                                                                               
                         fieldLabel: 'Имя',
                         fieldType: 'text',
                         fieldPlaceholder: 'Введите имя',
                         fieldValue: '',
                         fieldTitle: 'Имя отправителя',
-                        fieldSelectValues: JSON.stringify([]),
+                        fieldSelectValues: [],
                         fieldHidden: false
                     },
-                    {                     
+                    {          
+                        fieldKey: `email${Math.random().toString().replace(/[.]/g, "")}`,           
                         fieldPosition: 2,                                                                                      
                         fieldLabel: 'Email',
                         fieldType: 'email',
@@ -225,7 +219,8 @@ class ContactFormStore{
                         fieldSelectValues: [],
                         fieldHidden: false
                     },
-                    {           
+                    {          
+                        fieldKey: `select${Math.random().toString().replace(/[.]/g, "")}`,    
                         fieldPosition: 3,                                                                                                    
                         fieldLabel: 'Тип заявки',
                         fieldType: 'select',
@@ -236,6 +231,7 @@ class ContactFormStore{
                         fieldHidden: false
                     },
                     {
+                        fieldKey: `textarea${Math.random().toString().replace(/[.]/g, "")}`,  
                         fieldPosition: 4,   
                         fieldLabel: 'Сообщение',
                         fieldType: 'textarea',
@@ -246,19 +242,21 @@ class ContactFormStore{
                         fieldHidden: false
                     }
                 ]
-                formData.append('formFields', JSON.stringify(fieldsForm))
+                formData.set('formMethod', 'post')
+                formData.set('formFields', JSON.stringify(fieldsForm))
             } else {
-                formData.append('formFields', JSON.stringify([]))
+                formData.set('formFields', JSON.stringify([]))
             }
-            modalStore.modalClose()
+   
         }
 
-        const data = await this.httpRequest(`/api/contact`,'POST',formData,{'Authorization': `${authStore.isToken}`})
+        const data = await this.httpRequest(`/api/contact/`, 'POST', formData, {'Authorization': `${authStore.isToken}`}, false)
         if(data.message){
             window.M.toast({ html:`${data.message}`})
         }else{
             this.addForms(data)
             this.clearFormElement()
+            modalStore.modalClose()
         }
     }
 
@@ -272,14 +270,12 @@ class ContactFormStore{
     }
 
     @action async fetchItemForms(id) {
-        const data = await this.httpRequest(`/api/contact/${id}`,'GET',null,{'Authorization': `${authStore.isToken}`})
+        const data = await this.httpRequest(`/api/contact/${id}`, 'GET', null, {'Content-type':'application/json','Authorization': `${authStore.isToken}`})
         if(data.message){
             window.M.toast({ html:`${data.message}`})
         }else{
             this.setItemForm(data)
-            if(data.formFields){
-                this.setFieldsForm(data.formFields)
-            }
+            console.log(data)
             if(data.imageSrc){
                 this.setImagesData('/'+data.imageSrc)
             }
@@ -287,17 +283,17 @@ class ContactFormStore{
     }
 
     @action httpRequest = async (url, method = 'GET', body = null, headers = {}, loading=true) => {
-        console.log(body)
         if(loading) {this.setLoading(true)} 
         try {
           if (body) {
-            body = JSON.stringify(body)
-            headers['Content-Type'] = 'application/json'
+            //body = JSON.stringify(body)
+            //headers['Content-Type'] = 'application/json'
+             headers['Accept'] = 'application/json'
           }
           const response = await fetch(url, {method, body, headers})
           const data = await response.json()
           if (!response.ok) {
-            throw new Error(data.message || 'Что-то пошло не так')
+           throw new Error(data.message || 'Что-то пошло не так')
           }
           if(loading) {this.setLoading(false)}
           return data

@@ -12,6 +12,9 @@ class ModalStore{
 
     @action setModalElement(elem){
         this.modalElement = elem
+        const fieldType = document.querySelector('[name="fieldType"]')
+        var eventOnChange = new Event('change', { bubbles: true })
+        fieldType.dispatchEvent(eventOnChange)
         this.formRef = elem.querySelector('form')
         this.modalOpen()
     }
@@ -34,7 +37,7 @@ class ModalStore{
     }
 
     @action modalOpen() {
-        // this.showModal = true
+         this.showModal = true
         if(this.modalElement) {
             this.modalElement.style.display='flex'
         }

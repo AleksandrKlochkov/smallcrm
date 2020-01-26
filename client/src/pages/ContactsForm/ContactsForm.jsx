@@ -74,7 +74,6 @@ import Loading from '../../components/Loading/Loading'
                     modalRef={this.modalCreateFieldsRef}
                     closeModal={this.closeModal.bind(this)}
                 />   
-
                 <CreateFormModal 
                     modalRef={this.modalCreateFormRef}
                     closeModal={this.closeModal.bind(this)}

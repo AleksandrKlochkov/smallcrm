@@ -460,9 +460,14 @@ display: none;
 .fields-editing {
     display: flex;
     width: 100%;
-    padding: 10px 0;
     align-items: center;
     justify-content: flex-end;
+}
+
+.fields-box{
+    background: #222d32;
+    padding: 10px 0 10px 0;
+    color: #fff;
 }
 
 .fields-editing button {

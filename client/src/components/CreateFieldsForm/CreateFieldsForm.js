@@ -12,10 +12,8 @@ import { inject, observer } from 'mobx-react'
     }
     
     componentDidMount() {
+        console.log('DID_MOUNT')
         const selects = document.querySelectorAll('select');
-        const fieldType = document.querySelector('[name="fieldType"]')
-        var eventOnChange = new Event('change', { bubbles: true });
-        fieldType.dispatchEvent(eventOnChange);
         window.M.FormSelect.init(selects);
         window.M.updateTextFields();
     }
@@ -36,6 +34,7 @@ import { inject, observer } from 'mobx-react'
                         id="fieldType" 
                         name="fieldType" 
                         defaultValue={field.fieldType}
+                        value={field.fieldType}
                     >
                         <option value="email">Email</option>
                         <option value="text">Текстовое поле</option>
@@ -88,11 +87,11 @@ import { inject, observer } from 'mobx-react'
                                         {this.renderFields(contactFormStore.FieldForm)}
                                         <div className="modal_win_btn">
                                             {Object.keys(toJS(contactFormStore.FieldForm)).length !== 0  ?
-                                                <button type="submit" className="btn btn-small light-blue accent-4">
+                                                <button type="submit" className="btn btn-small light-blue accent-4 waves-effect waves-light">
                                                         Отредактировать
                                                 </button>
                                             : 
-                                                <button type="submit" className="btn btn-small green">
+                                                <button type="submit" className="btn btn-small green waves-effect waves-light">
                                                         Добавить
                                                 </button>
                                             } 

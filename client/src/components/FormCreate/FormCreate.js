@@ -12,13 +12,9 @@ import Loading from '../Loading/Loading'
 @observer class FormCreate extends Component {
 
     componentDidMount(){
-       
         const elems = document.querySelectorAll('select');
         window.M.FormSelect.init(elems);
         this.props.contactFormStore.fetchItemForms(this.props.match.params.id)
-        setTimeout(()=>{
-            window.M.updateTextFields()
-        },100)
         window.M.updateTextFields()
     }
 
@@ -98,22 +94,22 @@ import Loading from '../Loading/Loading'
                                                 >
                                                 
                                                 </textarea>
-                                                <label htmlFor="formSendMessage">Сообщение после отправки</label>
+                                                <label className="active" htmlFor="formSendMessage">Сообщение после отправки</label>
                                             </div>
                                             <div className="fields-editing">
                                                 <button onClick={()=>modalStore.setModalElement(this.props.modalCreateFieldsRef.current)}  className="waves-effect waves-light btn" type="button">
                                                 <i className="small material-icons left">add</i>                   
                                                     Добавить поле
                                                 </button>
-                                            </div>
-                                            <div className="col s12 margin-tb">
-                                                <Fields />
-                                            </div>        
-                                            <div className="fields-editing-btn-box">
-                                                <button className="waves-effect waves-light btn light-blue darken-4" type="button">
-                                                    Отправить   
+                                                <button onClick={()=>contactFormStore.removeFormFields()} className="waves-effect waves-light btn light-blue darken-4" type="button">
+                                                <i className="small material-icons left">delete</i> 
+                                                    Удалить поля
                                                 </button>
                                             </div>
+                                            <h5>ПОЛЯ ФОРМЫ</h5>
+                                            <div className="fields-box">
+                                                <Fields modalCreateFieldsRef={this.props.modalCreateFieldsRef} />
+                                            </div>        
                                         </div>
                                 </div>
                             </div>

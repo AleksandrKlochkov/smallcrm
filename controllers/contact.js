@@ -16,6 +16,7 @@ module.exports.getAll = async function(req, res) {
 }
 
 module.exports.getById = async function(req, res) {
+
   try{
     const form = await Contact.findById(req.params.id)
     res.status(200).json(form)
@@ -37,7 +38,6 @@ module.exports.remove = async function(req, res) {
 }
 
 module.exports.create = async function(req, res) {
-    console.log(req.body.formFields)
     const form = new Contact({
       formMethod: req.body.formMethod,
       formName: req.body.formName,
@@ -66,15 +66,15 @@ module.exports.update = async function(req, res) {
   // if(req.file){
   //   updated.imageSrc = req.file.path
   // }
-  // try{
+  try{
   //   const form = await Contact.findByIdAndUpdate(
   //     {_id: req.params.id},
   //     {$set: updated},
   //     {new: true}
   //   )
    // res.status(200).json(form)
-   res.status(200).json({message:'ок'})
-  // }catch(e){
-  //   errorHandler(res,e)
-  // }
+   res.status(200).json({message:'ок',item: 'asd'})
+  }catch(e){
+    errorHandler(res,e)
+  }
 }

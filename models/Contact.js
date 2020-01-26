@@ -36,6 +36,8 @@ const contactSchema = new Schema({
   },
   formFields: [
     {
+      fieldKey: {type: String, require: true},
+      fieldPosition: {type: String, require: true},
       fieldLabel: {type: String, required: true},
       fieldType: {type: String, required: true},
       fieldPlaceholder: {type: String, default: ''},
