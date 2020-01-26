@@ -58,6 +58,7 @@ module.exports.create = async function(req, res) {
 }
 
 module.exports.update = async function(req, res) {
+  console.log(req.body)
   // const updated = {
   //   name: req.body.name
   // }
@@ -66,12 +67,13 @@ module.exports.update = async function(req, res) {
   //   updated.imageSrc = req.file.path
   // }
   // try{
-  //   const category = await Contact.findByIdAndUpdate(
+  //   const form = await Contact.findByIdAndUpdate(
   //     {_id: req.params.id},
   //     {$set: updated},
   //     {new: true}
   //   )
-  //   res.status(200).json(category)
+   // res.status(200).json(form)
+   res.status(200).json({message:'ок'})
   // }catch(e){
   //   errorHandler(res,e)
   // }

@@ -24,7 +24,6 @@ import Loading from '../Loading/Loading'
 
     render() {
         const {contactFormStore, modalStore} = this.props
-        console.log(toJS(contactFormStore.ItemForm.formFields))
         return (
             <Fragment>
                 {contactFormStore.Loading ? <Loading /> :

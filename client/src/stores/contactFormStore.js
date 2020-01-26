@@ -1,5 +1,6 @@
 import {observable, computed, action, toJS} from 'mobx'
 import modalStore from './modalStore';
+import authStore from './authStore'
 
 class ContactFormStore{
     @observable loading = false
@@ -97,10 +98,17 @@ class ContactFormStore{
         this.fieldsForm = fields
     }
 
-    @action addFieldForm(field) {
+    @action async addFieldForm(field) {
         const formIdx = this.forms.findIndex(f=>f._id === this.ItemForm._id)
         this.forms[formIdx].formFields.push(field)
-        this.itemForm.fieldsForm.push(field)
+
+        const data = await this.httpRequest(`/api/contact/${this.ItemForm._id}`,'PATH',toJS(this.ItemForm),{'Authorization': `${authStore.isToken}`}, false)
+        if(data.message) {
+            window.M.toast({html: data.message})
+        }else {
+            console.log(data)
+        }
+        this.itemForm.formFields.push(field)
         window.M.toast({html: `Добавлено новое поле ${toJS(field.fieldTitle)}`})
     }
 
@@ -163,7 +171,12 @@ class ContactFormStore{
             let fieldSelectValues = null
             if(formData.get('fieldSelectValues')){
                 fieldSelectValues = formData.get('fieldSelectValues').split(',')
+                formData.set('fieldSelectValues', fieldSelectValues)
+            }else{
+                formData.set('fieldSelectValues', [])
             }
+            formData.set('fieldHidden', formData.get('fieldType') === 'hidden' ? true : false)
+           
             const field = {
                 fieldLabel: formData.get('fieldTitle'),
                 fieldPlaceholder: formData.get('fieldPlaceholder'),
@@ -173,7 +186,6 @@ class ContactFormStore{
                 fieldSelectValues:  fieldSelectValues ? fieldSelectValues : [],
                 fieldHidden: formData.get('fieldType') === 'hidden' ? true : false
             }
-            console.log(field)
             this.addFieldForm(field)
         }
     
@@ -186,7 +198,6 @@ class ContactFormStore{
         event.preventDefault()
         const elemForm = event.target
         const formData = new FormData(elemForm)
-        const fieldKey = `${formData.get('fieldType')}${Math.random().toString().replace(/[.]/g, "")}`
         this.elementForm = elemForm
 
         if(save){
@@ -242,102 +253,60 @@ class ContactFormStore{
             modalStore.modalClose()
         }
 
-        const token = localStorage.getItem('token')
-        try{
-            await fetch('/api/contact',{
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': `${token}`
-                },
-                body: formData
-            })
-            .then(response => {
-                return response.json()
-            })
-            .then(data=>{
-                if(data.message){
-                    window.M.toast({ html:`${data.message}`})
-                }else{
-                    this.addForms(data)
-                    this.clearFormElement()
-                }
-            })
-            .catch(e => {
-                window.M.toast({ html:`Что то пошло не так`})
-            })
-        }catch(e){
-            window.M.toast({ html:`Что то пошло не так`})
+        const data = await this.httpRequest(`/api/contact`,'POST',formData,{'Authorization': `${authStore.isToken}`})
+        if(data.message){
+            window.M.toast({ html:`${data.message}`})
+        }else{
+            this.addForms(data)
+            this.clearFormElement()
         }
     }
 
     @action async fetchForms() {
-        this.setLoading(true)
-        const token = localStorage.getItem('token')  
-        try{
-            await fetch('/api/contact',{
-                method: 'GET',
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-            .then(response => {
-                return response.json()
-            })
-            .then(data=>{
-                if(data.message){
-                    window.M.toast({ html:`${data.message}`})
-                }else{
-                    this.setForms(data)
-                    this.setLoading(false)
-                }
-            })
-            .catch(e => {
-                window.M.toast({ html:`Что то пошло не так`})
-            })
-        }catch(e){
-            window.M.toast({ html:`Что то пошло не так`})
+        const data = await this.httpRequest(`/api/contact`,'GET',null,{'Authorization': `${authStore.isToken}`})
+        if(data.message){
+            window.M.toast({ html:`${data.message}`})
+        }else{
+            this.setForms(data)
         }
     }
 
     @action async fetchItemForms(id) {
-        this.setLoading(true)
-        const token = localStorage.getItem('token')  
-        try{
-            await fetch(`/api/contact/${id}`,{
-                method: 'GET',
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-            .then(response => {
-                return response.json()
-            })
-            .then(data=>{
-                if(data.message){
-                    window.M.toast({ html:`${data.message}`})
-                }else{
-                    console.log(data)
-                    this.setItemForm(data)
-                    if(data.formFields){
-                        this.setFieldsForm(data.formFields)
-                    }
-                    if(data.imageSrc){
-                        this.setImagesData('/'+data.imageSrc)
-                    }
-                    this.setLoading(false)
-                    window.M.updateTextFields()
-                }
-            })
-            .catch(e => {
-                console.log(e.message)
-                window.M.toast({ html:`Что то пошло не так`})
-            })
-        }catch(e){
-            console.log(e.message)
-            window.M.toast({ html:`Что то пошло не так`})
+        const data = await this.httpRequest(`/api/contact/${id}`,'GET',null,{'Authorization': `${authStore.isToken}`})
+        if(data.message){
+            window.M.toast({ html:`${data.message}`})
+        }else{
+            this.setItemForm(data)
+            if(data.formFields){
+                this.setFieldsForm(data.formFields)
+            }
+            if(data.imageSrc){
+                this.setImagesData('/'+data.imageSrc)
+            }
         }
     }
+
+    @action httpRequest = async (url, method = 'GET', body = null, headers = {}, loading=true) => {
+        console.log(body)
+        if(loading) {this.setLoading(true)} 
+        try {
+          if (body) {
+            body = JSON.stringify(body)
+            headers['Content-Type'] = 'application/json'
+          }
+          const response = await fetch(url, {method, body, headers})
+          const data = await response.json()
+          if (!response.ok) {
+            throw new Error(data.message || 'Что-то пошло не так')
+          }
+          if(loading) {this.setLoading(false)}
+          return data
+        } catch (e) {
+          if(loading) {this.setLoading(false)}
+          window.M.toast({ html:`Что то пошло не так`})
+          throw e
+        }
+      }
 
     @action clearFormElement(){
         this.setImagesData(null)
