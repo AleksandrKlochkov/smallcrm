@@ -12,7 +12,6 @@ import { inject, observer } from 'mobx-react'
     }
     
     componentDidMount() {
-        console.log('DID_MOUNT')
         const selects = document.querySelectorAll('select');
         window.M.FormSelect.init(selects);
         window.M.updateTextFields();
@@ -34,10 +33,9 @@ import { inject, observer } from 'mobx-react'
                         id="fieldType" 
                         name="fieldType" 
                         defaultValue={field.fieldType}
-                        value={field.fieldType}
                     >
-                        <option value="email">Email</option>
                         <option value="text">Текстовое поле</option>
+                        <option value="email">Email</option>
                         <option value="select">Выпадающий список</option>
                         <option value="textarea">Сообщение</option>
                         <option value="number">Цифры</option>

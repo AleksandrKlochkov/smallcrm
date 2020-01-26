@@ -90,6 +90,12 @@ class ContactFormStore{
     @action setFieldForm(fieldKey, modalElem) {
 
         this.fieldForm = this.itemForm.formFields.find(item => item.fieldKey === fieldKey)
+        const select = document.querySelector('[name="fieldType"]')
+        if(select){
+            select.value = this.fieldForm.fieldType
+            const ev2 = new Event('change', { bubbles: true});
+            select.dispatchEvent(ev2);
+        }
         modalStore.setModalElement(modalElem)
     }
 
