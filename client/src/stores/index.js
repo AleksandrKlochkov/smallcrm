@@ -3,6 +3,7 @@ import sideBarStore from './sideBarStores'
 import siteLayoutStore from './siteLayoutStore'
 import contactFormStore from './contactFormStore'
 import modalStore from './modalStore'
+import frameFormStore from './frameFormStore'
 
 export default () => {
     return {
@@ -10,6 +11,7 @@ export default () => {
       sideBarStore,
       siteLayoutStore,
       contactFormStore,
-      modalStore
+      modalStore,
+      frameFormStore
     };
   }

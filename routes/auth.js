@@ -1,4 +1,5 @@
 const express = require('express')
+const passport = require('passport')
 const controller = require('../controllers/auth')
 const router = express.Router()
 
@@ -6,7 +7,7 @@ const router = express.Router()
 router.post('/login', controller.login)
 
 // localhost:5000/api/auth/register
-router.post('/register', controller.register)
+router.post('/register',passport.authenticate('jwt', {session: false}), controller.register)
 
 
 module.exports = router
