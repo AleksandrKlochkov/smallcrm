@@ -22,7 +22,11 @@ import Loading from '../Loading/Loading'
         return (
             <Fragment>
                 {contactFormStore.Loading ? <Loading /> :
-                 <Fragment>
+                                 <Fragment>
+                 <div className="contact-form-btn">
+                   <button onClick={()=>contactFormStore.removeForm()} type="button" className="btn btn-small red"><i className="material-icons left">delete</i>Удалить форму</button>
+               </div>
+
                     <div className="row">
                         <form action="#" onSubmit={(event)=>contactFormStore.submitSaveForm(event, true)}>
                             <div className="col s12 l6 xl6">
@@ -46,6 +50,10 @@ import Loading from '../Loading/Loading'
                                     <label className="active" htmlFor="name">Название формы</label>
                                 </div>
                                 <div className="input-field">
+                                    <input defaultValue={contactFormStore.ItemForm.formNameSite} id="formNameSite" type="text" name="formNameSite" placeholder="Название сайта" required/>
+                                    <label  className="active" htmlFor="formNameSite">Название сайта</label>
+                                </div>
+                                <div className="input-field">
                                     <input defaultValue={contactFormStore.ItemForm.formUrlSite} id="formUrlSite" type="text" name="formUrlSite" placeholder="Введите URL домена сайта" required/>
                                     <label  className="active" htmlFor="formUrlSite">URL-домен сайта</label>
                                 </div>
@@ -66,7 +74,14 @@ import Loading from '../Loading/Loading'
                             <div className="col s12 l6 xl6">
                                 <div className="generate-form-box">
                                         <h5>Создание формы</h5>
+ 
                                         <div className="generate-form-content">
+                                        <div className="fields-editing">
+                                        <button onClick={()=>contactFormStore.setFormHtmlCode(this.props.formHtmlCodeModal.current)}  className="waves-effect waves-light btn orange darken-4" type="button">
+                                            <i className="material-icons left">code</i>
+                                                Получить код
+                                        </button>
+                                        </div>
                                             <div className="input-field">
                                                 <input 
                                                     defaultValue={contactFormStore.ItemForm.formTitle}

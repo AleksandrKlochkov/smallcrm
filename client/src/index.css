@@ -515,6 +515,25 @@ display: none;
     transition-delay: 0.5s;*/
 }
 
+.code-plaintext {
+    border: 1px solid #cacac9;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 0px 20px 20px;
+    background: #f8f7f2;
+    margin: 15px 0 15px 0;
+}
+
+.code-btn{
+    text-align: right;
+}
+
+.code-plaintext-pre {
+    padding: 10px 0 20px 0px;
+    overflow: auto;
+    color: #069;
+}
+
 .modal--align-top {
     align-items: flex-start;
     padding-top: 15px;

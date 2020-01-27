@@ -6,6 +6,7 @@ class ContactFormStore{
     @observable loading = false
     @observable forms = []
     @observable itemForm = {}
+    @observable formHtmlCode = ''
     @observable location = {}
     @observable fieldForm = {}
     @observable titleForm = 'Оставьте отзыв'
@@ -53,6 +54,22 @@ class ContactFormStore{
 
     @computed get FieldTypeKey() {
         return this.fieldTypeKey
+    }
+
+    @computed get FormHtmlCode() {
+        return this.formHtmlCode
+    }
+
+    @action setFormHtmlCode(elemForm){
+        if(this.itemForm.formFields.length !== 0){
+            const domen = window.location.origin 
+            const url = `${domen}/forms/view/${this.itemForm._id}`
+            const code = `<iframe style="width:100%;max-width:600px;min-height:600px;overflow:auto;" src="${url}">Ваш браузер не поддерживает плавающие фреймы!</iframe>`
+            this.formHtmlCode = code
+            modalStore.setModalElement(elemForm)
+        }else{
+            alert('Код формы не доступен. Добавьте поля в форму!')
+        }
     }
 
     @action setItemForm(form) {
@@ -205,24 +222,28 @@ class ContactFormStore{
         this.elementForm = elemForm
 
         if(save){
-            formData.append('formFields', JSON.stringify(toJS(this.ItemForm.formFields)))
-            const data = await this.httpRequest(`/api/contact/${this.itemForm._id}`, 'PATCH', formData, {'Authorization': `${authStore.isToken}`}, true)
-            if(data.message){
-                window.M.toast({ html:`${data.message}`})
-            }else{
-                this.setItemForm(data)
-                this.setTitleForm(data.formTitle)
-                const title = document.querySelector('[name="formTitle"]')
-                if(title){
-                    title.value = data.formTitle
-                }
-                if(data.imageSrc){
-                    this.setImagesData('/'+data.imageSrc)
-                }
-                this.setSendingMessage(data.formSuccessMessages)
+            if(this.itemForm.formFields.length !== 0){
+                formData.append('formFields', JSON.stringify(toJS(this.ItemForm.formFields)))
+                const data = await this.httpRequest(`/api/contact/${this.itemForm._id}`, 'PATCH', formData, {'Authorization': `${authStore.isToken}`}, true)
+                if(data.message){
+                    window.M.toast({ html:`${data.message}`})
+                }else{
+                    this.setItemForm(data)
+                    this.setTitleForm(data.formTitle)
+                    const title = document.querySelector('[name="formTitle"]')
+                    if(title){
+                        title.value = data.formTitle
+                    }
+                    if(data.imageSrc){
+                        this.setImagesData('/'+data.imageSrc)
+                    }
+                    this.setSendingMessage(data.formSuccessMessages)
 
-                window.M.toast({ html:`Изменения формы сохранены`})
-           }
+                    window.M.toast({ html:`Изменения формы сохранены`})
+                }
+            }else{
+                alert('Изменения не сохранены. Добавьте поля в форму')
+            }
         }else{
             if(formData.get('autoGenerationFields') && formData.get('autoGenerationFields') === 'on'){
                 const fieldsForm = [
@@ -302,6 +323,20 @@ class ContactFormStore{
         }
     }
 
+    @action async removeForm() {
+        const result = window.confirm('Вы уверены что хотите удалить форму?')
+        if(result){
+            const data = await this.httpRequest(`/api/contact/${this.itemForm._id}`,'DELETE',null,{'Authorization': `${authStore.isToken}`})
+            if(data.message){
+                const forms = this.forms.filter(i=>i._id !== this.itemForm._id)
+                this.setForms(forms)
+                window.M.toast({ html:`${data.message}`})
+            }
+            this.clearFormElement()
+            this.location.history.push('/contacts/contact_form')
+        }
+    }
+
     @action async fetchItemForms(id) {
         const data = await this.httpRequest(`/api/contact/${id}`, 'GET', null, {'Content-type':'application/json','Authorization': `${authStore.isToken}`})
         if(data.message){
@@ -341,9 +376,10 @@ class ContactFormStore{
     @action clearFormElement(){
         // this.setImagesData(null)
         // this.clearFieldForm()
+        // this.setItemForm(null)
         // this.elementForm.reset()
         // this.setFieldTypeKey(null)
-        // window.M.updateTextFields()
+        window.M.updateTextFields()
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {toJS } from 'mobx'
 import { inject, observer} from 'mobx-react'
 import {withRouter, Switch, Route} from 'react-router-dom'
@@ -7,6 +7,7 @@ import FormCreate from '../../components/FormCreate/FormCreate'
 import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm'
 import CreateFormModal from '../../components/CreateFormModal/CreateFormModal'
 import Loading from '../../components/Loading/Loading'
+import FormHtmlCodeModal from '../../components/FormHtmlCodeModal/FormHtmlCodeModal'
 
 @inject('contactFormStore','modalStore')
 @observer class ContactsForm extends Component {
@@ -15,6 +16,7 @@ import Loading from '../../components/Loading/Loading'
         this.modalRef = React.createRef()
         this.modalCreateFormRef =React.createRef()
         this.modalCreateFieldsRef = React.createRef()
+        this.formHtmlCodeModal = React.createRef()
     }
 
     closeModal(e) {
@@ -51,21 +53,26 @@ import Loading from '../../components/Loading/Loading'
     }
 
     render() {
-        const {contactFormStore, modalStore, match} = this.props
+        const {contactFormStore, modalStore, history} = this.props
         return (
             <div className="contact-form-pages">
-                <div className="contact-form-btn">
-                    <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
-                </div>
+              
                 <div className="contact-form">
                     <Switch>
                         <Route exact path="/contacts/contact_form">
-                            <div className="row">
-                              {contactFormStore.Loading ? <Loading /> : this.renderCardForms(toJS(contactFormStore.Forms))}
-                            </div>
+                            <Fragment>
+                                {history.location.pathname === '/contacts/contact_form' && !contactFormStore.Loading ?   
+                                <div className="contact-form-btn">
+                                    <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
+                                </div>
+                                : null}
+                                <div className="row">
+                                    {contactFormStore.Loading ? <Loading /> : this.renderCardForms(toJS(contactFormStore.Forms))}
+                                </div>
+                            </Fragment>
                         </Route>
                         <Route path="/contacts/contact_form/:id">
-                            <FormCreate modalCreateFieldsRef={this.modalCreateFieldsRef} />
+                            <FormCreate modalCreateFieldsRef={this.modalCreateFieldsRef} formHtmlCodeModal={this.formHtmlCodeModal}/>
                         </Route>
                     </Switch>     
                 </div>
@@ -76,7 +83,11 @@ import Loading from '../../components/Loading/Loading'
                 <CreateFormModal 
                     modalRef={this.modalCreateFormRef}
                     closeModal={this.closeModal.bind(this)}
-                />   
+                />  
+                <FormHtmlCodeModal 
+                       modalRef={this.formHtmlCodeModal}
+                       closeModal={this.closeModal.bind(this)}
+                /> 
         </div>
         )
     }

@@ -26,21 +26,22 @@ module.exports.getById = async function(req, res) {
 }
 
 module.exports.remove = async function(req, res) {
-  // try{
-  //   await Form.remove({_id: req.params.id})
-  //   await Position.remove({category: req.params.id})
-  //   res.status(200).json({
-  //     message: 'Категория удалена'
-  //   })
-  // }catch(e){
-  //   errorHandler(res,e)
-  // }
+  try{
+    await Form.remove({_id: req.params.id})
+    await Position.remove({category: req.params.id})
+    res.status(200).json({
+      message: 'Форма удалена'
+    })
+  }catch(e){
+    errorHandler(res,e)
+  }
 }
 
 module.exports.create = async function(req, res) {
     const form = new Form({
       formMethod: req.body.formMethod,
       formName: req.body.formName,
+      formNameSite: req.body.formNameSite,
       formUrlSite: req.body.formUrlSite,
       formTitle: req.body.formTitle,
       formDescription: req.body.formDescription,
@@ -63,6 +64,7 @@ module.exports.update = async function(req, res) {
       formMethod: req.body.formMethod,
       formName: req.body.formName,
       formUrlSite: req.body.formUrlSite,
+      formNameSite: req.body.formNameSite,
       formTitle: req.body.formTitle,
       formDescription: req.body.formDescription,
       formSuccessMessages: req.body.formSuccessMessages,

@@ -14,6 +14,10 @@ const contactSchema = new Schema({
     type: String,
     default: ''
   },
+  formNameSite: {
+    type: String,
+    default: ''
+  },
   formUrlSite: {
     type: String,
     default: ''
