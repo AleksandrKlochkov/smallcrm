@@ -14,7 +14,7 @@ import FormGenerate from '../../components/FormGenerate/FormGenerate'
     render() {
         const {contactFormStore, modalStore, history} = this.props
         return (
-            <div className="contact-form-pages">
+            <div className="frame-container">
               <FormGenerate />
             </div>
         )

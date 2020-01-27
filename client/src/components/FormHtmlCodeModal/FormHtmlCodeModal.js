@@ -15,6 +15,7 @@ import { inject, observer } from 'mobx-react'
         //пытаемся скопировать текст в буфер обмена
         try { 
             document.execCommand('copy'); 
+            window.M.toast({html: `Код скопирован в буфер обмена`})
         } catch(err) { 
             console.log('Can`t copy, boss'); 
         } 

@@ -99,12 +99,8 @@ import FileUI from '../UI/FileUI/FileUI'
     render() {
         const {contactFormStore} = this.props
         return (
-            <div className="form-generate">
-                <div className="form-generate-title">
-                    <h5>Визуальное представления формы</h5>
-                </div>
-
-                <form action="#" method="POST" style={{border: "1px solid rgb(154, 154, 154)", width: "100%", padding:20, background: '#fff'}} noValidate>
+            <div className="form-generate" ref={this.props.formGenerateRef}>
+                <form action="#" method="POST" noValidate>
                     <div>
                         <h2 style={{color:"#222d32", fontSize: "18px", margin: "10px 0", fontWeight: 600, textTransform: "uppercase", }}>{contactFormStore.TitleForm ? contactFormStore.TitleForm : 'Здесь будет заголовок'}</h2>  
                     </div>

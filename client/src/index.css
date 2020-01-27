@@ -627,7 +627,7 @@ display: none;
 
 /*FORM GENERATE*/
 .form-generate>form{
-    border: 1px solid rgb(154, 154, 154);
+    /* border: 1px solid rgb(154, 154, 154); */
     width: 100%;
     padding: 20px;
     background: rgb(255, 255, 255);
@@ -680,6 +680,14 @@ span.mess-error {
 
 
 /*FORM GENERATE*/
+
+
+/*FORM FRAME*/
+.frame-container {
+    height: 100vh;
+    background: #fff;    
+}
+/*FORM FRAME*/
 
 
 

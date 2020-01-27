@@ -17,6 +17,7 @@ import FormHtmlCodeModal from '../../components/FormHtmlCodeModal/FormHtmlCodeMo
         this.modalCreateFormRef =React.createRef()
         this.modalCreateFieldsRef = React.createRef()
         this.formHtmlCodeModal = React.createRef()
+        this.formGenerateRef = React.createRef()
     }
 
     closeModal(e) {
@@ -72,7 +73,7 @@ import FormHtmlCodeModal from '../../components/FormHtmlCodeModal/FormHtmlCodeMo
                             </Fragment>
                         </Route>
                         <Route path="/contacts/contact_form/:id">
-                            <FormCreate modalCreateFieldsRef={this.modalCreateFieldsRef} formHtmlCodeModal={this.formHtmlCodeModal}/>
+                            <FormCreate formGenerateRef={this.formGenerateRef} modalCreateFieldsRef={this.modalCreateFieldsRef} formHtmlCodeModal={this.formHtmlCodeModal}/>
                         </Route>
                     </Switch>     
                 </div>

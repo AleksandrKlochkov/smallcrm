@@ -77,7 +77,7 @@ import Loading from '../Loading/Loading'
  
                                         <div className="generate-form-content">
                                         <div className="fields-editing">
-                                        <button onClick={()=>contactFormStore.setFormHtmlCode(this.props.formHtmlCodeModal.current)}  className="waves-effect waves-light btn orange darken-4" type="button">
+                                        <button onClick={()=>contactFormStore.setFormHtmlCode(this.props.formHtmlCodeModal.current, this.props.formGenerateRef.current)}  className="waves-effect waves-light btn orange darken-4" type="button">
                                             <i className="material-icons left">code</i>
                                                 Получить код
                                         </button>
@@ -142,7 +142,10 @@ import Loading from '../Loading/Loading'
                     </div>
 
                     <hr/>
-                    <FormGenerate />
+                    <div className="form-generate-title">
+                        <h5>Визуальное представления формы</h5>
+                    </div>
+                    <FormGenerate formGenerateRef={this.props.formGenerateRef}/>
                     </Fragment>
                 }
             </Fragment>
