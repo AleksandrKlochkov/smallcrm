@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import {toJS } from 'mobx'
 import { inject, observer} from 'mobx-react'
-import {withRouter, Switch, Route} from 'react-router-dom'
+import {withRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Card from '../../components/Card/Card'
 import FormCreate from '../../components/FormCreate/FormCreate'
 import CreateFieldsForm from '../../components/CreateFieldsForm/CreateFieldsForm'
@@ -64,7 +64,7 @@ import FormHtmlCodeModal from '../../components/FormHtmlCodeModal/FormHtmlCodeMo
                             <Fragment>
                                 {history.location.pathname === '/contacts/contact_form' && !contactFormStore.Loading ?   
                                 <div className="contact-form-btn">
-                                    <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)} className="waves-effect waves-light btn grey darken-1">Добавить форму</button>
+                                    <button onClick={()=>modalStore.setModalElement(this.modalCreateFormRef.current)}  className="waves-effect waves-light btn" type="button"><i className="small material-icons left">add</i>Добавить форму</button>
                                 </div>
                                 : null}
                                 <div className="row">
@@ -75,6 +75,7 @@ import FormHtmlCodeModal from '../../components/FormHtmlCodeModal/FormHtmlCodeMo
                         <Route path="/contacts/contact_form/:id">
                             <FormCreate formGenerateRef={this.formGenerateRef} modalCreateFieldsRef={this.modalCreateFieldsRef} formHtmlCodeModal={this.formHtmlCodeModal}/>
                         </Route>
+                        <Redirect to='/NotFound' />
                     </Switch>     
                 </div>
                 <CreateFieldsForm

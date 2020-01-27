@@ -17,7 +17,7 @@ import { inject, observer } from 'mobx-react'
             document.execCommand('copy'); 
             window.M.toast({html: `Код скопирован в буфер обмена`})
         } catch(err) { 
-            console.log('Can`t copy, boss'); 
+            window.M.toast({html: `Ошибка! Повторите попытку`})
         } 
         //очистим выделение текста, чтобы пользователь "не парился"
         window.getSelection().removeAllRanges();

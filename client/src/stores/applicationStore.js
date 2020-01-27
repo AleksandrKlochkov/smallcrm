@@ -1,6 +1,6 @@
 import {observable, computed, action, toJS} from 'mobx'
 
-class FrameFormStore{
+class ApplicationStore{
     @observable loading = false
     @observable form = {}
 
@@ -91,8 +91,8 @@ class FrameFormStore{
       }
 }
 
-const frameFormStore = new FrameFormStore()
+const applicationStore = new ApplicationStore()
 
-export default frameFormStore
+export default applicationStore
 
-export {FrameFormStore}
+export {ApplicationStore}

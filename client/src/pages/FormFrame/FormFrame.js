@@ -103,19 +103,19 @@ import Loading from '../../components/Loading/Loading'
 
     render() {
         const {frameFormStore} = this.props
-        console.log(toJS(frameFormStore.Form))
+        // console.log(toJS(frameFormStore.Form))
         return (
             <div className="frame-container">
                 <div className="form-generate">
                     {frameFormStore.Loading ? <Loading /> :
-                        <form action="#" method="POST" >
+                        <form action="#" onSubmit={(event)=>frameFormStore.submitSendForm(event)}>
                             <div>
                                 <h2 style={{color:"#222d32", fontSize: "18px", margin: "10px 0", fontWeight: 600, textTransform: "uppercase", }}>{frameFormStore.Form.formTitle}</h2>  
                             </div>
                             <hr/>
-                            <div className="message-form success">
+                            {frameFormStore.ErrorForm ? <div className="message-form success">
                                 <p>{frameFormStore.Form.formSuccessMessages}</p>
-                            </div>
+                            </div>: null}
                             <div className="row">
                                 {this.renderFormGenerate()}
                                 <div className="input-field col">

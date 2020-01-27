@@ -64,7 +64,7 @@ class ContactFormStore{
         if(this.itemForm.formFields.length !== 0){
             const domen = window.location.origin 
             const url = `${domen}/forms/view/${this.itemForm._id}`
-            const code = `<iframe style="width:100%;max-width:450px;min-height:${formGenerateElem.clientHeight}px;overflow:auto;border-radius:5px;border: 1px solid rgb(154, 154, 154);" marginwidth="0" marginheight="0" frameborder="0" src="${url}">Ваш браузер не поддерживает плавающие фреймы!</iframe>`
+            const code = `<iframe style="width:100%;max-width:450px;min-height:${formGenerateElem.clientHeight}px;overflow:auto;border-radius:5px;" marginwidth="0" marginheight="0" frameborder="0" src="${url}">Ваш браузер не поддерживает плавающие фреймы!</iframe>`
             this.formHtmlCode = code
             modalStore.setModalElement(elemForm)
         }else{
@@ -220,7 +220,6 @@ class ContactFormStore{
         const elemForm = event.target
         const formData = new FormData(elemForm)
         this.elementForm = elemForm
-
         if(save){
             if(this.itemForm.formFields.length !== 0){
                 formData.append('formFields', JSON.stringify(toJS(this.ItemForm.formFields)))

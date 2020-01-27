@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component} from 'react'
 import {Redirect, Route } from 'react-router-dom'
 import { inject, observer } from 'mobx-react'
 import authStore from '../../../stores/authStore'
@@ -19,12 +19,10 @@ import Auth from '../../../pages/Auth/Auth'
     renderRoutes() {
         if(authStore.isAuthenticated){
             return  <Redirect to="/" /> 
-        } 
-           
+        }   
         return (
             <Route path="/"><Auth /></Route> 
         )
-
     }
 
     render() {

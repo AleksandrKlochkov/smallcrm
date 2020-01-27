@@ -19,13 +19,10 @@ export function useRoutes(isAuthenticated) {
         <Route path="/auth">
           <AuthLayout />
         </Route>
+        <Route path="/NotFound" component={NotFound} />
         <PrivateRoute path="/" isAuthenticated={isAuthenticated}>
           <SiteLayout />
         </PrivateRoute>
-        <Route path="/NotFound" component={NotFound} />
-        <Route path="*">
-            <Redirect to="/NotFound" />
-        </Route>
     </Switch>
   )
 
