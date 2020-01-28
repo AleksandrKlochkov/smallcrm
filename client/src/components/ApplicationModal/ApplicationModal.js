@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 
 @inject('contactFormStore')
-@observer class CreateFromModal extends Component {
+@observer class ApplicationModal extends Component {
 
     componentDidMount() {
         const elems = document.querySelectorAll('select');
@@ -22,7 +22,7 @@ import { inject, observer } from 'mobx-react'
         >
             <div className="modal_win_dialog">
                 <div className="modal_win_content">
-                    <form onSubmit={(event)=>contactFormStore.submitSaveForm(event,false)}>
+                    <form onSubmit={(event)=>contactFormStore.submitSaveForm(event)}>
                         <div className="modal-content">
                             <h4>Добавление формы</h4>
                             <div className="input-field col s12 xl6">
@@ -93,4 +93,4 @@ import { inject, observer } from 'mobx-react'
     }
 }
 
-export default CreateFromModal
+export default ApplicationModal

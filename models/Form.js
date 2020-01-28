@@ -18,6 +18,10 @@ const contactSchema = new Schema({
     type: String,
     default: ''
   },
+  formTypeApplication:{
+    type: String,
+    required: true
+  },
   formUrlSite: {
     type: String,
     default: ''

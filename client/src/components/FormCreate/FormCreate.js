@@ -47,8 +47,16 @@ import Loading from '../Loading/Loading'
                                 </div>
                                 <div className="input-field">
                                     <input defaultValue={contactFormStore.ItemForm.formName} id="formName" type="text" name="formName" placeholder="Введите название формы" required/>
-                                    <label className="active" htmlFor="name">Название формы</label>
+                                    <label className="active" htmlFor="formName">Название формы</label>
                                 </div>
+                                <div className="input-field">
+                                    <select  id="formTypeApplication" name="formTypeApplication" defaultValue={contactFormStore.ItemForm.formTypeApplication}>
+                                        <option value="support">Поддержка</option>
+                                        <option value="sales">Продажи</option>
+                                    </select>
+                                    <label htmlFor="formTypeApplication">Тип заявок</label>
+                                </div>
+
                                 <div className="input-field">
                                     <input defaultValue={contactFormStore.ItemForm.formNameSite} id="formNameSite" type="text" name="formNameSite" placeholder="Название сайта" required/>
                                     <label  className="active" htmlFor="formNameSite">Название сайта</label>

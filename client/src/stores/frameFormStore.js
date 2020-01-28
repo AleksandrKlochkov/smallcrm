@@ -53,6 +53,7 @@ class FrameFormStore{
         formData.set('formName', this.Form.formName)
         formData.set('formId', this.Form._id)
         formData.set('formFields', JSON.stringify(formFields))
+        formData.set('formTypeApplication', this.Form.formTypeApplication)
         const data = await this.httpRequest(`/api/application`, 'POST', formData,{}, true)
         if(data.message){
             window.M.toast({ html:`${data.message}`})

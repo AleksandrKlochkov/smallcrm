@@ -689,6 +689,21 @@ span.mess-error {
 }
 /*FORM FRAME*/
 
+/*Applications*/
+.applications-field{
+    cursor: pointer;
+}
+
+.applications-field.new{
+    background-color: #26a69a !important;
+}
+
+.applications-field.expired{
+    background-color: rgba(228, 56, 56, 0.72) !important;
+}
+
+/*Aplications*/
+
 
 
 

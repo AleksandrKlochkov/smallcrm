@@ -1,15 +1,16 @@
 import {observable, computed, action, toJS} from 'mobx'
+import authStore from './authStore'
 
 class ApplicationStore{
     @observable loading = false
-    @observable form = {}
+    @observable applications = []
 
-    @computed get Form() {
-        return this.form
+    @computed get Applications() {
+        return this.applications
     }
 
-    @action setForm(form) {
-        this.form = form
+    @action setApplications(applications) {
+        this.applications = applications
     }
 
     @computed get Loading() {
@@ -20,47 +21,37 @@ class ApplicationStore{
         this.loading = flag
     }
 
-    // @action uploadsFiles = (event) => {
-    //     const file = event.target.files[0]
-    //     const reader = new FileReader()
-    //     reader.onload = () => {
-    //        const imagesData = reader.result
-    //     }
-    //     reader.readAsDataURL(file)
-    // }
-
     @action async submitSendForm(event) {
         event.preventDefault()
-        const elemForm = event.target
-        const formData = new FormData(elemForm)
-        const fields = event.target.querySelectorAll('[name]')
-        // console.log(toJS(this.Form))
-        const formFields = []
-        // let images = ''
-        fields.forEach(item => {
-            // if(item.files && item.files.length !== 0 ){
-            //     console.log(item)
-            //     images =item.files[0]
-            // }else{
-                const field = this.Form.formFields.find(i=>i._id === item.name) 
-                formFields.push({ name: field.fieldLabel, value: item.value || ''})
-            // }
-            
-        })
-        // if(images && Object.keys(images).length !==0 ){
-        // formData.append('formImages', images)
+        // const elemForm = event.target
+        // const formData = new FormData(elemForm)
+        // const fields = event.target.querySelectorAll('[name]')
+        // const formFields = []
+        // fields.forEach(item => {
+        //     const field = this.Form.formFields.find(i=>i._id === item.name) 
+        //     formFields.push({ name: field.fieldLabel, value: item.value || ''})
+        // })
+        // formData.set('formName', this.Form.formName)
+        // formData.set('formId', this.Form._id)
+        // formData.set('formFields', JSON.stringify(formFields))
+        // formData.set('formTypeApplication', this.Form.formTypeApplication)
+        // const data = await this.httpRequest(`/api/application`, 'POST', formData,{}, true)
+        // if(data.message){
+        //     window.M.toast({ html:`${data.message}`})
         // }
-        formData.set('formName', this.Form.formName)
-        formData.set('formId', this.Form._id)
-        formData.set('formFields', JSON.stringify(formFields))
-        const data = await this.httpRequest(`/api/application`, 'POST', formData,{}, true)
-        if(data.message){
-            window.M.toast({ html:`${data.message}`})
-        }
-        elemForm.reset();
+        // elemForm.reset();
     }
 
-    @action async fetchForm(id) {
+    @action async fetchApplications() {
+        const data = await this.httpRequest(`/api/application`, 'GET', null, {'Authorization': `${authStore.isToken}`}, false)
+        if(data.message){
+            window.M.toast({ html:`${data.message}`})
+        }else{
+            this.setApplications(data)
+        }
+    }
+
+    @action async fetchApplicationById(id) {
         const data = await this.httpRequest(`/api/contact/${id}`, 'GET', null, {'Content-type':'application/json'})
         if(data.message){
             window.M.toast({ html:`${data.message}`})

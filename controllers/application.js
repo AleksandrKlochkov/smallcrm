@@ -4,9 +4,9 @@ const errorHandler = require('../utils/errorHandler')
 
 module.exports.getAll = async function(req, res) {
   try{
-    const forms = await Application.find({
-      user: req.user.id
-    })
+    const forms = await Application
+    .find()
+    .sort({date: -1})
 
     res.status(200).json(forms)
   }catch(e){
@@ -37,11 +37,12 @@ module.exports.remove = async function(req, res) {
 module.exports.create = async function(req, res) {
     const application = new Application({
       formName: req.body.formName,
+      formTypeApplication: req.body.formTypeApplication,
       imageSrc: req.file ? req.file.path : '',
       formFields: JSON.parse(req.body.formFields),
       form: req.body.formId
     })
-    
+
     try{
        await application.save()
        res.status(201).json({message: 'Сообщение отправлено'})

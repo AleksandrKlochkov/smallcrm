@@ -41,6 +41,7 @@ module.exports.create = async function(req, res) {
     const form = new Form({
       formMethod: req.body.formMethod,
       formName: req.body.formName,
+      formTypeApplication: req.body.formTypeApplication,
       formNameSite: req.body.formNameSite,
       formUrlSite: req.body.formUrlSite,
       formTitle: req.body.formTitle,
@@ -63,6 +64,7 @@ module.exports.update = async function(req, res) {
   const updated = {
       formMethod: req.body.formMethod,
       formName: req.body.formName,
+      formTypeApplication: req.body.formTypeApplication,
       formUrlSite: req.body.formUrlSite,
       formNameSite: req.body.formNameSite,
       formTitle: req.body.formTitle,

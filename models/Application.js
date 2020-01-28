@@ -17,6 +17,8 @@ const applicationSchema = new Schema({
       value: {type: String, default: '', require: true},
     }
   ],
+  formStatus: {type: String, default: 'new', require: true},
+  formTypeApplication: {type: String, default: '', require: true},
   form: {
     ref: 'forms',
     type: Schema.Types.ObjectId
