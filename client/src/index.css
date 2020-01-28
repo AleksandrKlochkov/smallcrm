@@ -293,9 +293,10 @@ ul.sidenav.close{
 }
 
 .toggle-sidebar {
-	cursor: pointer;
+    cursor: pointer;
     background: transparent;
-	box-sizing: border-box;
+    box-sizing: border-box;
+    float: left;
     height: 100%;
     border: none;
     color: #fff;
@@ -714,6 +715,26 @@ span.mess-error {
 }
 
 /*Aplications*/
+
+nav .brand-logo {
+    position: absolute;
+    display: flex;
+    color: #fff;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 0 35px;
+    font-size: 2.1rem;
+    padding: 0;
+}
+
+nav .brand-logo img{
+    width: 50px;
+    margin: 5px;
+}
+
+nav .brand-logo span {
+    color: #66ad00;
+}
 
 
 

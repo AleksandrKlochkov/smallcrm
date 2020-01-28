@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Link, NavLink} from 'react-router-dom'
 import {inject, observer} from 'mobx-react'
+import logo from  '../../shared/images/logo_about.png'
 
 @inject('authStore','sideBarStore')
 @observer class Navbar extends Component {
@@ -23,7 +24,7 @@ import {inject, observer} from 'mobx-react'
             <nav>
                 <div className="nav-wrapper grey darken-4">
                 {authStore.IsAuthenticated ? <button className="toggle-sidebar" type="button" onClick={() => sideBarStore.sideBarToggle()}><i className="material-icons">menu</i></button>: null}
-                    <Link to="/" className="brand-logo">CRM</Link>
+                <Link to="/" className="brand-logo"><img src={logo} className="barnd-logo-img" alt="АИС CRM"/>АИС <span>&nbsp;CRM</span></Link>
                         {this.renderNavbarLinks()}
                 </div>
             </nav>
