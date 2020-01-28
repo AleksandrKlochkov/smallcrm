@@ -14,6 +14,12 @@ import Loading from '../../components/Loading/Loading'
         this.modalApplicationRef =React.createRef()
     }
 
+    modalHandler(id) {
+       
+        this.props.modalStore.setModalElement(this.modalApplicationRef.current)
+        this.props.applicationStore.fetchApplicationById(id)
+    }
+
     renderApplications() {
         const {applicationStore} = this.props
         if(applicationStore.Applications && applicationStore.Applications.length !==0){
@@ -57,7 +63,7 @@ import Loading from '../../components/Loading/Loading'
                     <td>{new Date(item.date).toLocaleDateString()}</td>
                     <td>{`${new Date(item.date).getHours()}:${new Date(item.date).getMinutes()} `}</td>
                     <td>
-                        <button  onClick={()=>this.props.modalStore.setModalElement(this.modalApplicationRef.current)} className="btn btn-small grey darken-1"><i className="material-icons">open_in_new</i></button>
+                        <button  onClick={()=>this.modalHandler(item._id)} className="btn btn-small grey darken-1"><i className="material-icons">open_in_new</i></button>
                     </td>
                 </tr>
             )

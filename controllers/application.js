@@ -17,7 +17,7 @@ module.exports.getAll = async function(req, res) {
 module.exports.getById = async function(req, res) {
   try{
     const application= await Application.findById(req.params.id)
-    res.status(200).json(application )
+    res.status(200).json(application)
   }catch(e){
     errorHandler(res,e)
   }
@@ -53,18 +53,7 @@ module.exports.create = async function(req, res) {
 
 module.exports.update = async function(req, res) {
   const updated = {
-      formMethod: req.body.formMethod,
-      formName: req.body.formName,
-      formUrlSite: req.body.formUrlSite,
-      formNameSite: req.body.formNameSite,
-      formTitle: req.body.formTitle,
-      formDescription: req.body.formDescription,
-      formSuccessMessages: req.body.formSuccessMessages,
-      formFields: JSON.parse(req.body.formFields),
-      formHtmlCode: '',
-  }
-  if(req.file){
-    updated.imageSrc = req.file.path
+      formStatus: req.body.formStatus,
   }
   try{
     const application = await Application.findByIdAndUpdate(

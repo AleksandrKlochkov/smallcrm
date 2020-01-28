@@ -4,6 +4,7 @@ import authStore from './authStore'
 class ApplicationStore{
     @observable loading = false
     @observable applications = []
+    @observable application = {}
 
     @computed get Applications() {
         return this.applications
@@ -13,6 +14,22 @@ class ApplicationStore{
         this.applications = applications
     }
 
+
+    @action editApplications(application, id) {
+        const idx = this.applications.findIndex(i=>i._id === id)
+        this.application[idx] = application
+    }
+
+    @computed get Application() {
+        return this.application
+    }
+
+    @action setApplication(application) {
+        this.application = application
+    }
+
+    
+
     @computed get Loading() {
         return this.loading
     }
@@ -21,25 +38,21 @@ class ApplicationStore{
         this.loading = flag
     }
 
-    @action async submitSendForm(event) {
+    @action async submitSaveForm(event) {
         event.preventDefault()
-        // const elemForm = event.target
-        // const formData = new FormData(elemForm)
-        // const fields = event.target.querySelectorAll('[name]')
-        // const formFields = []
-        // fields.forEach(item => {
-        //     const field = this.Form.formFields.find(i=>i._id === item.name) 
-        //     formFields.push({ name: field.fieldLabel, value: item.value || ''})
-        // })
-        // formData.set('formName', this.Form.formName)
-        // formData.set('formId', this.Form._id)
-        // formData.set('formFields', JSON.stringify(formFields))
-        // formData.set('formTypeApplication', this.Form.formTypeApplication)
-        // const data = await this.httpRequest(`/api/application`, 'POST', formData,{}, true)
-        // if(data.message){
-        //     window.M.toast({ html:`${data.message}`})
-        // }
-        // elemForm.reset();
+        const elemForm = event.target
+        const formData = new FormData(elemForm)
+        formData.set('formStatus', this.Application.formStatus)
+        console.log(formData.get('formStatus'))
+        const data = await this.httpRequest(`/api/application/${this.Application._id}`, 'PATCH', formData,{'Authorization': `${authStore.isToken}`}, false)
+        if(data.message){
+            window.M.toast({ html:`${data.message}`})
+        }else{
+            console.log(data)
+
+            this.setApplication(data)
+            this.editApplications(data, this.Application._id)
+        }
     }
 
     @action async fetchApplications() {
@@ -52,12 +65,11 @@ class ApplicationStore{
     }
 
     @action async fetchApplicationById(id) {
-        const data = await this.httpRequest(`/api/contact/${id}`, 'GET', null, {'Content-type':'application/json'})
+        const data = await this.httpRequest(`/api/application/${id}`, 'GET', null, {'Authorization': `${authStore.isToken}`}, false)
         if(data.message){
             window.M.toast({ html:`${data.message}`})
-            window.location.href="/NotFound"
         }else{
-                this.setForm(data)
+            this.setApplication(data)
         }
     }
 

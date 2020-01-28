@@ -1,16 +1,17 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 
-@inject('contactFormStore')
+@inject('applicationStore')
 @observer class ApplicationModal extends Component {
 
     componentDidMount() {
         const elems = document.querySelectorAll('select');
         window.M.FormSelect.init(elems);
+      
     }
     
     render() {
-        const {id, modalRef, closeModal, contactFormStore} = this.props
+        const {id, modalRef, closeModal, applicationStore} = this.props
         return (
             <div
             id={id}
@@ -22,17 +23,37 @@ import { inject, observer } from 'mobx-react'
         >
             <div className="modal_win_dialog">
                 <div className="modal_win_content">
-                    <form onSubmit={(event)=>contactFormStore.submitSaveForm(event)}>
+                    <form onSubmit={(event)=>applicationStore.submitSaveForm(event)}>
                         <div className="modal-content" style={{width:600}}>
                             <h4>Заявка №</h4>
                             <div className="input-field col s12 xl6">
-                                    <p><strong>Название заявки:</strong> Лендинг</p>
-                                    <p><strong>Тип заявки:</strong> Поддержка</p>
-                                    <p><strong>Дата получения:</strong> Поддержка</p>
-                                    <p><strong>Время получения:</strong> Поддержка</p>
+                                    <p><strong>Название заявки:</strong> {applicationStore.Application.formName}</p>
+                                    <p><strong>Тип заявки:</strong> {applicationStore.Application.formTypeApplication}</p>
+                                    <p><strong>Дата получения:</strong> {new Date(applicationStore.Application.date).toLocaleDateString()}</p>
+                                    <p><strong>Время получения:</strong> {`${new Date(applicationStore.Application.date).getHours()}:${new Date(applicationStore.Application.date).getMinutes()} `}</p>
+                                    <hr/>
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Название поля</th>
+                                            <th>Значение поля</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            {applicationStore.Application.formFields ? applicationStore.Application.formFields.map((item,index)=> {
+                                                return (
+                                                    <tr key={index}>
+                                                        <td>{item.name}</td>
+                                                        <td>{item.value}</td>
+                                                    </tr>
+                                                )
+                                            }): <tr>Список полей отсутствует</tr>}
+                                        </tbody>
+                                    </table>
                             </div>
                             <div className="input-field col s12 xl6">
-                                <select  id="formStatus" name="formStatus" defaultValue={''}>
+                                <select  id="formStatus" name="formStatus" defaultValue={applicationStore.Application.formStatus}>
                                     <option value="new">Новая заявка</option>
                                     <option value="expired">Просроченная</option>
                                     <option value="inwork">В работе</option>
