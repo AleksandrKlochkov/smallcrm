@@ -43,7 +43,7 @@ class ApplicationStore{
     }
 
     @action async fetchApplications() {
-        const data = await this.httpRequest(`/api/application`, 'GET', null, {'Authorization': `${authStore.isToken}`}, false)
+        const data = await this.httpRequest(`/api/application`, 'GET', null, {'Authorization': `${authStore.isToken}`}, true)
         if(data.message){
             window.M.toast({ html:`${data.message}`})
         }else{

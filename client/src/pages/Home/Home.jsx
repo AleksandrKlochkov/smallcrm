@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
 import  ApplicationModal from '../../components/ApplicationModal/ApplicationModal'
+import Loading from '../../components/Loading/Loading'
 
 // import FeatureDiscovery from '../../components/FeatureDiscovery/FeatureDiscovery'
 
@@ -14,8 +15,6 @@ import  ApplicationModal from '../../components/ApplicationModal/ApplicationModa
     }
 
     renderApplications() {
-        //inwork
-        //expired
         const {applicationStore} = this.props
         if(applicationStore.Applications && applicationStore.Applications.length !==0){
         return this.props.applicationStore.Applications.map((item,index)=>{
@@ -77,8 +76,8 @@ import  ApplicationModal from '../../components/ApplicationModal/ApplicationModa
         e.stopPropagation()
         const close = e.target.classList.contains('modal_win_close')
         if(close){
-            const {contactFormStore, modalStore} = this.props
-            contactFormStore.clearFieldForm()
+            const {modalStore} = this.props
+            // contactFormStore.clearFieldForm()
             // if(this.modalRef.current){
             //     this.modalRef.current.querySelector('form').reset()
             // }
@@ -94,7 +93,10 @@ import  ApplicationModal from '../../components/ApplicationModal/ApplicationModa
     render() {
         const {applicationStore} = this.props
         return (
+            <React.Fragment>
+            {applicationStore.Loading ? <Loading /> :
             <div>
+             
                 {/* {applicationStore.Applications && applicationStore.Applications.length !==0 ?
                     <div className="fields-editing">
                         <button className="btn btn-small js-filter tooltipped active" data-tooltip="Открыть фильтр">
@@ -102,6 +104,7 @@ import  ApplicationModal from '../../components/ApplicationModal/ApplicationModa
                         </button>
                     </div>
                 : null} */}
+                
                <div className="filter js-filter-block hide">
                     <div className="fr">
                         <div className="col order">
@@ -155,7 +158,10 @@ import  ApplicationModal from '../../components/ApplicationModal/ApplicationModa
                     modalRef={this.modalApplicationRef}
                     closeModal={this.closeModal.bind(this)}
                  />
+
             </div>
+    }
+            </React.Fragment>
         )
     }
 }

@@ -23,62 +23,26 @@ import { inject, observer } from 'mobx-react'
             <div className="modal_win_dialog">
                 <div className="modal_win_content">
                     <form onSubmit={(event)=>contactFormStore.submitSaveForm(event)}>
-                        <div className="modal-content">
-                            <h4>Добавление формы</h4>
+                        <div className="modal-content" style={{width:600}}>
+                            <h4>Заявка №</h4>
                             <div className="input-field col s12 xl6">
-                                <input id="_formName" type="text" name="formName" placeholder="Введите название формы" />
-                                <label htmlFor="_formName" className="active">Название формы*</label>
-                            </div>
-                            <div className="input-field  col s12 xl6">
-                                <input 
-                                    id="_formTitle" 
-                                    type="text" 
-                                    name="formTitle" 
-                                    placeholder="Введите заголовок формы" 
-                                />
-                                <label className="active" htmlFor="_formTitle">Заголовок формы*</label>
+                                    <p><strong>Название заявки:</strong> Лендинг</p>
+                                    <p><strong>Тип заявки:</strong> Поддержка</p>
+                                    <p><strong>Дата получения:</strong> Поддержка</p>
+                                    <p><strong>Время получения:</strong> Поддержка</p>
                             </div>
                             <div className="input-field col s12 xl6">
-                                <select  id="_formTypeApplication" name="formTypeApplication" defaultValue={contactFormStore.ItemForm.formTypeApplication}>
-                                    <option value="support">Поддержка</option>
-                                    <option value="sales">Продажи</option>
+                                <select  id="formStatus" name="formStatus" defaultValue={''}>
+                                    <option value="new">Новая заявка</option>
+                                    <option value="expired">Просроченная</option>
+                                    <option value="inwork">В работе</option>
+                                    <option value="completed">Завершенная</option>
                                 </select>
-                                <label htmlFor="_formTypeApplication">Тип заявок</label>
                             </div>
 
-                            <div className="file-field input-field col s12 xl6">
-                                <div className="btn">
-                                    <span>File</span>
-                                    <input name="formImages" type="file"/>
-                                </div>
-                                <div className="file-path-wrapper">
-                                    <input className="file-path validate" type="text"/>
-                                </div>
-                            </div>
-
-                            <div className="input-field col s12 xl6">
-                                <p>
-                                    <label>
-                                        <input type="checkbox" name="autoGenerationFields" defaultChecked={true}/>
-                                        <span>Сгенировать поля формы автоматически</span>
-                                    </label>
-                                </p>
-                            </div>
-                            <div className="input-field col s12">
-                                <textarea
-                                 className="materialize-textarea" 
-                                 data-length="50"
-                                 id="_formDescription" 
-                                 type="text" 
-                                 name="formDescription" 
-                                 placeholder="Введите краткое описание формы" 
-                                 >
-                                 </textarea>
-                                <label className="active" htmlFor="_formDescription">Краткое описание формы*</label>
-                            </div>
                             <div className="modal_win_btn">
                                 <button type="submit" className="btn btn-small green waves-effect waves-light">
-                                    Добавить
+                                    Обновить
                                 </button>
                             </div>
                         </div>
