@@ -1,4 +1,4 @@
-import {observable, computed, action, toJS} from 'mobx'
+import {observable, computed, action} from 'mobx' //toJS
 import authStore from './authStore'
 
 class ApplicationStore{
@@ -17,7 +17,7 @@ class ApplicationStore{
 
     @action editApplications(application, id) {
         const idx = this.applications.findIndex(i=>i._id === id)
-        this.application[idx] = application
+        this.applications[idx] = application
     }
 
     @computed get Application() {
@@ -42,14 +42,10 @@ class ApplicationStore{
         event.preventDefault()
         const elemForm = event.target
         const formData = new FormData(elemForm)
-        formData.set('formStatus', this.Application.formStatus)
-        console.log(formData.get('formStatus'))
         const data = await this.httpRequest(`/api/application/${this.Application._id}`, 'PATCH', formData,{'Authorization': `${authStore.isToken}`}, false)
         if(data.message){
             window.M.toast({ html:`${data.message}`})
         }else{
-            console.log(data)
-
             this.setApplication(data)
             this.editApplications(data, this.Application._id)
         }

@@ -696,10 +696,21 @@ span.mess-error {
 
 .applications-field.new{
     background-color: #26a69a !important;
+    color: #ffffff;
 }
 
 .applications-field.expired{
     background-color: rgba(228, 56, 56, 0.72) !important;
+    color: #ffffff;
+}
+
+.applications-field.inwork{
+    background-color: orange !important;
+    color: #ffffff;
+}
+
+.completed {
+    background-color: initial;
 }
 
 /*Aplications*/

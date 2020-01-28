@@ -48,12 +48,12 @@ import { inject, observer } from 'mobx-react'
                                                         <td>{item.value}</td>
                                                     </tr>
                                                 )
-                                            }): <tr>Список полей отсутствует</tr>}
+                                            }): <tr><td>Имя пусто</td><td>Значение пустое</td></tr>}
                                         </tbody>
                                     </table>
                             </div>
                             <div className="input-field col s12 xl6">
-                                <select  id="formStatus" name="formStatus" defaultValue={applicationStore.Application.formStatus}>
+                                <select  name="formStatus" defaultValue={applicationStore.Application.formStatus}>
                                     <option value="new">Новая заявка</option>
                                     <option value="expired">Просроченная</option>
                                     <option value="inwork">В работе</option>

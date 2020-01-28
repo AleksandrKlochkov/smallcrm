@@ -1,4 +1,4 @@
-import {observable, computed, action, toJS} from 'mobx'
+import {observable, computed, action} from 'mobx' // toJS
 
 class FrameFormStore{
     @observable loading = false
