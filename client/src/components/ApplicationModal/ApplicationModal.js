@@ -25,7 +25,7 @@ import { inject, observer } from 'mobx-react'
                 <div className="modal_win_content">
                     <form onSubmit={(event)=>applicationStore.submitSaveForm(event)}>
                         <div className="modal-content" style={{width:600}}>
-                            <h4>Заявка №</h4>
+                            <h4>Заявка № {applicationStore.Application._id}</h4>
                             <div className="input-field col s12 xl6">
                                     <p><strong>Название заявки:</strong> {applicationStore.Application.formName}</p>
                                     <p><strong>Тип заявки:</strong> {applicationStore.Application.formTypeApplication}</p>

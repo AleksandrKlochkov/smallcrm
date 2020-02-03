@@ -15,6 +15,7 @@ import Loading from '../Loading/Loading'
         window.M.FormSelect.init(elems);
         this.props.contactFormStore.fetchItemForms(this.props.match.params.id)
         window.M.updateTextFields()
+        window.M.updateTextFields()
     }
 
     render() {
